@@ -1,0 +1,260 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Pressable,
+  Alert,
+  ImageBackground,
+  Image,
+  Dimensions
+} from "react-native";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MamaKilo from "../../../components/MamaKilo";
+import { StatusBar } from "expo-status-bar";
+
+const RegisterScreen = () => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [image, setImage] = useState("");
+  const navigation = useNavigation();
+  const handleRegister = () => {
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+      image: image,
+    };
+
+    // send a POST  request to the backend API to register the user
+    axios
+      .post("http://127.0.0.0:8000/register", user)
+      .then((response) => {
+        console.log(response);
+        Alert.alert(
+          "Registration successful",
+          "You have been registered Successfully"
+        );
+        setName("");
+        setEmail("");
+        setPassword("");
+        setImage("");
+      })
+      .catch((error) => {
+        Alert.alert(
+          "Registration Error",
+          "An error occurred while registering"
+        );
+        console.log("registration failed", error);
+        console.log(user)
+      });
+  };
+  return (
+    <ImageBackground source={require('../../../assets/images/6.webp')} style={{ flex: 1, position: 'relative' }} resizeMode='cover'>
+
+      <SafeAreaView style={styles.container}>
+      
+       
+          <View style={styles.logo}>
+
+            <Image style={{ height: 150, width: 150, marginRight: 10, flex: 1 / 4 }} source={require('../../../assets/images/rahalogo.png')} />
+
+
+          </View>
+
+
+          <View
+            style={{
+              marginTop: 180,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <MamaKilo color='white' height={40} size={30} >
+              REGISTER TO CHAT
+            </MamaKilo>
+
+
+          </View>
+
+        <View style={{ marginTop: 8 }}>
+          <View style={{ marginTop: 10 , justifyContent: 'center', alignItems: 'center'}}>
+            
+
+            <TextInput
+              value={name}
+              onChangeText={(text) => setName(text)}
+              style={{
+                fontSize: email ? 18 : 18,
+                borderBottomColor: "white",
+                borderBottomWidth: 3,
+                marginVertical: 10,
+                width: 300,
+                color: 'white'
+              }}
+              placeholderTextColor={"white"}
+              placeholder="Enter your name"
+            />
+          </View>
+
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            
+
+            <TextInput
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              style={{
+                fontSize: email ? 18 : 18,
+                borderBottomColor: "white",
+                borderBottomWidth: 3,
+                marginVertical: 10,
+                width: 300,
+                color: 'white'
+              }}
+              placeholderTextColor={"white"}
+              placeholder="Enter Your Email"
+            />
+          </View>
+
+          <View style={{ marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
+            
+
+            <TextInput
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              secureTextEntry={true}
+              style={{
+                fontSize: email ? 18 : 18,
+                borderBottomColor: "white",
+                borderBottomWidth: 3,
+                marginVertical: 10,
+                width: 300,
+                color:'white' 
+              }}
+              placeholderTextColor={"white"}
+              placeholder="Enter Your Password"
+            />
+          </View>
+
+          <View style={{ marginTop: 10, justifyContent: 'center', alignItems: 'center' }}>
+            
+
+            <TextInput
+              value={image}
+              onChangeText={(text) => setImage(text)}
+              style={{
+                fontSize: email ? 18 : 18,
+                borderBottomColor: "white",
+                borderBottomWidth: 3,
+                marginVertical: 10,
+                width: 300,
+                color: 'white'
+              }}
+              placeholderTextColor={"white"}
+              placeholder="Image"
+            />
+          </View>
+
+          <Pressable
+            onPress={handleRegister}
+            style={{
+              width: 200,
+              backgroundColor: "#4A55A2",
+              padding: 15,
+              marginTop: 50,
+              marginLeft: "auto",
+              marginRight: "auto",
+              borderRadius: 6,
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Sign Up
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => navigation.goBack()}
+            style={{ marginTop: 40 }}
+          >
+            <Text style={{ textAlign: "center", color: "white", fontSize: 16 }}>
+              Already Have an account? Sign in
+            </Text>
+          </Pressable>
+        </View>
+    
+        
+    </SafeAreaView >
+
+
+
+
+  <StatusBar style="light" />
+
+    </ImageBackground >
+  );
+};
+
+export default RegisterScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
+
+  background: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 0,
+  }, 
+
+  logo: {
+    position: "absolute",
+    zIndex: 1,
+    //elevation: 1,
+    //flexDirection: 'row', 
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    marginLeft: (Dimensions.get('window').width / 2 ) - 75,
+    marginTop: 50,
+    marginBottom: 20,
+    
+    
+   
+  },
+
+  mamakiloContainer: {
+    //backgroundColor: "#483248",
+    zIndex: 1,
+    //position: 'absolute',
+    marginTop: 100,
+    marginLeft: (Dimensions.get('window').width / 2 ) - 200,
+    height: 200,
+    paddingHorizontal: 10, 
+    opacity: 0.8, justifyContent: 'center',
+    alignItems: 'center',
+    width: 400
+  },
+
+  mamakilo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 1
+    
+  }
+});
