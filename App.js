@@ -15,6 +15,8 @@ import Chat from './Chat/chat_screens/Chat';
 import Info from './Info';
 import LineupList from './LineupList';
 import LineupDetail from './LineupDetail';
+import Menu from './Menu';
+import Map from './Map';
 
 
 
@@ -67,11 +69,18 @@ export default function App() {
           tabBarLabelStyle: {color: 'black'}
         }}/>
 
-        {/* <Tab.Screen name="Chat" component={Chat} options={{
+        <Tab.Screen name="Menu" component={Menu} options={{
           headerShown: false,
-          tabBarIcon : ({size, focused}) => focused ? <Entypo name="chat" size={size} color='#bc4a0d' /> : <Entypo name="chat" size={size} color='black' />,
+          tabBarIcon : ({size, focused}) => focused ? <MaterialCommunityIcons name="food-fork-drink" size={size} color='#bc4a0d' /> : <MaterialCommunityIcons name="food-fork-drink" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
-        }}/> */}
+        }}/>
+
+        <Tab.Screen name="Map" component={Map} options={{
+          headerShown: false,
+          tabBarIcon : ({size, focused}) => focused ? <MaterialCommunityIcons name="google-maps" size={size} color='#bc4a0d' /> : <MaterialCommunityIcons name="google-maps" size={size} color='black' />,
+          tabBarLabelStyle: {color: 'black'}
+        }}/>
+
       </Tab.Navigator>
     </NavigationContainer>
   )

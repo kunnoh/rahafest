@@ -3,7 +3,7 @@ import React from 'react'
 
 const Info = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Info</Text>
     </View>
   )
@@ -11,4 +11,10 @@ const Info = () => {
 
 export default Info
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
