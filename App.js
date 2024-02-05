@@ -24,7 +24,6 @@ const Tab = createBottomTabNavigator()
 export default function App() {
 
   const LineupStack = () => {
-    
     return(
       <Stack.Navigator screenOptions={{
         headerShown: false,
@@ -33,50 +32,51 @@ export default function App() {
         <Stack.Screen name="LineupDetail" component={LineupDetail} />
       </Stack.Navigator>
     )     
-
   }
-
 
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{
-    tabBarStyle: { borderTopWidth: 0},
-    tabBarShowLabel: false,
-    
-      }}
-  >
+      <Tab.Navigator screenOptions={
+        {
+          tabBarStyle: { borderTopWidth: 0},
+          tabBarShowLabel: false,
+        }
+      }>
+        
         <Tab.Screen name="Home" component={Home} options={{
           headerShown: false,
           tabBarIcon : ({size, focused }) => focused ? <Entypo name="home" size={size} color='#bc4a0d'/> : <Entypo name="home" size={size} color='black'/>,
           tabBarLabelStyle: {color: 'black'},
-        
-          
         }} />
+
         <Tab.Screen name="Lineup" component={LineupStack} options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <FontAwesome5 name="compact-disc" size={size} color='#bc4a0d' /> : <FontAwesome5 name="compact-disc" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
         }} />
+
         <Tab.Screen name="Schedule" component={Schedule} options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <MaterialCommunityIcons name="calendar-clock" size={size} color='#bc4a0d' /> : <MaterialCommunityIcons name="calendar-clock" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
         }}/>
+
         <Tab.Screen name="Info" component={Info} options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <Ionicons name="information-circle" size={size} color='#bc4a0d' /> : <Ionicons name="information-circle" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
         }}/>
-        <Tab.Screen name="Chat" component={Chat} options={{
+
+        {/* <Tab.Screen name="Chat" component={Chat} options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <Entypo name="chat" size={size} color='#bc4a0d' /> : <Entypo name="chat" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
-        }}/>
+        }}/> */}
       </Tab.Navigator>
     </NavigationContainer>
   )
 
-  }
+}
 
 
 
