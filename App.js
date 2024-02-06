@@ -16,7 +16,7 @@ import Info from './Info';
 import LineupList from './LineupList';
 import LineupDetail from './LineupDetail';
 import Menu from './Menu';
-import Map from './Map';
+import Map from './src/screens/Map';
 
 
 
@@ -75,7 +75,7 @@ export default function App() {
           tabBarLabelStyle: {color: 'black'}
         }}/>
 
-        <Tab.Screen name="Map" component={Map} options={{
+        <Tab.Screen name="Map" component={ Map } options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <MaterialCommunityIcons name="google-maps" size={size} color='#bc4a0d' /> : <MaterialCommunityIcons name="google-maps" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
