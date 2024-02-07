@@ -1,21 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions, ImageBackground, Pressable, Linking } from 'react-native';
-import * as Font from 'expo-font'
-import { useEffect, useState } from 'react';
-import MamaKilo from './components/MamaKilo';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './Home';
-import Lineup from './Lineup';
 import Schedule from './Schedule';
-import Chat from './Chat/chat_screens/Chat';
 import Info from './Info';
 import LineupList from './LineupList';
 import LineupDetail from './LineupDetail';
-import Menu from './Menu';
+import Menu from './src/screens/Menu';
 import Map from './src/screens/Map';
 
 
@@ -75,7 +68,7 @@ export default function App() {
           tabBarLabelStyle: {color: 'black'}
         }}/>
 
-        <Tab.Screen name="Map" component={ Map } options={{
+        <Tab.Screen name="Map" component = { Map } options={{
           headerShown: false,
           tabBarIcon : ({size, focused}) => focused ? <MaterialCommunityIcons name="google-maps" size={size} color='#bc4a0d' /> : <MaterialCommunityIcons name="google-maps" size={size} color='black' />,
           tabBarLabelStyle: {color: 'black'}
