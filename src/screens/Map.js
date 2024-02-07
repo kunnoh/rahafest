@@ -13,8 +13,8 @@ const Map = () => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         }}
-        minZoomLevel={10}
-        maxZoomLevel={100}
+        minZoomLevel={16.5}
+        maxZoomLevel={18.5}
         mapType={"satellite"}
       >
         {/* main stage */}
@@ -26,6 +26,7 @@ const Map = () => {
           title="Stage"
           description="Main stage"
           calloutEnabled={true}
+          tracksViewChanges={true}
         >
           <Callout>
             <View>
@@ -43,6 +44,7 @@ const Map = () => {
           title="Rahafest 3D logo"
           description="Rahafest 3D logo"
           calloutEnabled={true}
+          tracksViewChanges={true}
         >
           <Callout>
             <View>
@@ -60,6 +62,7 @@ const Map = () => {
           title="Concert area"
           description="Main concert area"
           calloutEnabled={true}
+          tracksViewChanges={true}
         >
           <Callout>
             <View>
@@ -77,6 +80,7 @@ const Map = () => {
           title="Exit"
           description="exit"
           calloutEnabled={true}
+          tracksViewChanges={true}
         >
           <Callout>
             <View>
