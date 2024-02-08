@@ -1,5 +1,5 @@
 import { StyleSheet, Text, Image, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import MapView, { Callout, Marker } from 'react-native-maps';
 
 const Map = () => {
@@ -16,6 +16,7 @@ const Map = () => {
         minZoomLevel={17}
         maxZoomLevel={18.5}
         mapType={"satellite"}
+        loadingEnabled = { true }
       >
         {/* main stage */}
         <Marker
