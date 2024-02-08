@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions, ImageBackground, Pressable, Linking, FlatList } from 'react-native';
 import * as Font from 'expo-font'
 import { useEffect, useState } from 'react';
-import MamaKilo from '../../components/MamaKilo';
+import MamaKilo from '../utils/MamaKilo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5, Entypo, Ionicons } from '@expo/vector-icons';
 
@@ -30,7 +30,7 @@ export default function LineupDetail() {
 
       <View style = {styles.logo}>
       
-        <Image style={{height: 130, width: 130, marginRight: 10, flex: 1/4}} source={require('./assets/images/rahalogo.png')} />
+        <Image style={{height: 130, width: 130, marginRight: 10, flex: 1/4}} source={require('../../assets/images/rahalogo.png')} />
 
       {/**<span style={{ color: "#11e0ff" }}>R</span>
       <span style={{ color: "#ffffff" }}>A</span>
@@ -71,9 +71,6 @@ export default function LineupDetail() {
       
       
       </SafeAreaView>
-
-      
-     
 
       <StatusBar style="light" />
 

@@ -2,29 +2,24 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions, ImageBackground, Pressable, Linking } from 'react-native';
 import * as Font from 'expo-font'
 import { useEffect, useState } from 'react';
-import MamaKilo from '../../components/MamaKilo';
+import MamaKilo from '../utils/MamaKilo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5, Entypo, Ionicons } from '@expo/vector-icons';
 
 export default function Home() {
 
  let [fontsLoaded] = Font.useFonts({
-  'Roboto-Light': require('./assets/fonts/Roboto-Light.ttf'),
-  'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+  'Roboto-Light': require('../../assets/fonts/Roboto-Light.ttf'),
+  'Roboto-Bold': require('../../assets/fonts/Roboto-Bold.ttf'),
  })
 
 
-  return (
-
-
-    
-
-      <ImageBackground source={require('./assets/images/background.webp')} style={{flex: 1, position: 'relative'}} resizeMode='cover'>
-         
+  return ( 
+    <ImageBackground source={require('../../assets/images/background.webp')} style={{flex: 1, position: 'relative'}} resizeMode='cover'>
       <SafeAreaView style={styles.container}>
       <View style = {styles.logo}>
       
-        <Image style={{height: 130, width: 130, marginRight: 10, flex: 1/4}} source={require('./assets/images/rahalogo.png')} />
+        <Image style={{height: 130, width: 130, marginRight: 10, flex: 1/4}} source={require('../../assets/images/rahalogo.png')} />
 
       {/**<span style={{ color: "#11e0ff" }}>R</span>
       <span style={{ color: "#ffffff" }}>A</span>
@@ -35,7 +30,7 @@ export default function Home() {
       <span style={{ color: "#ffffff" }}>S</span>
   <span style={{ color: "#11e0ff" }}>T</span> **/}
                   
-       {/**<View style={{flex: 3/4}}>
+      {/**<View style={{flex: 3/4}}>
        //<MamaKilo color="#ffffff" size={25} height={35}>Food, Art, Culture, Music</MamaKilo>
 //</View> **/}
         
@@ -61,7 +56,7 @@ export default function Home() {
 
       <View style={{marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', marginTop: 100, marginRight: 20}}>
         <Pressable style={{position: 'relative', justifyContent: 'center', alignItems: 'center'}} onPress={()=>Linking.openURL('http://www.rahafest.com/events')}>
-          <Image source={require('./assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
+          <Image source={require('../../assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
           <View style={{position: 'absolute'}}>
             <FontAwesome5 name='headphones' size={50} color='white'/>
             {fontsLoaded 
@@ -73,7 +68,7 @@ export default function Home() {
 
 
         <Pressable style={{position: 'relative', justifyContent: 'center', alignItems: 'center'}}>
-          <Image source={require('./assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
+          <Image source={require('../../assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
           <View style={{position: 'absolute'}}>
           <Entypo name='mobile' size={50} color='white'/>
           {fontsLoaded 
@@ -85,7 +80,7 @@ export default function Home() {
 
 
         <Pressable style={{position: 'relative', justifyContent: 'center', alignItems: 'center'}} onPress={()=>Linking.openURL('http://www.rahafest.com/partners')}>
-          <Image source={require('./assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
+          <Image source={require('../../assets/images/blob-grid-orange-nobg.png')} style={{height: 120, width: 120, opacity: 0.15}}/>
           <View style={{position: 'absolute'}}>
             <Ionicons name='people-sharp' size={50} color='white'/>
             {fontsLoaded 
@@ -94,23 +89,10 @@ export default function Home() {
             }
           </View>
         </Pressable>
-
-
       </View>
-
- 
-     
-
       </SafeAreaView>
-
-      
-     
-
       <StatusBar style="light" />
-
-      </ImageBackground>
-    
-   
+    </ImageBackground>
   );
 }
 
@@ -119,13 +101,11 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-
   background: {
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 0,
   }, 
-
   logo: {
     position: "absolute",
     zIndex: 1,
@@ -137,9 +117,6 @@ const styles = StyleSheet.create({
     marginLeft: (Dimensions.get('window').width / 2 ) - 65,
     marginTop: 50,
     marginBottom: 60,
-    
-    
-   
   },
 
   mamakiloContainer: {
@@ -154,17 +131,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 400
   },
-
   mamakilo: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    zIndex: 1
-    
+    zIndex: 1 
   }
-
-
-
- 
 });

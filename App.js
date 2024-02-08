@@ -2,11 +2,11 @@ import { FontAwesome5, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/ve
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import Home from './Home';
+import Home from './src/screens/Home';
 import Schedule from './src/screens/Schedule';
 import Info from './src/screens/Info';
-import LineupList from './LineupList';
-import LineupDetail from './LineupDetail';
+import LineupList from './src/screens/LineupList';
+import LineupDetail from './src/screens/LineupDetail';
 import Menu from './src/screens/Menu';
 import Map from './src/screens/Map';
 
