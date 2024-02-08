@@ -1,23 +1,19 @@
-import { StyleSheet, Text, View, Image, Dimensions, ImageBackground, Pressable, Linking } from 'react-native';
 import { FontAwesome5, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './Home';
-import Schedule from './Schedule';
-import Info from './Info';
+import Schedule from './src/screens/Schedule';
+import Info from './src/screens/Info';
 import LineupList from './LineupList';
 import LineupDetail from './LineupDetail';
 import Menu from './src/screens/Menu';
 import Map from './src/screens/Map';
 
-
-
-const Stack = createNativeStackNavigator()
-const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-
   const LineupStack = () => {
     return(
       <Stack.Navigator screenOptions={{
@@ -26,8 +22,8 @@ export default function App() {
         <Stack.Screen name="LineupList" component={LineupList} />
         <Stack.Screen name="LineupDetail" component={LineupDetail} />
       </Stack.Navigator>
-    )     
-  }
+    );
+  };
 
   return (
     <NavigationContainer>
@@ -37,7 +33,7 @@ export default function App() {
           tabBarShowLabel: false,
         }
       }>
-        
+      
         <Tab.Screen name="Home" component={Home} options={{
           headerShown: false,
           tabBarIcon : ({size, focused }) => focused ? <Entypo name="home" size={size} color='#bc4a0d'/> : <Entypo name="home" size={size} color='black'/>,
@@ -76,16 +72,5 @@ export default function App() {
 
       </Tab.Navigator>
     </NavigationContainer>
-  )
-
-}
-
-
-
-
-
-const styles = StyleSheet.create({
-  
-
- 
-});
+  );
+};
