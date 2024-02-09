@@ -3,10 +3,12 @@
 import { StyleSheet, Text, Image, View } from 'react-native'
 import React from 'react'
 import MapView, { Callout, Marker, Polyline } from 'react-native-maps'
+import LiveMap from '../utils/livemap'
 
 const Map = () => {
   return (
     <View style={styles.container}>
+      <LiveMap></LiveMap>
       <MapView
         style={styles.map}
         initialRegion={{
