@@ -1,6 +1,6 @@
-import { StyleSheet, Text, Image, View } from 'react-native';
-import React from 'react';
-import MapView, { Callout, Marker } from 'react-native-maps';
+import { StyleSheet, Text, Image, View } from 'react-native'
+import React from 'react'
+import MapView, { Callout, Marker } from 'react-native-maps'
 
 const Map = () => {
   return (
@@ -11,11 +11,11 @@ const Map = () => {
           latitude: -1.3260428510920745,
           longitude: 36.80065023291559,
           latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
+          longitudeDelta: 0.005
         }}
         minZoomLevel={17}
         maxZoomLevel={18.5}
-        mapType={"satellite"}
+        mapType={'satellite'}
         loadingEnabled = { true }
       >
         {/* main stage */}
@@ -74,7 +74,7 @@ const Map = () => {
           <View style={styles.imageContainer}>
             <Image style = { styles.icon } source={require('../../assets/icons/hands-up.png')} />
           </View>
-          <Callout style={{width: 'auto'}}>
+          <Callout style={{ width: 'auto' }}>
             <View>
               <Text style={styles.label}>Concert Area</Text>
             </View>
@@ -179,7 +179,7 @@ const Map = () => {
               <Text style={styles.label}>Toilet</Text>
             </View>
           </Callout>
-        </Marker>        
+        </Marker>
 
         {/* food and bar */}
         <Marker
@@ -220,8 +220,7 @@ const Map = () => {
           </Callout>
         </Marker>
 
-
-        {/* Corporate area*/}
+        {/* Corporate area */}
         <Marker
           coordinate={{
             latitude: -1.3255457748460688,
@@ -403,35 +402,35 @@ const Map = () => {
 
       </MapView>
     </View>
-  );
-};
+  )
+}
 
-export default Map;
+export default Map
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
-  },
-  imageContainer: {
-    padding: 5,
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
   },
   icon: {
-    width: 32,
     height: 32,
+    width: 32
   },
-  map: {
-    flex: 1,
-    width: '100%',
-    height: '100%'
+  imageContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 5
   },
   label: {
     // elevation: 5,
     // padding: 2,
     borderRadius: 5,
     width: 'fit-content'
+  },
+  map: {
+    flex: 1,
+    height: '100%',
+    width: '100%'
   }
-});
+})

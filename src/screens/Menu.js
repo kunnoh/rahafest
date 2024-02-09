@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
 
 const Menu = () => {
   return (
@@ -7,14 +7,14 @@ const Menu = () => {
       <Text>Menu</Text>
     </View>
   )
-};
+}
 
-export default Menu;
+export default Menu
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  }
+})
