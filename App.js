@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 import { FontAwesome5, Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
