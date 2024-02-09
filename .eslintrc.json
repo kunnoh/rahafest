@@ -17,5 +17,12 @@
         "react-native"
     ],
     "rules": {
+    },
+    "settings": {
+        "react-native/style-sheet-object-names": [
+            "EStyleSheet",
+            "CustomStyleSheet",
+            "OtherStyleSheet"
+        ]
     }
 }

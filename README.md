@@ -3,13 +3,30 @@
 ## Installation
 
 ```sh
-git clone 
+git clone https://github.com/kunnoh/rahafest.git
 ```
+
+Change directory
+
+```sh
+cd rahafest
+```
+
+Install dependencies
+
+```sh
+npm install
+```
+
+
 
 ---
 
 
-## Development mode
+## Run the app
+
+
+### Development mode
 
 **Android**
 
@@ -29,21 +46,23 @@ npm run ios
 npm run web
 ```
 
-## Lint and test
 
-Lint
+
+### Lint and test
+
+Lint.
 
 ```sh
 npm run lint
 ```
 
-Lint and fix
+Lint and automatically fix errors.
 
 ```sh
 npm run lint-fix
 ```
 
-Test
+Test.
 
 ```sh
 npm run test

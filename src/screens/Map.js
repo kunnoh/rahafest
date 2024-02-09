@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, Text, Image, View } from 'react-native'
 import React from 'react'
-import MapView, { Callout, Marker } from 'react-native-maps'
+import MapView, { Callout, Marker, Polyline } from 'react-native-maps'
 
 const Map = () => {
   return (
@@ -93,6 +95,34 @@ const Map = () => {
           tracksViewChanges={true}
         >
           <View style={styles.imageContainer}>
+            {/* <Image style = { styles.icon } source={require('../../assets/icons/exit.png')} /> */}
+          </View>
+          <Callout>
+            <View>
+              <Text style={styles.label}>Exit</Text>
+            </View>
+          </Callout>
+        </Marker>
+        <Polyline
+          coordinates={[
+            { latitude: -1.3273852771279349, longitude: 36.80075267188107 },
+            { latitude: -1.327619938609936, longitude: 36.80109511665861 }
+          ]}
+          strokeColor='#fff'
+          strokeWidth={2}
+        />
+
+        <Marker
+          coordinate={{
+            latitude: -1.327619938609936,
+            longitude: 36.80109511665861
+          }}
+          title="Exit"
+          description="exit"
+          calloutEnabled
+          tracksViewChanges={true}
+        >
+          <View style={styles.imageContainer}>
             <Image style = { styles.icon } source={require('../../assets/icons/exit.png')} />
           </View>
           <Callout>
@@ -107,6 +137,33 @@ const Map = () => {
           coordinate={{
             latitude: -1.3273852771279349,
             longitude: 36.800548823999904
+          }}
+          title="VIP entrance"
+          description="VIP entrance"
+          calloutEnabled
+        >
+          <View style={styles.imageContainer}>
+            {/* <Image style = { styles.icon } source={require('../../assets/icons/red-carpet.png')} /> */}
+          </View>
+          <Callout>
+            <View>
+              <Text style={styles.label}>VIP entrance</Text>
+            </View>
+          </Callout>
+        </Marker>
+
+        <Polyline
+          coordinates={[
+            { latitude: -1.3273852771279349, longitude: 36.800548823999904 },
+            { latitude: -1.3279631691705918, longitude: 36.80055867486607 }
+          ]}
+          strokeColor='#fff'
+          strokeWidth={2}
+        />
+        <Marker
+          coordinate={{
+            latitude: -1.3279631691705918,
+            longitude: 36.80055867486607
           }}
           title="VIP entrance"
           description="VIP entrance"
@@ -128,6 +185,36 @@ const Map = () => {
             latitude: -1.327428180954696,
             longitude: 36.80033424728288
           }}
+          title="Regular entrance"
+          description="Regular entrance"
+          calloutEnabled
+        >
+          <View style={styles.imageContainer}>
+            {/* <Image style = { styles.icon } source={require('../../assets/icons/entrance.png')} /> */}
+          </View>
+          <Callout>
+            <View>
+              <Text style={styles.label}>Regular entrance</Text>
+            </View>
+          </Callout>
+        </Marker>
+
+        <Polyline
+          coordinates={[
+            { latitude: -1.327428180954696, longitude: 36.80033424728288 },
+            { latitude: -1.3278237317610664, longitude: 36.79999004656596 }
+          ]}
+          strokeColor='#fff'
+          strokeWidth={2}
+        />
+
+        <Marker
+          coordinate={
+            {
+              latitude: -1.3278237317610664,
+              longitude: 36.79999004656596
+            }
+          }
           title="Regular entrance"
           description="Regular entrance"
           calloutEnabled
@@ -418,15 +505,15 @@ const styles = StyleSheet.create({
     width: 32
   },
   imageContainer: {
+    alignItems: 'center',
     backgroundColor: '#fff',
     borderRadius: 5,
+    flexDirection: 'row',
     padding: 5
   },
   label: {
-    // elevation: 5,
-    // padding: 2,
     borderRadius: 5,
-    width: 'fit-content'
+    flexDirection: 'row'
   },
   map: {
     flex: 1,
