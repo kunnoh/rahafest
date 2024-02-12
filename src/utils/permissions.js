@@ -1,27 +1,12 @@
-/* eslint-disable react-native/split-platform-components */
-import { PermissionsAndroid } from 'react-native'
+import * as Location from 'expo-location'
 
 const AndroidLocation = async () => {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Geolocation Permission',
-        message: 'We need your location',
-        // buttonNeutral: 'Ask me later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK'
-      }
-    )
-    if (granted === 'granted') {
-      console.log('You can use Geolocation')
-      return true
-    } else {
-      console.log('You cannot use Geolocation')
-      return false
-    }
+    const { status } = await Location.requestForegroundPermissionsAsync()
+    return status
   } catch (error) {
-    alert(error)
+    console.log('PERM ERR: ', error)
+    return false
   }
 }
 
