@@ -14,6 +14,7 @@ const LiveMap = () => {
     longitude: 36.80311585942039
   })
   const [loading, setLoading] = useState(true)
+  const [heading, setHeading] = useState(0)
 
   useEffect(() => {
     const getLocation = async () => {
@@ -23,19 +24,20 @@ const LiveMap = () => {
         Location.watchPositionAsync(
           { accuracy: Location.Accuracy.Highest, timeInterval: 1000 },
           (location) => {
-            console.log('LIVE:: ', location)
             setCurrentLocation(location.coords)
             setLoading(false)
           }
         )
+
+        Location.watchHeadingAsync((heading) => {
+          setHeading(heading.trueHeading)
+        })
       } catch (err) {
         setLoading(false)
       }
     }
     getLocation()
   }, [])
-
-  // console.log(currentPosition)
 
   return (
     <View>
@@ -47,10 +49,12 @@ const LiveMap = () => {
         title='my location'
         calloutEnabled
         tracksViewChanges = { true }
+        rotation = { heading }
+        pinColor='green'
         >
         <Callout>
-          <View style={tyles.imageContainer}>
-            <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} />
+          <View>
+            {/* <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} /> */}
           </View>
         </Callout>
       </Marker>
