@@ -3,7 +3,7 @@ import React from 'react'
 
 const Schedule = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Schedule</Text>
     </View>
   )
@@ -11,4 +11,10 @@ const Schedule = () => {
 
 export default Schedule
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  }
+})
