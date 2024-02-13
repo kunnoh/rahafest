@@ -1,0 +1,40 @@
+name: Reactive native continous integration
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test the app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          java-version: '21'
+          distribution: openjdk
+          cache: gradle
+      - name: 'change permission'
+        run: chmod +x gradlew
+      - name: Bindle 'release' with Gradle
+        run:  ./gradlew bundleRelease
+      - name: Sign app apk
+        id: sign apk
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle
+          signingKeyBase64: ${{secrets.SIGNING_KEYS}}
+          alias: ${{secrets.SIGNING_ALIAS}}
+          keyStorePassword: ${{secrets.SIGNING_KEYS}}
+          keyPassword: ${{secrets.SIGNING_ALIAS_PASSWORD}}
+      - run: echo "Build status report=${{ jon.status }}"
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab
+          path: ${{steps.sign_aab.outputs.signedReleaseFile}}

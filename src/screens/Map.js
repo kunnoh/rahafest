@@ -52,11 +52,6 @@ const LiveMap = () => {
         rotation = { heading }
         pinColor='green'
         >
-        <Callout>
-          <View>
-            {/* <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} /> */}
-          </View>
-        </Callout>
       </Marker>
     </View>
   )
