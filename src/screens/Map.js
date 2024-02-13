@@ -1,14 +1,94 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, Text, Image, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MapView, { Callout, Marker, Polyline } from 'react-native-maps'
-import LiveMap from '../app/components/livemap'
+// import LiveMap from '../app/components/livemap'
+
+import { AndroidLocation } from '../utils/permissions'
+import * as Location from 'expo-location'
+
+const LiveMap = () => {
+  const [currentPosition, setCurrentLocation] = useState({
+    latitude: -1.3264437836590561,
+    longitude: 36.80311585942039
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        await AndroidLocation()
+
+        Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.Highest, timeInterval: 1000 },
+          (location) => {
+            console.log(location)
+            setCurrentLocation(location.coords)
+            setLoading(false)
+          }
+        )
+      } catch (err) {
+        setLoading(false)
+      }
+    }
+    getLocation()
+  }, [])
+
+  console.log(currentPosition)
+
+  return (
+    <View>
+      <Marker
+        coordinate={{
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude
+        }}
+        title='my location'
+        calloutEnabled
+        tracksViewChanges = { true }
+        >
+        <Callout>
+          <View style={tyles.imageContainer}>
+            <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} />
+          </View>
+        </Callout>
+      </Marker>
+    </View>
+  )
+}
+
+const tyles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  },
+  icon: {
+    height: 32,
+    width: 32
+  },
+  imageContainer: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    flexDirection: 'row',
+    padding: 5
+  },
+  label: {
+    borderRadius: 5,
+    flexDirection: 'row'
+  },
+  map: {
+    flex: 1,
+    height: '100%',
+    width: '100%'
+  }
+})
 
 const Map = () => {
   return (
     <View style={styles.container}>
-      <LiveMap></LiveMap>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -17,11 +97,14 @@ const Map = () => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005
         }}
-        minZoomLevel={17}
-        maxZoomLevel={18.5}
+        // minZoomLevel={17}
+        // maxZoomLevel={18.5}
         mapType={'satellite'}
         loadingEnabled = { true }
       >
+
+        <LiveMap/>
+
         {/* main stage */}
         <Marker
           coordinate={{
