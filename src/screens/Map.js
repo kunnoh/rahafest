@@ -23,7 +23,7 @@ const LiveMap = () => {
         Location.watchPositionAsync(
           { accuracy: Location.Accuracy.Highest, timeInterval: 1000 },
           (location) => {
-            console.log(location)
+            console.log('LIVE:: ', location)
             setCurrentLocation(location.coords)
             setLoading(false)
           }
@@ -35,7 +35,7 @@ const LiveMap = () => {
     getLocation()
   }, [])
 
-  console.log(currentPosition)
+  // console.log(currentPosition)
 
   return (
     <View>
@@ -581,9 +581,10 @@ export default Map
 
 const styles = StyleSheet.create({
   container: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'flex-end'
   },
   icon: {
     height: 32,
@@ -601,8 +602,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   map: {
-    flex: 1,
-    height: '100%',
-    width: '100%'
+    // flex: 1,
+    // height: '100%',
+    // width: '100%'
+    ...StyleSheet.absoluteFillObject
   }
 })
