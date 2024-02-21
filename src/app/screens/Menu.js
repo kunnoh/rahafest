@@ -1,20 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
 const Menu = () => {
   return (
-    <View style={styles.container}>
-      <Text>Menu</Text>
-    </View>
-  )
-}
-
-export default Menu
+    <ImageBackground
+      source={require("../../../assets/images/background.webp")}
+      style={{ flex: 1, position: "relative" }}
+      resizeMode="cover">
+      <View style={styles.container}>
+        <Text>Menu</Text>
+      </View>
+    </ImageBackground>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center'
-  }
-})
+    justifyContent: "center",
+  },
+});
+
+export default Menu;

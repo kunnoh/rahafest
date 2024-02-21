@@ -1,15 +1,12 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-const Schedule = () => {
+const Playlist = () => {
   return (
     <View style={styles.container}>
-      <Text>Schedule</Text>
+      <Text>Playlist</Text>
     </View>
   );
 };
-
-export default Schedule;
 
 const styles = StyleSheet.create({
   container: {
@@ -18,3 +15,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default Playlist;
