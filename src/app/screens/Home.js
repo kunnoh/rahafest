@@ -1,5 +1,4 @@
 import { FontAwesome5, Entypo, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -12,12 +11,11 @@ import {
   Pressable,
   Linking,
 } from "react-native";
-import { SpeedDial, SocialIcon } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MamaKilo from "../../utils/MamaKilo";
 
-export default function Home({ navigation }) {
+export default function Home() {
   const [fontsLoaded] = Font.useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),
     "Roboto-Bold": require("../../../assets/fonts/Roboto-Bold.ttf"),
@@ -46,9 +44,6 @@ export default function Home({ navigation }) {
             marginBottom: 10,
           }}>
           <Pressable
-            onPress={() => {
-              navigation.navigate("Playlist");
-            }}
             style={{
               position: "relative",
               justifyContent: "center",
@@ -86,14 +81,6 @@ export default function Home({ navigation }) {
               source={require("../../../assets/images/blob-grid-orange-nobg.png")}
               style={{ height: 120, width: 120, opacity: 0.15 }}
             />
-            {/* <SpeedDial isOpen>
-              <SpeedDial.Action
-                // title="fb"
-                onPress={() => {
-                  console.log("presssed");
-                }}
-              />
-            </SpeedDial> */}
             <View style={{ position: "absolute" }}>
               <Entypo name="mobile" size={50} color="white" />
               {fontsLoaded ? (
@@ -141,6 +128,7 @@ export default function Home({ navigation }) {
             </View>
           </Pressable>
         </View>
+
         <View
           style={{
             display: "flex",
@@ -151,7 +139,7 @@ export default function Home({ navigation }) {
           {fontsLoaded ? (
             <Text style={styles.locationText}>VENUE:</Text>
           ) : (
-            <Text style={styles.locationText}>VENUE</Text>
+            <Text style={{ color: "white", fontSize: 20 }}>VENUE</Text>
           )}
           <View>
             <MamaKilo color="#ffffff" size={20} height={30}>
@@ -167,7 +155,7 @@ export default function Home({ navigation }) {
             {fontsLoaded ? (
               <Text style={styles.locationText}>DATES:</Text>
             ) : (
-              <Text style={styles.locationText}>DATES</Text>
+              <Text style={{ color: "white", fontSize: 20 }}>DATES</Text>
             )}
             <View style={{ display: "flex", flexDirection: "column" }}>
               <MamaKilo color="#ffffff" size={20} height={30}>
@@ -209,8 +197,8 @@ const styles = StyleSheet.create({
   locationText: {
     fontFamily: "Roboto-Light",
     color: "white",
-    fontSize: 16,
-    marginTop: 7,
+    fontSize: 18,
+    marginTop: 6,
     marginRight: 8,
   },
   mamakilo: {
