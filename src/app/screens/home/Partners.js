@@ -94,8 +94,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   logoWrapper: {
-    // width: 50,
-    // margin: 20
     justifyContent: "center",
   },
   imgWrapper: {

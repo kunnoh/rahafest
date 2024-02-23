@@ -1,40 +1,16 @@
-import { View, Text, StyleSheet, Image, Dimensions, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  SafeAreaView,
+  FlatList,
+  ImageBackground,
+} from "react-native";
 
-const lineup = [
-  {
-    name: "Femi One",
-    country: "KE",
-    imageList: () => (
-      <Image
-        source={require("../../../../assets/images/femione.webp")}
-        resizeMode="cover"
-        style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}
-      />
-    ),
-  },
-  {
-    name: "Otile Brown",
-    country: "KE",
-    imageDetail: () => (
-      <Image
-        source={require("../../../../assets/images/otile.webp")}
-        resizeMode="cover"
-        style={{
-          height: 300,
-          width: Dimensions.get("window").width - 40,
-          opacity: 0.9,
-        }}
-      />
-    ),
-    imageList: () => (
-      <Image
-        source={require("../../../../assets/images/otile.webp")}
-        resizeMode="cover"
-        style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}
-      />
-    ),
-  },
-];
+import MamaKilo from "../../../utils/MamaKilo";
+import Artists from "../../services/lineUp.data";
 
 const Item = ({ title }) => (
   <View>
@@ -44,19 +20,33 @@ const Item = ({ title }) => (
 
 const Playlist = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={{ textAlign: "center", fontSize: 42 }}>Playlists</Text>
-      <FlatList data={lineup} renderItem={({ item }) => <Item title={item.name} />} />
-    </SafeAreaView>
+    <ImageBackground
+      source={{
+        uri: "https://www.wknd.fi/content/uploads/2023/08/WKND23_Day2_223431_HeikkiSalonen_.jpg",
+      }}
+      style={{ flex: 1, position: "relative" }}
+      resizeMode="cover">
+      <SafeAreaView style={styles.container}>
+        <MamaKilo color="#fff" size={40} height={80}>
+          Playlists
+        </MamaKilo>
+        <FlatList
+          data={Artists}
+          renderItem={({ item }) => <Item title={item.name} />}
+          keyExtractor={(item) => item.name}
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     padding: 15,
+    paddingTop: 40,
     // alignItems: "center",
-    flex: 1 / 2,
+    // backgroundColor: "rgb(33, 37, 41)",
+    flex: 1,
     justifyContent: "center",
   },
   div: {
@@ -64,11 +54,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   item: {
-    backgroundColor: "#f58a42",
+    backgroundColor: "rgba(5,5,5, 0.5)",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 10,
+    color: "#fff",
   },
 });
 

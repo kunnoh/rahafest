@@ -29,7 +29,7 @@ const Info = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="rgb(255, 215, 0)" />
+        <ActivityIndicator size="large" color="#f58a42" />
       </View>
     );
   }
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgb(229, 227, 226)",
   },
   wrapper: {
     backgroundColor: "grey",
