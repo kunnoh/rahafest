@@ -4,11 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PaperProvider } from "react-native-paper";
 
-import { Info, Menu, Playlist, Schedule } from "./src/app/screens";
-import Home from "./src/app/screens/Home";
+import { Info, Menu, Schedule } from "./src/app/screens";
 import LineupDetail from "./src/app/screens/LineupDetail";
 import LineupList from "./src/app/screens/LineupList";
 import MapScreen from "./src/app/screens/Map";
+import HomeScreen from "./src/app/screens/home/index";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,7 +22,6 @@ export default function App() {
         }}>
         <Stack.Screen name="LineupList" component={LineupList} />
         <Stack.Screen name="LineupDetail" component={LineupDetail} />
-        <Stack.Screen name="Playlist" component={Playlist} />
       </Stack.Navigator>
     );
   };
@@ -30,15 +29,14 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Stack.Screen name="playlist" component={Playlist} />
         <Tab.Navigator
           screenOptions={{
             tabBarStyle: { borderTopWidth: 0 },
             tabBarShowLabel: false,
           }}>
           <Tab.Screen
-            name="Home"
-            component={Home}
+            name="Homer"
+            component={HomeScreen}
             options={{
               headerShown: false,
               tabBarIcon: ({ size, focused }) =>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { List } from "react-native-paper";
+import { List, ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MamaKilo from "../../utils/MamaKilo";
@@ -10,6 +10,7 @@ const Info = () => {
   const [expanded, setExpanded] = useState(true);
   const handlePress = () => setExpanded(!expanded);
   const [faqs, setFaqs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadFaqs() {
@@ -18,10 +19,20 @@ const Info = () => {
         setFaqs(data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadFaqs();
   }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="rgb(255, 215, 0)" />
+      </View>
+    );
+  }
 
   return (
     // <SafeAreaView>
@@ -54,6 +65,11 @@ const Info = () => {
 export default Info;
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   wrapper: {
     backgroundColor: "grey",
   },
