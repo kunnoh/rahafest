@@ -7,7 +7,6 @@ import LiveMap from "../../app/components/livemap";
 const MapScreen = () => {
   return (
     <View style={styles.container}>
-      <LiveMap />
       <MapView
         style={styles.map}
         initialRegion={{
@@ -16,7 +15,7 @@ const MapScreen = () => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         }}
-        minZoomLevel={12}
+        minZoomLevel={8}
         maxZoomLevel={18.5}
         mapType="satellite"
         loadingEnabled>
@@ -462,6 +461,8 @@ const MapScreen = () => {
             </View>
           </Callout>
         </Marker>
+
+        {/* <LiveMap /> */}
       </MapView>
     </View>
   );

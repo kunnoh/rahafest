@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  SafeAreaView,
-  FlatList,
-  ImageBackground,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, FlatList, ImageBackground } from "react-native";
 
 import MamaKilo from "../../../utils/MamaKilo";
 import Artists from "../../services/lineUp.data";

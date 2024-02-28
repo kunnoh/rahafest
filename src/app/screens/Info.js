@@ -7,7 +7,7 @@ import MamaKilo from "../../utils/MamaKilo";
 import { GetFaq } from "../services/faq.api.service";
 
 const Info = () => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(null);
   const handlePress = () => setExpanded(!expanded);
   const [faqs, setFaqs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,35 +34,49 @@ const Info = () => {
     );
   }
 
+  const handleAccordionPress = (index) => {
+    setExpanded((prevIndex) => (prevIndex === index ? null : index));
+  };
+
   return (
-    // <SafeAreaView>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.wrapper}>
+          <View style={styles.container}>
+            <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
+              Frequently
+            </MamaKilo>
+            <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
+              Asked
+            </MamaKilo>
+            <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
+              Questions
+            </MamaKilo>
+          </View>
 
-    // </SafeAreaView>
-    <ScrollView>
-      <View style={styles.wrapper}>
-        <View style={styles.container}>
-          <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
-            Frequently
-          </MamaKilo>
-          <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
-            Asked
-          </MamaKilo>
-          <MamaKilo color="rgb(229, 227, 226)" size={30} height={46}>
-            Questions
-          </MamaKilo>
+          {faqs.map((faq, index) => (
+            <FAQAccordion
+              key={index}
+              faq={faq}
+              isExpanded={index === expanded}
+              onPress={() => handleAccordionPress(index)}
+            />
+          ))}
         </View>
-
-        {faqs.map((faq, index) => (
-          <List.Accordion key={index} title={faq.question}>
-            <List.Item title={faq.answer} />
-          </List.Accordion>
-        ))}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Info;
+
+const FAQAccordion = ({ faq, isExpanded, onPress }) => {
+  return (
+    <List.Accordion title={faq.question} expanded={isExpanded} onPress={onPress}>
+      <Text style={styles.ans}>{faq.answer}</Text>
+    </List.Accordion>
+  );
+};
 
 const styles = StyleSheet.create({
   loadingContainer: {
@@ -83,5 +97,10 @@ const styles = StyleSheet.create({
   },
   accordion: {
     marginTop: 80,
+  },
+  ans: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
   },
 });

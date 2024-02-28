@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Callout, Marker } from "react-native-maps";
 
 import { AndroidLocation } from "../../utils/permissions";
@@ -30,11 +30,11 @@ const LiveMap = () => {
   console.log(initPosition);
 
   return (
-    <Marker coordinate={{ latitude: initPosition.latitude, longitude: initPosition.longitude }}>
+    <Marker coordinate={{ latitude: -1.32795117588182, longitude: 36.80049889657756 }}>
       <Callout>
-        <View style={styles.imageContainer}>
-          <Image style={styles.icon} source={require("../../../assets/icons/bar1.png")} />
-        </View>
+        {/* <View style={styles.imageContainer}> */}
+          {/* <Image style={styles.icon} source={require("../../../assets/icons/bar1.png")} /> */}
+        {/* </View> */}
       </Callout>
     </Marker>
   );

@@ -18,13 +18,21 @@ const Menu = () => {
     { key: "drinks", title: "Drinks" },
   ]);
 
+  const handleIndexChange = (selectedIndex) => {
+    if (selectedIndex >= 0 && selectedIndex < routes.length) {
+      setIndex(selectedIndex);
+    } else {
+      console.error("Invalid index provided:", selectedIndex);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeView}>
       <TabView
         style={styles.tabview}
         navigationState={{ index, routes }}
         renderScene={renderScene}
-        onIndexChange={setIndex}
+        onIndexChange={handleIndexChange}
         initialLayout={{ width: layout.width }}
       />
     </SafeAreaView>
@@ -45,7 +53,6 @@ const styles = StyleSheet.create({
   },
   tabview: {
     marginTop: 40,
-    color: "green",
     flex: 1,
   },
 });
