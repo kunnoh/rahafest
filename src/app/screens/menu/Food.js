@@ -101,19 +101,19 @@ const Food = () => {
               <View style={{ marginTop: 30 }}>
                 <Text style={styles.category}>chomaZone</Text>
                 <Text>Goat Choma(+Fries)</Text>
-                <Text>  1kg ...... 1400</Text>
-                <Text>  1/2kg ...... 750</Text>
-                <Text>  1/4kg ...... 400</Text>
+                <Text style={styles.quantity}> 1kg ...... 1400</Text>
+                <Text style={styles.quantity}> 1/2kg ...... 750</Text>
+                <Text style={styles.quantity}> 1/4kg ...... 400</Text>
 
                 <Text>Beef Choma(+Fries)</Text>
-                <Text>  1kg ...... 1300</Text>
-                <Text>  1/2kg ...... 650</Text>
-                <Text>  1/4kg ...... 300</Text>
+                <Text style={styles.quantity}> 1kg ...... 1300</Text>
+                <Text style={styles.quantity}> 1/2kg ...... 650</Text>
+                <Text style={styles.quantity}> 1/4kg ...... 300</Text>
 
                 <Text>Chicken Choma(+Fries)</Text>
-                <Text>  1kg ...... 1500</Text>
-                <Text>  1/2kg ...... 750</Text>
-                <Text>  1/4kg ...... 400</Text>
+                <Text style={styles.quantity}> 1kg ...... 1500</Text>
+                <Text style={styles.quantity}> 1/2kg ...... 750</Text>
+                <Text style={styles.quantity}> 1/4kg ...... 400</Text>
 
                 <Text>Choma Sausage(2 pieces) ...... 500</Text>
 
@@ -196,5 +196,8 @@ const styles = StyleSheet.create({
     // left: 0,
     textAlign: "center",
     // backgroundColor: "purple",
+  },
+  quantity: {
+    left: 5,
   },
 });
