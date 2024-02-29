@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PaperProvider } from "react-native-paper";
 
+import Chat from "./Chat/chat_screens/Chat";
 import { Info, Menu, Schedule } from "./src/app/screens";
 import LineupDetail from "./src/app/screens/LineupDetail";
 import LineupList from "./src/app/screens/LineupList";
@@ -119,6 +120,21 @@ export default function App() {
                   <MaterialCommunityIcons name="google-maps" size={size} color="#bc4a0d" />
                 ) : (
                   <MaterialCommunityIcons name="google-maps" size={size} color="black" />
+                ),
+              tabBarLabelStyle: { color: "black" },
+            }}
+          />
+
+          <Tab.Screen
+            name="chat"
+            component={Chat}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ size, focused }) =>
+                focused ? (
+                  <MaterialCommunityIcons name="chat" size={size} color="#bc4a0d" />
+                ) : (
+                  <MaterialCommunityIcons name="chat" size={size} color="black" />
                 ),
               tabBarLabelStyle: { color: "black" },
             }}

@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
@@ -8,22 +7,23 @@ import {
   View,
   TextInput,
   Pressable,
-  Alert,
   ImageBackground,
   Image,
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import MamaKilo from "../../../components/MamaKilo";
+import MamaKilo from "../../../src/utils/MamaKilo";
+import { danger, success } from "../../../src/utils/toast";
+import { RegisterApi } from "../services/auth.service";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState("1");
   const navigation = useNavigation();
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const user = {
       name,
       email,
@@ -31,22 +31,19 @@ const RegisterScreen = () => {
       image,
     };
 
-    // send a POST  request to the backend API to register the user
-    axios
-      .post("http://127.0.0.0:8000/register", user)
-      .then((response) => {
-        console.log(response);
-        Alert.alert("Registration successful", "You have been registered Successfully");
-        setName("");
-        setEmail("");
-        setPassword("");
-        setImage("");
-      })
-      .catch((error) => {
-        Alert.alert("Registration Error", "An error occurred while registering");
-        console.log("registration failed", error);
-        console.log(user);
-      });
+    try {
+      const newUser = await RegisterApi(user);
+      console.log(newUser);
+      navigation.navigate("Login");
+      success("You are now registered. Login now!", 2000);
+      setName("");
+      setEmail("");
+      setPassword("");
+      setImage("");
+    } catch (e) {
+      console.log(e);
+      danger(e.errorMessage.message);
+    }
   };
   return (
     <ImageBackground

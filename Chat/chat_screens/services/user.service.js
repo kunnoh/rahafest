@@ -1,0 +1,58 @@
+import axios from "axios";
+
+import handleError from "./errorHandler";
+import prod from "../../../env/env";
+
+const headers = {
+  "Content-Type": "application/json",
+};
+
+const GetFriendRequestSent = async (user_id) => {
+  try {
+    const { data } = await axios.get(`${prod.local}/friend-requests/sent/${user_id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw handleError(error);
+  }
+};
+
+const GetUserFriends = async (user_id) => {
+  try {
+    const { data } = await axios.get(`${prod.local}/friends/${user_id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw handleError(error);
+  }
+};
+
+const SendFriendRequest = async (currentUserId, selectedUserId) => {
+  try {
+    const { data } = await axios.post(
+      `${prod.local}/friend-request`,
+      { currentUserId, selectedUserId },
+      headers,
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw handleError(error);
+  }
+};
+
+const CancelFriendRequest = async (currentUserId, selectedUserId) => {
+  try {
+    const { data } = await axios.post(
+      `${prod.local}/friend-request`,
+      { currentUserId, selectedUserId },
+      headers,
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw handleError(error);
+  }
+};
+
+export { GetFriendRequestSent, GetUserFriends, SendFriendRequest, CancelFriendRequest };

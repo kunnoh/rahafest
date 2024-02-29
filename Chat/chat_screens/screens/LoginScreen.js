@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
@@ -10,14 +9,15 @@ import {
   Text,
   TextInput,
   View,
-  Alert,
   ImageBackground,
   Image,
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import MamaKilo from "../../../components/MamaKilo";
+import MamaKilo from "../../../src/utils/MamaKilo";
+import { danger, success } from "../../../src/utils/toast";
+import { LoginApi } from "../services/auth.service";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -47,25 +47,25 @@ const LoginScreen = () => {
     "Roboto-Bold": require("../../../assets/fonts/Roboto-Bold.ttf"),
   });
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const user = {
       email,
       password,
     };
 
-    axios
-      .post("http://127.0.0.0:8000/login", user)
-      .then((response) => {
-        console.log(response);
-        const token = response.data.token;
-        AsyncStorage.setItem("authToken", token);
-
-        navigation.replace("Home");
-      })
-      .catch((error) => {
-        Alert.alert("Login Error", "Invalid email or password");
-        console.log("Login Error", error);
-      });
+    try {
+      const u = await LoginApi(user);
+      console.log(u);
+      AsyncStorage.setItem("authToken", u.access_token);
+      AsyncStorage.setItem("refreshToken", u.access_token);
+      setEmail("");
+      setPassword("");
+      success("Welcome!", 200);
+      navigation.navigate("Home");
+    } catch (e) {
+      console.log(e.errorMessage);
+      danger(e.errorMessage.message, 2000);
+    }
   };
   return (
     <ImageBackground

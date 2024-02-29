@@ -1,5 +1,6 @@
 const prod = {
   endpoint: "https://api.rahafest.com",
+  local: "http://192.168.88.118:8000",
 };
 
 export default prod;

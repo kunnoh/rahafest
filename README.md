@@ -12,12 +12,17 @@ Change directory
 cd rahafest
 ```
 
-Install dependencies
+Install dependencies for mobile app
 
 ```sh
 npm install
 ```
 
+Install dependencies for chat app
+
+```sh
+npm chat-install
+```
 
 
 ---
@@ -25,7 +30,7 @@ npm install
 
 ## Run the app
 
-
+## MOBILE
 ### Development mode
 
 **Android**
@@ -46,8 +51,6 @@ npm run ios
 npm run web
 ```
 
-
-
 ### Lint and test
 
 Lint.
@@ -67,3 +70,6 @@ Test.
 ```sh
 npm run test
 ```
+
+
+## CHAT APP
