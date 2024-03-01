@@ -16,12 +16,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MamaKilo from "../../../src/utils/MamaKilo";
 import { danger, success } from "../../../src/utils/toast";
 import { RegisterApi } from "../services/auth.service";
+import { ActivityIndicator } from "react-native-paper";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [image, setImage] = useState("1");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const handleRegister = async () => {
     const user = {
@@ -30,7 +32,7 @@ const RegisterScreen = () => {
       password,
       image,
     };
-
+    setLoading(true);
     try {
       const newUser = await RegisterApi(user);
       console.log(newUser);
@@ -43,6 +45,8 @@ const RegisterScreen = () => {
     } catch (e) {
       console.log(e);
       danger(e.errorMessage.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -154,7 +158,7 @@ const RegisterScreen = () => {
             />
           </View>
 
-          <Pressable
+          {/* <Pressable
             onPress={handleRegister}
             style={{
               width: 200,
@@ -165,6 +169,35 @@ const RegisterScreen = () => {
               marginRight: "auto",
               borderRadius: 6,
             }}>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}>
+              Sign Up
+            </Text>
+          </Pressable> */}
+
+          <Pressable
+            onPress={handleRegister}
+            disabled={loading}
+            style={{
+              width: 200,
+              backgroundColor: "#4A55A2",
+              padding: 15,
+              marginTop: 50,
+              marginLeft: "auto",
+              marginRight: "auto",
+              borderRadius: 6,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}>
+            {/* Conditionally render ActivityIndicator when loading */}
+            {loading ? (
+              <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+            ) : null}
             <Text
               style={{
                 color: "white",

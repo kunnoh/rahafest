@@ -13,6 +13,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MamaKilo from "../../../src/utils/MamaKilo";
@@ -22,6 +23,7 @@ import { LoginApi } from "../services/auth.service";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -54,19 +56,23 @@ const LoginScreen = () => {
     };
 
     try {
+      setLoading(true);
       const u = await LoginApi(user);
       console.log(u);
       AsyncStorage.setItem("authToken", u.access_token);
-      AsyncStorage.setItem("refreshToken", u.access_token);
+      AsyncStorage.setItem("refreshToken", u.refresh_token);
       setEmail("");
       setPassword("");
-      success("Welcome!", 200);
+      success("Welcome!", 2000);
       navigation.navigate("Home");
     } catch (e) {
       console.log(e.errorMessage);
       danger(e.errorMessage.message, 2000);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <ImageBackground
       source={require("../../../assets/images/6.webp")}
@@ -143,6 +149,7 @@ const LoginScreen = () => {
 
           <Pressable
             onPress={handleLogin}
+            disabled={loading}
             style={{
               width: 200,
               backgroundColor: "#4A55A2",
@@ -151,7 +158,13 @@ const LoginScreen = () => {
               marginLeft: "auto",
               marginRight: "auto",
               borderRadius: 6,
+              flexDirection: "row",
+              justifyContent: "center",
             }}>
+            {/* Conditionally render ActivityIndicator when loading */}
+            {loading ? (
+              <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+            ) : null}
             <Text
               style={{
                 color: "white",
@@ -179,6 +192,18 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent",
+    position: "relative",
+  },
+
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.01)",
+  },
   background: {
     alignItems: "center",
     justifyContent: "center",

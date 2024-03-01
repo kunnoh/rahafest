@@ -99,8 +99,8 @@ const Map = () => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         }}
-        // minZoomLevel={17}
-        // maxZoomLevel={18.5}
+        minZoomLevel={12}
+        maxZoomLevel={18.5}
         mapType="satellite"
         loadingEnabled>
         <LiveMap />
