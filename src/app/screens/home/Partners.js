@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgb(33, 37, 41)",
   },
   wrapper: {
     flex: 1,

@@ -1,27 +1,23 @@
 import * as Location from "expo-location";
-import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Image, StyleSheet } from "react-native";
 import { Callout, Marker } from "react-native-maps";
 
 import { AndroidLocation } from "../../utils/permissions";
 
 const LiveMap = () => {
-  const [initPosition, setInitPosition] = useState({
-    latitude: -1.32795117588182,
-    longitude: 36.80049889657756,
-  });
+  const [initPosition, setInitPosition] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getLocation = async () => {
       try {
         await AndroidLocation();
         const { coords } = await Location.getCurrentPositionAsync();
-        setInitPosition({
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
+        setInitPosition(coords);
+        setLoading(false);
       } catch (err) {
-        console.log(err);
+        setLoading(false);
       }
     };
     getLocation();
@@ -30,11 +26,11 @@ const LiveMap = () => {
   console.log(initPosition);
 
   return (
-    <Marker coordinate={{ latitude: -1.32795117588182, longitude: 36.80049889657756 }}>
+    <Marker coordinate={{ latitude: -1.2714877, longitude: 36.8102461 }}>
       <Callout>
-        {/* <View style={styles.imageContainer}> */}
-          {/* <Image style={styles.icon} source={require("../../../assets/icons/bar1.png")} /> */}
-        {/* </View> */}
+        <View style={styles.imageContainer}>
+          <Image style={styles.icon} source={require("../../../assets/icons/bar1.png")} />
+        </View>
       </Callout>
     </Marker>
   );

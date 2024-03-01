@@ -1,10 +1,94 @@
-import React from "react";
+import * as Location from "expo-location";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 import MapView, { Callout, Marker, Polyline } from "react-native-maps";
+// import LiveMap from '../app/components/livemap'
 
-import LiveMap from "../../app/components/livemap";
+import { AndroidLocation } from "../../utils/permissions";
 
-const MapScreen = () => {
+const LiveMap = () => {
+  const [currentPosition, setCurrentLocation] = useState({
+    latitude: -1.3264437836590561,
+    longitude: 36.80311585942039,
+  });
+  const [loading, setLoading] = useState(true);
+  const [heading, setHeading] = useState(0);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        await AndroidLocation();
+
+        Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.Highest, timeInterval: 1000 },
+          (location) => {
+            setCurrentLocation(location.coords);
+            setLoading(false);
+          },
+        );
+
+        Location.watchHeadingAsync((heading) => {
+          setHeading(heading.trueHeading);
+        });
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+    getLocation();
+  }, []);
+
+  return (
+    <View>
+      <Marker
+        coordinate={{
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
+        }}
+        title="my location"
+        calloutEnabled
+        tracksViewChanges
+        rotation={heading}
+        pinColor="green">
+        <Callout>
+          <View>
+            {/* <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} /> */}
+          </View>
+        </Callout>
+      </Marker>
+    </View>
+  );
+};
+
+const tyles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+  icon: {
+    height: 32,
+    width: 32,
+  },
+  imageContainer: {
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    flexDirection: "row",
+    padding: 5,
+  },
+  label: {
+    borderRadius: 5,
+    flexDirection: "row",
+  },
+  map: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+  },
+});
+
+const Map = () => {
   return (
     <View style={styles.container}>
       <MapView
@@ -15,10 +99,12 @@ const MapScreen = () => {
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         }}
-        minZoomLevel={8}
-        maxZoomLevel={18.5}
+        // minZoomLevel={17}
+        // maxZoomLevel={18.5}
         mapType="satellite"
         loadingEnabled>
+        <LiveMap />
+
         {/* main stage */}
         <Marker
           coordinate={{
@@ -461,20 +547,19 @@ const MapScreen = () => {
             </View>
           </Callout>
         </Marker>
-
-        {/* <LiveMap /> */}
       </MapView>
     </View>
   );
 };
 
-export default MapScreen;
+export default Map;
 
 const styles = StyleSheet.create({
   container: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: "center",
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   icon: {
     height: 32,
@@ -492,8 +577,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   map: {
-    flex: 1,
-    height: "100%",
-    width: "100%",
+    // flex: 1,
+    // height: '100%',
+    // width: '100%'
+    ...StyleSheet.absoluteFillObject,
   },
 });
