@@ -1,120 +1,79 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Image, Dimensions, ImageBackground, Pressable, Linking, FlatList } from 'react-native'
-import * as Font from 'expo-font'
-import { useEffect, useState } from 'react'
-import MamaKilo from '../utils/MamaKilo'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { FontAwesome5, Entypo, Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  ImageBackground,
+  Pressable,
+  FlatList,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const lineup = [
-  {
-    name: 'Femi One',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/femione.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/femione.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Otile Brown',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/otile.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/otile.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'JB Mpiana',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/jbmpiana.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/jbmpiana.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Bensoul',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/bensoul.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/bensoul.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.8, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Samidoh',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/samidoh.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/samidoh.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.8, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Musa Keys',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/musakeys.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/musakeys.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Nviiri the Storyteller',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/nviiri.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/nviiri.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'H_art the Band',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/harttheband.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/harttheband.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'King Promise',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/kingpromise.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/kingpromise.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Nadia Mukami',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/nadia.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/nadia.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Sanaipei Tande',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/sanaipei.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/sanaipei.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  },
-  {
-    name: 'Mejja',
-    country: 'KE',
-    imageDetail: () => <Image source= {require('../../assets/images/mejja.webp')} resizeMode='cover' style={{ height: 300, width: Dimensions.get('window').width - 40, opacity: 0.9 }}/>,
-    imageList: () => <Image source= {require('../../assets/images/mejja.webp')} resizeMode='cover' style={{ height: 180, width: 180, opacity: 0.9, borderRadius: 20 }}/>
-  }
-]
+import MamaKilo from "../../utils/MamaKilo";
+import Artists from "../services/lineUp.data";
 
-export default function LineupList () {
-  const navigation = useNavigation()
+export default function LineupList() {
+  const navigation = useNavigation();
 
   const renderItem = (itemData) => {
-    console.log(itemData.item)
+    // console.log(itemData.item);
 
     return (
-        <View style={{ marginHorizontal: 10, marginVertical: 10, justifyContent: 'center', alignItems: 'center', borderColor: 'white', borderRadius: 20, borderWidth: 2 }}>
-            {itemData.item.imageList()}
-            <View style={{ flexDirection: 'row', marginLeft: 10, alignSelf: 'flex-start', justifyContent: 'space-between', width: 170 }}>
-                <View style={{ flex: 2.9 / 3 }}>
-                    <MamaKilo color='white' size={18} height={30}>{itemData.item.name}</MamaKilo>
-                    <MamaKilo color='white' size={15} height={30}>{itemData.item.country}</MamaKilo>
-                </View>
-                <Pressable style={{ justifyContent: 'center' }} onPress={() => navigation.navigate('LineupDetail', { ...itemData })}>
-                    <Ionicons name='ellipsis-horizontal-circle-sharp' size={35} color="white" />
-                </Pressable>
-            </View>
-
+      <View
+        style={{
+          marginHorizontal: 10,
+          marginVertical: 10,
+          justifyContent: "center",
+          alignItems: "center",
+          borderColor: "white",
+          borderRadius: 20,
+          borderWidth: 2,
+        }}>
+        {itemData.item.imageList()}
+        <View
+          style={{
+            flexDirection: "row",
+            marginLeft: 10,
+            alignSelf: "flex-start",
+            justifyContent: "space-between",
+            width: 170,
+          }}>
+          <View style={{ flex: 2.9 / 3 }}>
+            <MamaKilo color="white" size={18} height={30}>
+              {itemData.item.name}
+            </MamaKilo>
+            <MamaKilo color="white" size={15} height={30}>
+              {itemData.item.country}
+            </MamaKilo>
+          </View>
+          <Pressable
+            style={{ justifyContent: "center" }}
+            onPress={() => navigation.navigate("LineupDetail", { ...itemData })}>
+            <Ionicons name="ellipsis-horizontal-circle-sharp" size={35} color="white" />
+          </Pressable>
         </View>
-    )
-  }
+      </View>
+    );
+  };
 
   return (
-
-      <ImageBackground source={{ uri: 'https://www.wknd.fi/content/uploads/2023/08/WKND23_Day2_223431_HeikkiSalonen_.jpg' }} style={{ flex: 1, position: 'relative' }} resizeMode='cover'>
-
+    <ImageBackground
+      source={{
+        uri: "https://www.wknd.fi/content/uploads/2023/08/WKND23_Day2_223431_HeikkiSalonen_.jpg",
+      }}
+      style={{ flex: 1, position: "relative" }}
+      resizeMode="cover">
       <SafeAreaView style={styles.container}>
-      <View style = {styles.logo}>
+        <View style={styles.logo}>
+          <Image
+            style={{ height: 130, width: 130, marginRight: 10, flex: 1 / 4 }}
+            source={require("../../../assets/images/rahalogo.png")}
+          />
 
-        <Image style={{ height: 130, width: 130, marginRight: 10, flex: 1 / 4 }} source={require('../../assets/images/rahalogo.png')} />
-
-      {/** <span style={{ color: "#11e0ff" }}>R</span>
+          {/** <span style={{ color: "#11e0ff" }}>R</span>
       <span style={{ color: "#ffffff" }}>A</span>
       <span style={{ color: "#e42eff" }}>H</span>
       <span style={{ color: "#ffdf2d" }}>A</span>
@@ -123,65 +82,60 @@ export default function LineupList () {
       <span style={{ color: "#ffffff" }}>S</span>
   <span style={{ color: "#11e0ff" }}>T</span> **/}
 
-       {/** <View style={{flex: 3/4}}>
+          {/** <View style={{flex: 3/4}}>
        <MamaKilo color="#ffffff" size={25} height={35}>Food, Art, Culture, Music</MamaKilo>
 </View> **/}
+        </View>
 
-       </View>
-
-      <View style={{ marginTop: 160 }}>
-      <FlatList
-        numColumns={2}
-        contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
-          data={lineup}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.name}
-      />
-
-      </View>
-
+        <View style={{ marginTop: 160 }}>
+          <FlatList
+            numColumns={2}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            data={Artists}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.name}
+          />
+        </View>
       </SafeAreaView>
 
       <StatusBar style="light" />
-
-      </ImageBackground>
-
-  )
+    </ImageBackground>
+  );
 }
 
 const styles = StyleSheet.create({
   background: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 0
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 0,
   },
 
   container: {
     flex: 1,
-    position: 'relative'
+    position: "relative",
   },
 
   logo: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     // elevation: 1,
     // flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
+    alignItems: "center",
     marginRight: 10,
-    marginLeft: (Dimensions.get('window').width / 2) - 65,
+    marginLeft: Dimensions.get("window").width / 2 - 65,
     marginTop: 50,
-    marginBottom: 10
-
+    marginBottom: 10,
   },
 
   mamakilo: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center',
-    position: 'absolute',
-    zIndex: 1
-
+    justifyContent: "center",
+    position: "absolute",
+    zIndex: 1,
   },
 
   mamakiloContainer: {
@@ -189,13 +143,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
     // position: 'absolute',
     marginTop: 150,
-    marginLeft: (Dimensions.get('window').width / 2) - 200,
+    marginLeft: Dimensions.get("window").width / 2 - 200,
     height: 200,
     paddingHorizontal: 10,
     opacity: 0.8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 400
-  }
-
-})
+    justifyContent: "center",
+    alignItems: "center",
+    width: 400,
+  },
+});

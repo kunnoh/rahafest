@@ -1,40 +1,122 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, Image, View } from 'react-native'
-import React from 'react'
-import MapView, { Callout, Marker, Polyline } from 'react-native-maps'
-import LiveMap from '../app/components/livemap'
+import * as Location from "expo-location";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, Image, View } from "react-native";
+import MapView, { Callout, Marker, Polyline } from "react-native-maps";
+// import LiveMap from '../app/components/livemap'
+
+import { AndroidLocation } from "../../utils/permissions";
+
+const LiveMap = () => {
+  const [currentPosition, setCurrentLocation] = useState({
+    latitude: -1.3264437836590561,
+    longitude: 36.80311585942039,
+  });
+  const [loading, setLoading] = useState(true);
+  const [heading, setHeading] = useState(0);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      try {
+        await AndroidLocation();
+
+        Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.Highest, timeInterval: 1000 },
+          (location) => {
+            setCurrentLocation(location.coords);
+            setLoading(false);
+          },
+        );
+
+        Location.watchHeadingAsync((heading) => {
+          setHeading(heading.trueHeading);
+        });
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+    getLocation();
+  }, []);
+
+  return (
+    <View>
+      <Marker
+        coordinate={{
+          latitude: currentPosition.latitude,
+          longitude: currentPosition.longitude,
+        }}
+        title="my location"
+        calloutEnabled
+        tracksViewChanges
+        rotation={heading}
+        pinColor="green">
+        <Callout>
+          <View>
+            {/* <Image style={tyles.icon} source={require('../../assets/icons/bar1.png')} /> */}
+          </View>
+        </Callout>
+      </Marker>
+    </View>
+  );
+};
+
+const tyles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+  icon: {
+    height: 32,
+    width: 32,
+  },
+  imageContainer: {
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    flexDirection: "row",
+    padding: 5,
+  },
+  label: {
+    borderRadius: 5,
+    flexDirection: "row",
+  },
+  map: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+  },
+});
 
 const Map = () => {
   return (
     <View style={styles.container}>
-      <LiveMap></LiveMap>
       <MapView
         style={styles.map}
         initialRegion={{
           latitude: -1.3260428510920745,
           longitude: 36.80065023291559,
           latitudeDelta: 0.005,
-          longitudeDelta: 0.005
+          longitudeDelta: 0.005,
         }}
-        minZoomLevel={17}
-        maxZoomLevel={18.5}
-        mapType={'satellite'}
-        loadingEnabled = { true }
-      >
+        // minZoomLevel={17}
+        // maxZoomLevel={18.5}
+        mapType="satellite"
+        loadingEnabled>
+        <LiveMap />
+
         {/* main stage */}
         <Marker
           coordinate={{
             latitude: -1.3250194031472067,
-            longitude: 36.80053424261274
+            longitude: 36.80053424261274,
           }}
           title="Stage"
           description="Main stage"
           calloutEnabled
-          tracksViewChanges={true}
-        >
+          tracksViewChanges>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/stage.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/stage.png")} />
           </View>
           <Callout>
             <View>
@@ -47,15 +129,14 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3268865200872235,
-            longitude: 36.80053273074613
+            longitude: 36.80053273074613,
           }}
           title="Rahafest 3D logo"
           description="Rahafest 3D logo"
           calloutEnabled
-          tracksViewChanges={true}
-        >
+          tracksViewChanges>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/logo-design.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/logo-design.png")} />
           </View>
           <Callout>
             <View>
@@ -68,17 +149,16 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.325947998501439,
-            longitude: 36.800543459581974
+            longitude: 36.800543459581974,
           }}
           title="Concert area"
           description="Main concert area"
           calloutEnabled
-          tracksViewChanges={true}
-        >
+          tracksViewChanges>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/hands-up.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/hands-up.png")} />
           </View>
-          <Callout style={{ width: 'auto' }}>
+          <Callout style={{ width: "auto" }}>
             <View>
               <Text style={styles.label}>Concert Area</Text>
             </View>
@@ -89,13 +169,12 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3273852771279349,
-            longitude: 36.80075267188107
+            longitude: 36.80075267188107,
           }}
           title="Exit"
           description="exit"
           calloutEnabled
-          tracksViewChanges={true}
-        >
+          tracksViewChanges>
           <View style={styles.imageContainer}>
             {/* <Image style = { styles.icon } source={require('../../assets/icons/exit.png')} /> */}
           </View>
@@ -108,24 +187,23 @@ const Map = () => {
         <Polyline
           coordinates={[
             { latitude: -1.3273852771279349, longitude: 36.80075267188107 },
-            { latitude: -1.327619938609936, longitude: 36.80109511665861 }
+            { latitude: -1.327619938609936, longitude: 36.80109511665861 },
           ]}
-          strokeColor='#fff'
+          strokeColor="#fff"
           strokeWidth={2}
         />
 
         <Marker
           coordinate={{
             latitude: -1.327619938609936,
-            longitude: 36.80109511665861
+            longitude: 36.80109511665861,
           }}
           title="Exit"
           description="exit"
           calloutEnabled
-          tracksViewChanges={true}
-        >
+          tracksViewChanges>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/exit.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/exit.png")} />
           </View>
           <Callout>
             <View>
@@ -138,12 +216,11 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3273852771279349,
-            longitude: 36.800548823999904
+            longitude: 36.800548823999904,
           }}
           title="VIP entrance"
           description="VIP entrance"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
             {/* <Image style = { styles.icon } source={require('../../assets/icons/red-carpet.png')} /> */}
           </View>
@@ -157,22 +234,21 @@ const Map = () => {
         <Polyline
           coordinates={[
             { latitude: -1.3273852771279349, longitude: 36.800548823999904 },
-            { latitude: -1.3279631691705918, longitude: 36.80055867486607 }
+            { latitude: -1.3279631691705918, longitude: 36.80055867486607 },
           ]}
-          strokeColor='#fff'
+          strokeColor="#fff"
           strokeWidth={2}
         />
         <Marker
           coordinate={{
             latitude: -1.3279631691705918,
-            longitude: 36.80055867486607
+            longitude: 36.80055867486607,
           }}
           title="VIP entrance"
           description="VIP entrance"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/red-carpet.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/red-carpet.png")} />
           </View>
           <Callout>
             <View>
@@ -185,12 +261,11 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.327428180954696,
-            longitude: 36.80033424728288
+            longitude: 36.80033424728288,
           }}
           title="Regular entrance"
           description="Regular entrance"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
             {/* <Image style = { styles.icon } source={require('../../assets/icons/entrance.png')} /> */}
           </View>
@@ -204,25 +279,22 @@ const Map = () => {
         <Polyline
           coordinates={[
             { latitude: -1.327428180954696, longitude: 36.80033424728288 },
-            { latitude: -1.3278237317610664, longitude: 36.79999004656596 }
+            { latitude: -1.3278237317610664, longitude: 36.79999004656596 },
           ]}
-          strokeColor='#fff'
+          strokeColor="#fff"
           strokeWidth={2}
         />
 
         <Marker
-          coordinate={
-            {
-              latitude: -1.3278237317610664,
-              longitude: 36.79999004656596
-            }
-          }
+          coordinate={{
+            latitude: -1.3278237317610664,
+            longitude: 36.79999004656596,
+          }}
           title="Regular entrance"
           description="Regular entrance"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/entrance.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/entrance.png")} />
           </View>
           <Callout>
             <View>
@@ -235,14 +307,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3272243877709589,
-            longitude: 36.80029669635741
+            longitude: 36.80029669635741,
           }}
           title="Toilet"
           description="Toilet"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/toilet.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/toilet.png")} />
           </View>
           <Callout>
             <View>
@@ -254,14 +325,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3271707579829592,
-            longitude: 36.800784858388624
+            longitude: 36.800784858388624,
           }}
           title="Toilet"
           description="Toilet"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/toilet.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/toilet.png")} />
           </View>
           <Callout>
             <View>
@@ -274,14 +344,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.326489659574388,
-            longitude: 36.79989436501299
+            longitude: 36.79989436501299,
           }}
           title="Food & Bar"
           description="Food & Bar"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/bar.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/bar.png")} />
           </View>
           <Callout>
             <View>
@@ -293,14 +362,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.326489659574388,
-            longitude: 36.801165732061335
+            longitude: 36.801165732061335,
           }}
           title="Food & Bar"
           description="Food & Bar"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/bar.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/bar.png")} />
           </View>
           <Callout>
             <View>
@@ -313,14 +381,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3255457748460688,
-            longitude: 36.79988900059641
+            longitude: 36.79988900059641,
           }}
           title="Corporate Area"
           description="Corporate Area"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/corporate.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/corporate.png")} />
           </View>
           <Callout>
             <View>
@@ -333,14 +400,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3249665726661597,
-            longitude: 36.8020669542749
+            longitude: 36.8020669542749,
           }}
           title="VVIP entrance"
           description="VVIP entrance"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/gate.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/gate.png")} />
           </View>
           <Callout>
             <View>
@@ -353,14 +419,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.325374159404016,
-            longitude: 36.80114427439098
+            longitude: 36.80114427439098,
           }}
           title="VVIP Area"
           description="VVIP private food, bar and toilets"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/exclusive.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/exclusive.png")} />
           </View>
           <Callout>
             <View>
@@ -373,14 +438,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3257871090413367,
-            longitude: 36.80115500322683
+            longitude: 36.80115500322683,
           }}
           title="VIP Area"
           description="private food, bar and toilets"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/vip.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/vip.png")} />
           </View>
           <Callout>
             <View>
@@ -393,14 +457,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3256637604402766,
-            longitude: 36.802506836544794
+            longitude: 36.802506836544794,
           }}
           title="VVIP Parking"
           description="VVIP Parking"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/parking-area.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/parking-area.png")} />
           </View>
           <Callout>
             <View>
@@ -413,14 +476,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3250952842700012,
-            longitude: 36.79852107402615
+            longitude: 36.79852107402615,
           }}
           title="Artists & VVIP lounge"
           description="Artists & VVIP lounge"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/lounge.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/lounge.png")} />
           </View>
           <Callout>
             <View>
@@ -433,14 +495,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3253527074576086,
-            longitude: 36.80209914078246
+            longitude: 36.80209914078246,
           }}
           title="Art and branding panel"
           description="Art and branding panel"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/painting.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/painting.png")} />
           </View>
           <Callout>
             <View>
@@ -453,14 +514,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3251113732353186,
-            longitude: 36.801396402033475
+            longitude: 36.801396402033475,
           }}
           title="VVIP Art, Games, Fashion, Activations"
           description="VVIP Art, Games, Fashion, Activations"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/crown.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/crown.png")} />
           </View>
           <Callout>
             <View>
@@ -473,14 +533,13 @@ const Map = () => {
         <Marker
           coordinate={{
             latitude: -1.3251113732353186,
-            longitude: 36.799749525730356
+            longitude: 36.799749525730356,
           }}
           title="Art, Games, Fashion, Activations"
           description="Art, Games, Fashion, Activations"
-          calloutEnabled
-        >
+          calloutEnabled>
           <View style={styles.imageContainer}>
-            <Image style = { styles.icon } source={require('../../assets/icons/game-console.png')} />
+            <Image style={styles.icon} source={require("../../../assets/icons/game-console.png")} />
           </View>
           <Callout>
             <View>
@@ -488,38 +547,39 @@ const Map = () => {
             </View>
           </Callout>
         </Marker>
-
       </MapView>
     </View>
-  )
-}
+  );
+};
 
-export default Map
+export default Map;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    ...StyleSheet.absoluteFillObject,
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "flex-end",
   },
   icon: {
     height: 32,
-    width: 32
+    width: 32,
   },
   imageContainer: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    backgroundColor: "#fff",
     borderRadius: 5,
-    flexDirection: 'row',
-    padding: 5
+    flexDirection: "row",
+    padding: 5,
   },
   label: {
     borderRadius: 5,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   map: {
-    flex: 1,
-    height: '100%',
-    width: '100%'
-  }
-})
+    // flex: 1,
+    // height: '100%',
+    // width: '100%'
+    ...StyleSheet.absoluteFillObject,
+  },
+});
