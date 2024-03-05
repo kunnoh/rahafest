@@ -55,4 +55,28 @@ const CancelFriendRequest = async (currentUserId, selectedUserId) => {
   }
 };
 
-export { GetFriendRequestSent, GetUserFriends, SendFriendRequest, CancelFriendRequest };
+const AcceptRequest = async (friendReqId, userId) => {
+  try {
+    const { data } = await axios.post(
+      `${prod.local}/friend-request/accept`,
+      {
+        senderId: friendReqId,
+        recepientId: userId,
+      },
+      headers,
+    );
+    console.log("FRIENDID:: \t", friendReqId);
+    // console.log("USERID::\t", userId);
+    return data;
+  } catch (e) {
+    throw handleError(e);
+  }
+};
+
+export {
+  GetFriendRequestSent,
+  GetUserFriends,
+  SendFriendRequest,
+  AcceptRequest,
+  CancelFriendRequest,
+};

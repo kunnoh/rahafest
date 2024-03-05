@@ -14,8 +14,8 @@ const ChatsScreen = () => {
     const acceptedFriend = async () => {
       try {
         const friends = await acceptedFriendsList(userId);
-        console.log(friends);
-        // setAcceptedFriends(friends);
+        console.log("MABESHTE", friends);
+        setAcceptedFriends(friends);
       } catch (error) {
         console.log("error showing the accepted friends", error);
       }

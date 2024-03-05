@@ -41,6 +41,7 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
+    setUsers([]);
     const fetchUsers = async () => {
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwtDecode(token);

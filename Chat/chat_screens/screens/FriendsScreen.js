@@ -16,22 +16,12 @@ const FriendsScreen = () => {
   const fetchFriendRequests = async () => {
     try {
       const response = await FriendRequests(userId);
-      if (response) {
-        const friendRequestsData = response.data.map((friendRequest) => ({
-          _id: friendRequest._id,
-          name: friendRequest.name,
-          email: friendRequest.email,
-          image: friendRequest.image,
-        }));
-
-        setFriendRequests(friendRequestsData);
-      }
+      setFriendRequests(response);
     } catch (err) {
       console.log("error message", err);
     }
   };
 
-  console.log(friendRequests);
   return (
     <View style={{ padding: 10, marginHorizontal: 12 }}>
       {friendRequests.length > 0 && <Text>Your Friend Requests!</Text>}
@@ -49,5 +39,3 @@ const FriendsScreen = () => {
 };
 
 export default FriendsScreen;
-
-const styles = StyleSheet.create({});

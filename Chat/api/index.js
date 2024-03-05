@@ -34,6 +34,7 @@ app.listen(port, () => {
 const AuthGuard = require("./AuthGuard/auth.guard");
 const Message = require("./models/message");
 const User = require("./models/user");
+const Forum = require("./models/forum");
 
 // function to create a token for the user
 const createToken = (payload, secret_key, period) =>
@@ -114,7 +115,28 @@ app.post("/friend-request", AuthGuard, async (req, res) => {
   const { currentUserId, selectedUserId } = req.body;
 
   try {
-    // update the recepient's friendRequestsArray!
+    // update the recepient's freindRequestsArray!
+    await User.findByIdAndUpdate(selectedUserId, {
+      $push: { freindRequests: currentUserId },
+    });
+
+    // update the sender's sentFriendRequests array
+    await User.findByIdAndUpdate(currentUserId, {
+      $push: { sentFriendRequests: selectedUserId },
+    });
+
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+// endpoint to send a request to a user
+app.put("/friend-request", AuthGuard, async (req, res) => {
+  const { currentUserId, selectedUserId } = req.body;
+
+  try {
+    // update the recepient's freindRequestsArray!
     await User.findByIdAndUpdate(selectedUserId, {
       $push: { freindRequests: currentUserId },
     });
@@ -137,10 +159,10 @@ app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
 
     // fetch the user document based on the User id
     const user = await User.findById(userId).populate("freindRequests", "name email image").lean();
-
     const freindRequests = user.freindRequests;
 
     res.json(freindRequests);
+    console.log(freindRequests);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -151,7 +173,7 @@ app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
 app.post("/friend-request/accept", AuthGuard, async (req, res) => {
   try {
     const { senderId, recepientId } = req.body;
-
+    console.log("ACCEPT:: \t", req.body);
     // retrieve the documents of sender and the recipient
     const sender = await User.findById(senderId);
     const recepient = await User.findById(recepientId);
@@ -311,5 +333,26 @@ app.get("/friends/:userId", AuthGuard, (req, res) => {
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ message: "internal server error" });
+  }
+});
+
+// endpoint to post Messages in forum
+app.post("/forum", AuthGuard, upload.single("imageFile"), async (req, res) => {
+  try {
+    const { senderId, messageType, messageText } = req.body;
+
+    const newMessage = new Forum({
+      senderId,
+      messageType,
+      message: messageText,
+      timestamp: new Date(),
+      imageUrl: messageType === "image" ? req.file.path : null,
+    });
+
+    await newMessage.save();
+    res.status(200).json({ message: "Message sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });

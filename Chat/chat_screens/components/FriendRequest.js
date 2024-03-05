@@ -3,27 +3,15 @@ import React, { useContext } from "react";
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 
 import { UserType } from "../UserContext";
+import { AcceptRequest } from "../services/user.service";
 
 const FriendRequest = ({ item, friendRequests, setFriendRequests }) => {
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
   const acceptRequest = async (friendRequestId) => {
     try {
-      const response = await fetch("http://192.168.100.23:8000/friend-request/accept", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          senderId: friendRequestId,
-          recepientId: userId,
-        }),
-      });
-
-      if (response.ok) {
-        setFriendRequests(friendRequests.filter((request) => request._id !== friendRequestId));
-        navigation.navigate("Chats");
-      }
+      const resp = await AcceptRequest(friendRequestId, userId);
+      console.log("USERID:: \t", resp);
     } catch (err) {
       console.log("error acceptin the friend request", err);
     }

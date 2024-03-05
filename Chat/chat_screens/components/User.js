@@ -3,13 +3,21 @@ import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 
 import prod from "../../../env/env";
 import { UserType } from "../UserContext";
-import { CancelFriendRequest, GetFriendRequestSent, GetUserFriends, SendFriendRequest } from "../services/user.service";
+import {
+  CancelFriendRequest,
+  GetFriendRequestSent,
+  GetUserFriends,
+  SendFriendRequest,
+} from "../services/user.service";
+import { ActivityIndicator } from "react-native-paper";
 
 const User = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
   const [requestSent, setRequestSent] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
@@ -17,14 +25,6 @@ const User = ({ item }) => {
         const resp = await GetFriendRequestSent(userId);
         console.log("FRIEND REQ SENT::\t", resp);
         setFriendRequests(resp);
-        // const response = await fetch(`http://192.168.100.23:8000/friend-requests/sent/${userId}`);
-
-        // const data = await response.json();
-        // if (response.ok) {
-        //   setFriendRequests(data);
-        // } else {
-        //   console.log("error", response.status);
-        // }
       } catch (error) {
         console.log("error", error);
       }
@@ -39,15 +39,6 @@ const User = ({ item }) => {
         const resp = await GetUserFriends(userId);
         console.log("Friends::\t", resp);
         setUserFriends("USER FRIENDS::\t", resp);
-        // const response = await fetch(`${prod.local}/friends/${userId}`);
-
-        // const data = await response.json();
-
-        // if (response.ok) {
-        //   setUserFriends(data);
-        // } else {
-        //   console.log("error retrieving user friends", response.status);
-        // }
       } catch (error) {
         console.log("Error message", error);
       }
@@ -58,22 +49,14 @@ const User = ({ item }) => {
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
+      setLoading(true);
       const resp = await SendFriendRequest(currentUserId, selectedUserId);
       setRequestSent(true);
       console.log("SEND FRIEND REQ::\t", resp);
-      // const response = await fetch(prod.local + "/friend-request", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ currentUserId, selectedUserId }),
-      // });
-
-      // if (response.ok) {
-      //   setRequestSent(true);
-      // }
     } catch (error) {
       console.log("error message", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,8 +68,6 @@ const User = ({ item }) => {
       console.log(error);
     }
   };
-  // console.log("friend requests sent", friendRequests);
-  // console.log("user friends", userFriends);
   return (
     <Pressable style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
       <View>
@@ -135,6 +116,10 @@ const User = ({ item }) => {
             borderRadius: 6,
             width: 105,
           }}>
+          {/* Conditionally render ActivityIndicator when loading */}
+          {loading ? (
+            <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+          ) : null}
           <Text style={{ textAlign: "center", color: "white", fontSize: 13 }}>Add Friend</Text>
         </Pressable>
       )}
