@@ -24,6 +24,8 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -50,10 +52,23 @@ const LoginScreen = () => {
   });
 
   const handleLogin = async () => {
+    // Reset error messages
+    setEmailError("");
+    setPasswordError("");
     const user = {
       email,
       password,
     };
+
+    if (email === "" || password === "") {
+      if (email === "") {
+        setEmailError("Email is empty!");
+      }
+      if (password === "") {
+        setPasswordError("Password is empty!");
+      }
+      return;
+    }
 
     try {
       setLoading(true);
@@ -111,17 +126,11 @@ const LoginScreen = () => {
             <TextInput
               value={email}
               onChangeText={(text) => setEmail(text)}
-              style={{
-                fontSize: email ? 18 : 18,
-                borderBottomColor: "white",
-                borderBottomWidth: 4,
-                marginVertical: 10,
-                width: 300,
-                color: "white",
-              }}
+              style={[styles.input, emailError && styles.inputError]}
               placeholderTextColor="white"
               placeholder="Enter Your Email"
             />
+            {emailError ? <Text style={styles.errorMessage}>{emailError}</Text> : null}
           </View>
 
           <View
@@ -134,17 +143,11 @@ const LoginScreen = () => {
               value={password}
               onChangeText={(text) => setPassword(text)}
               secureTextEntry
-              style={{
-                fontSize: email ? 18 : 18,
-                borderBottomColor: "white",
-                borderBottomWidth: 4,
-                marginVertical: 10,
-                width: 300,
-                color: "white",
-              }}
+              style={[styles.input, passwordError && styles.inputError]}
               placeholderTextColor="white"
               placeholder="Enter Your Password"
             />
+            {passwordError ? <Text style={styles.errorMessage}>{passwordError}</Text> : null}
           </View>
 
           <Pressable
@@ -247,5 +250,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: 400,
+  },
+
+  input: {
+    fontSize: 20,
+    borderBottomColor: "#fff",
+    borderBottomWidth: 1,
+    marginVertical: 10,
+    width: 300,
+    color: "#fff",
+  },
+  inputError: {
+    borderBottomColor: "red",
+  },
+  errorMessage: {
+    color: "red",
+    marginBottom: 5,
   },
 });

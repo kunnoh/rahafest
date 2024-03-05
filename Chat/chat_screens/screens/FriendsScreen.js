@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { UserType } from "../UserContext";
 import FriendRequest from "../components/FriendRequest";
+import { FriendRequests } from "../services/chat.service";
 
 const FriendsScreen = () => {
   const { userId, setUserId } = useContext(UserType);
@@ -14,8 +15,8 @@ const FriendsScreen = () => {
 
   const fetchFriendRequests = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.0:8000/friend-request/${userId}`);
-      if (response.status === 200) {
+      const response = await FriendRequests(userId);
+      if (response) {
         const friendRequestsData = response.data.map((friendRequest) => ({
           _id: friendRequest._id,
           name: friendRequest.name,

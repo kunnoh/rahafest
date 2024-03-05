@@ -4,26 +4,24 @@ import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
 
 import { UserType } from "../UserContext";
 import UserChat from "../components/UserChat";
+import { acceptedFriendsList } from "../services/chat.service";
 
 const ChatsScreen = () => {
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
   useEffect(() => {
-    const acceptedFriendsList = async () => {
+    const acceptedFriend = async () => {
       try {
-        const response = await fetch(`http://127.0.0.0:8000/accepted-friends/${userId}`);
-        const data = await response.json();
-
-        if (response.ok) {
-          setAcceptedFriends(data);
-        }
+        const friends = await acceptedFriendsList(userId);
+        console.log(friends);
+        // setAcceptedFriends(friends);
       } catch (error) {
         console.log("error showing the accepted friends", error);
       }
     };
 
-    acceptedFriendsList();
+    acceptedFriend();
   }, []);
   console.log("friends", acceptedFriends);
   return (

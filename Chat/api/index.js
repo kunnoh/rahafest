@@ -31,6 +31,7 @@ app.listen(port, () => {
   console.log("Server running on port", port);
 });
 
+const AuthGuard = require("./AuthGuard/auth.guard");
 const Message = require("./models/message");
 const User = require("./models/user");
 
@@ -97,7 +98,7 @@ app.post("/login", async (req, res) => {
 });
 
 // endpoint to access all the users except the user who's is currently logged in!
-app.get("/users/:userId", async (req, res) => {
+app.get("/users/:userId", AuthGuard, async (req, res) => {
   try {
     const loggedInUserId = req.params.userId;
     const users = await User.find({ _id: { $ne: loggedInUserId } });
@@ -109,7 +110,7 @@ app.get("/users/:userId", async (req, res) => {
 });
 
 // endpoint to send a request to a user
-app.post("/friend-request", async (req, res) => {
+app.post("/friend-request", AuthGuard, async (req, res) => {
   const { currentUserId, selectedUserId } = req.body;
 
   try {
@@ -130,7 +131,7 @@ app.post("/friend-request", async (req, res) => {
 });
 
 // endpoint to show all the friend-requests of a particular user
-app.get("/friend-request/:userId", async (req, res) => {
+app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -147,7 +148,7 @@ app.get("/friend-request/:userId", async (req, res) => {
 });
 
 // endpoint to accept a friend-request of a particular person
-app.post("/friend-request/accept", async (req, res) => {
+app.post("/friend-request/accept", AuthGuard, async (req, res) => {
   try {
     const { senderId, recepientId } = req.body;
 
@@ -177,7 +178,7 @@ app.post("/friend-request/accept", async (req, res) => {
 });
 
 // endpoint to access all the friends of the logged in user!
-app.get("/accepted-friends/:userId", async (req, res) => {
+app.get("/accepted-friends/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId).populate("friends", "name email image");
@@ -204,7 +205,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // endpoint to post Messages and store it in the backend
-app.post("/messages", upload.single("imageFile"), async (req, res) => {
+app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
     const { senderId, recepientId, messageType, messageText } = req.body;
 
@@ -226,7 +227,7 @@ app.post("/messages", upload.single("imageFile"), async (req, res) => {
 });
 
 /// endpoint to get the userDetails to design the chat Room header
-app.get("/user/:userId", async (req, res) => {
+app.get("/user/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -241,7 +242,7 @@ app.get("/user/:userId", async (req, res) => {
 });
 
 // endpoint to fetch the messages between two users in the chatRoom
-app.get("/messages/:senderId/:recepientId", async (req, res) => {
+app.get("/messages/:senderId/:recepientId", AuthGuard, async (req, res) => {
   try {
     const { senderId, recepientId } = req.params;
 
@@ -260,7 +261,7 @@ app.get("/messages/:senderId/:recepientId", async (req, res) => {
 });
 
 // endpoint to delete the messages!
-app.post("/deleteMessages", async (req, res) => {
+app.post("/deleteMessages", AuthGuard, async (req, res) => {
   try {
     const { messages } = req.body;
 
@@ -277,7 +278,7 @@ app.post("/deleteMessages", async (req, res) => {
   }
 });
 
-app.get("/friend-requests/sent/:userId", async (req, res) => {
+app.get("/friend-requests/sent/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId)
@@ -292,7 +293,7 @@ app.get("/friend-requests/sent/:userId", async (req, res) => {
   }
 });
 
-app.get("/friends/:userId", (req, res) => {
+app.get("/friends/:userId", AuthGuard, (req, res) => {
   try {
     const { userId } = req.params;
 

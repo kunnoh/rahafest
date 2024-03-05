@@ -1,15 +1,29 @@
-import { View, Text, StyleSheet, SafeAreaView, FlatList, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 
 import MamaKilo from "../../../utils/MamaKilo";
 import Artists from "../../services/lineUp.data";
 
-const Item = ({ title }) => (
-  <View>
-    <Text style={styles.item}>{title}</Text>
-  </View>
-);
-
+const handleItemClick = (yt) => Linking.openURL(yt);
 const Playlist = () => {
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        handleItemClick(item.yt);
+      }}>
+      <View>
+        <Text style={styles.item}>{item.name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
   return (
     <ImageBackground
       source={{
@@ -21,11 +35,7 @@ const Playlist = () => {
         <MamaKilo color="#fff" size={40} height={80}>
           Playlists
         </MamaKilo>
-        <FlatList
-          data={Artists}
-          renderItem={({ item }) => <Item title={item.name} />}
-          keyExtractor={(item) => item.name}
-        />
+        <FlatList data={Artists} renderItem={renderItem} keyExtractor={(item) => item.name} />
       </SafeAreaView>
     </ImageBackground>
   );

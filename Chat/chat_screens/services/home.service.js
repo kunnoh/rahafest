@@ -12,7 +12,7 @@ const GetUsers = async (user_id) => {
     const { data } = await axios.get(prod.local + "/users/" + user_id);
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw handleError(error);
   }
 };
