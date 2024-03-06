@@ -46,7 +46,6 @@ const HomeScreen = () => {
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
-      console.log("UID:: \t", userId);
       setUserId(userId);
 
       try {

@@ -230,7 +230,6 @@ const upload = multer({ storage });
 app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
     const { senderId, recepientId, messageType, messageText } = req.body;
-
     const newMessage = new Message({
       senderId,
       recepientId,
@@ -285,13 +284,12 @@ app.get("/messages/:senderId/:recepientId", AuthGuard, async (req, res) => {
 // endpoint to delete the messages!
 app.post("/deleteMessages", AuthGuard, async (req, res) => {
   try {
-    const { messages } = req.body;
-
-    if (!Array.isArray(messages) || messages.length === 0) {
+    const { messageIds } = req.body;
+    if (!Array.isArray(messageIds) || messageIds.length === 0) {
       return res.status(400).json({ message: "invalid req body!" });
     }
 
-    await Message.deleteMany({ _id: { $in: messages } });
+    await Message.deleteMany({ _id: { $in: messageIds } });
 
     res.json({ message: "Message deleted successfully" });
   } catch (error) {

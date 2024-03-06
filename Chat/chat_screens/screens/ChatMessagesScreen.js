@@ -3,7 +3,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useContext, useLayoutEffect, useEffect, useRef } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   ScrollView,
@@ -13,8 +12,16 @@ import {
   Image,
 } from "react-native";
 import EmojiSelector from "react-native-emoji-selector";
+import { ActivityIndicator } from "react-native-paper";
 
+import { success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
+import {
+  DeleteMesages,
+  GetMessages,
+  GetRecipientData,
+  SendMessage,
+} from "../services/message.service";
 
 const ChatMessagesScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -27,8 +34,11 @@ const ChatMessagesScreen = () => {
   const { recepientId } = route.params;
   const [message, setMessage] = useState("");
   const { userId, setUserId } = useContext(UserType);
+  const [file, setFile] = useState(null);
+  const [sendingMsg, setSendingMsg] = useState(false);
 
   const scrollViewRef = useRef(null);
+  console.log({ message });
 
   useEffect(() => {
     scrollToBottom();
@@ -50,14 +60,8 @@ const ChatMessagesScreen = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`http://127.0.0.0:8000/messages/${userId}/${recepientId}`);
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessages(data);
-      } else {
-        console.log("error showing messags", response.status.message);
-      }
+      const msg = await GetMessages(userId, recepientId);
+      setMessages(msg);
     } catch (error) {
       console.log("error fetching messages", error);
     }
@@ -70,10 +74,9 @@ const ChatMessagesScreen = () => {
   useEffect(() => {
     const fetchRecepientData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.0:8000/user/${recepientId}`);
-
-        const data = await response.json();
-        setRecepientData(data);
+        const resp = await GetRecipientData(recepientId);
+        console.log("Recipient Data::\t", resp);
+        setRecepientData(resp);
       } catch (error) {
         console.log("error retrieving details", error);
       }
@@ -83,36 +86,41 @@ const ChatMessagesScreen = () => {
   }, []);
   const handleSend = async (messageType, imageUri) => {
     try {
-      const formData = new FormData();
-      formData.append("senderId", userId);
-      formData.append("recepientId", recepientId);
+      setSendingMsg(true);
+      const obj = {
+        senderId: userId,
+        recepientId,
+        messageText: message,
+        messageType,
+      };
+      // const formData = new FormData();
+      // formData.append("senderId", userId);
+      // formData.append("recepientId", recepientId);
 
       // if the message type id image or a normal text
       if (messageType === "image") {
-        formData.append("messageType", "image");
-        formData.append("imageFile", {
-          uri: imageUri,
-          name: "image.jpg",
-          type: "image/jpeg",
-        });
+        // formData.append("messageType", "image");
+        // formData.append("imageFile", {
+        //   uri: imageUri,
+        //   name: "image.jpg",
+        //   type: "image/jpeg",
+        // });
       } else {
-        formData.append("messageType", "text");
-        formData.append("messageText", message);
+        // formData.append("messageType", "text");
+        // formData.append("messageText", message);
       }
 
-      const response = await fetch("http://127.0.0.0:8000/messages", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        setMessage("");
-        setSelectedImage("");
-
+      try {
+        const send = SendMessage(obj);
+        console.log("SENT:: \t", send);
         fetchMessages();
+      } catch (e) {
+        console.log("handleSend Error::\t", e);
       }
     } catch (error) {
       console.log("error in sending the message", error);
+    } finally {
+      setSendingMsg(false);
     }
   };
 
@@ -166,23 +174,26 @@ const ChatMessagesScreen = () => {
 
   const deleteMessages = async (messageIds) => {
     try {
-      const response = await fetch("http://127.0.0.0:8000/deleteMessages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ messages: messageIds }),
-      });
+      // const response = await fetch("http://127.0.0.0:8000/deleteMessages", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ messages: messageIds }),
+      // });
 
-      if (response.ok) {
-        setSelectedMessages((prevSelectedMessages) =>
-          prevSelectedMessages.filter((id) => !messageIds.includes(id)),
-        );
+      // if (response.ok) {
+      //   setSelectedMessages((prevSelectedMessages) =>
+      //     prevSelectedMessages.filter((id) => !messageIds.includes(id)),
+      //   );
 
-        fetchMessages();
-      } else {
-        console.log("error deleting messages", response.status);
-      }
+      //   fetchMessages();
+      // } else {
+      //   console.log("error deleting messages", response.status);
+      // }
+      const resp = await DeleteMesages(messageIds);
+      success(resp.message, 2000);
+      fetchMessages();
     } catch (error) {
       console.log("error deleting messages", error);
     }
@@ -370,6 +381,10 @@ const ChatMessagesScreen = () => {
             paddingHorizontal: 12,
             borderRadius: 20,
           }}>
+          {/* Conditionally render ActivityIndicator when loading */}
+          {sendingMsg ? (
+            <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+          ) : null}
           <Text style={{ color: "white", fontWeight: "bold" }}>Send</Text>
         </Pressable>
       </View>
@@ -387,5 +402,3 @@ const ChatMessagesScreen = () => {
 };
 
 export default ChatMessagesScreen;
-
-const styles = StyleSheet.create({});

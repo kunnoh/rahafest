@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { Text, View, Pressable, Image } from "react-native";
 
 import { UserType } from "../UserContext";
 
@@ -83,5 +83,3 @@ const UserChat = ({ item }) => {
 };
 
 export default UserChat;
-
-const styles = StyleSheet.create({});

@@ -14,7 +14,6 @@ const ChatsScreen = () => {
     const acceptedFriend = async () => {
       try {
         const friends = await acceptedFriendsList(userId);
-        console.log("MABESHTE", friends);
         setAcceptedFriends(friends);
       } catch (error) {
         console.log("error showing the accepted friends", error);
@@ -23,7 +22,6 @@ const ChatsScreen = () => {
 
     acceptedFriend();
   }, []);
-  console.log("friends", acceptedFriends);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Pressable>
@@ -36,5 +34,3 @@ const ChatsScreen = () => {
 };
 
 export default ChatsScreen;
-
-const styles = StyleSheet.create({});
