@@ -1,12 +1,15 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Text, View } from "react-native";
 
+import { success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import FriendRequest from "../components/FriendRequest";
 import { FriendRequests } from "../services/chat.service";
+import { AcceptRequest, RemoveFriend } from "../services/user.service";
 
 const FriendsScreen = () => {
   const { userId, setUserId } = useContext(UserType);
+  const [isAccepted, setIsAccepted] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   useEffect(() => {
     fetchFriendRequests();
@@ -21,6 +24,26 @@ const FriendsScreen = () => {
     }
   };
 
+  const acceptRequest = async (friendRequestId) => {
+    try {
+      const resp = await AcceptRequest(friendRequestId, userId);
+      success("Friend request accepted!", 2000);
+      // console.log("USERID:: \t", resp);
+      setIsAccepted(true);
+    } catch (err) {
+      console.log("error acceptin the friend request", err);
+    }
+  };
+
+  const Unfriend = async (friendId) => {
+    try {
+      const res = await RemoveFriend(friendId);
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={{ padding: 10, marginHorizontal: 12 }}>
       {friendRequests.length > 0 && <Text>Your Friend Requests!</Text>}
@@ -30,7 +53,10 @@ const FriendsScreen = () => {
           key={index}
           item={item}
           friendRequests={friendRequests}
+          Unfriend={Unfriend}
           setFriendRequests={setFriendRequests}
+          acceptRequest={acceptRequest}
+          isAccepted={isAccepted}
         />
       ))}
     </View>

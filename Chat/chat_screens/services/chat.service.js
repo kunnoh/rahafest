@@ -6,6 +6,7 @@ import prod from "../../../env/env";
 const acceptedFriendsList = async (userId) => {
   try {
     const { data } = await axios.get(`${prod.local}/accepted-friends/${userId}`);
+    console.log({ chattes: data });
     return data;
   } catch (e) {
     throw handleError(e);
@@ -19,6 +20,6 @@ const FriendRequests = async (userId) => {
   } catch (e) {
     throw handleError(e);
   }
-}
+};
 
 export { acceptedFriendsList, FriendRequests };

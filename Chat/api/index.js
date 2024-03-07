@@ -102,7 +102,7 @@ app.post("/login", async (req, res) => {
 app.get("/users/:userId", AuthGuard, async (req, res) => {
   try {
     const loggedInUserId = req.params.userId;
-    const users = await User.find({ _id: { $ne: loggedInUserId } });
+    const users = await User.find({ _id: { $ne: loggedInUserId } }).select("-password -__v");
     return res.status(200).json({ data: users });
   } catch (error) {
     console.log(error);
@@ -137,16 +137,14 @@ app.put("/friend-request", AuthGuard, async (req, res) => {
   console.log(req.body);
   try {
     // update the recepient's freindRequestsArray!
-    const n = await User.findByIdAndUpdate(selectedUserId, {
+    await User.findByIdAndUpdate(selectedUserId, {
       $pull: { freindRequests: currentUserId },
     });
 
     // update the sender's sentFriendRequests array
-    const m = await User.findByIdAndUpdate(currentUserId, {
+    await User.findByIdAndUpdate(currentUserId, {
       $pull: { sentFriendRequests: selectedUserId },
     });
-    console.log("CURRENT::\t", n);
-    console.log("SELECTED:\t", m);
     res.status(200).json({ message: "Friend request cancelled" });
   } catch (error) {
     res.status(500).json(error);
@@ -172,6 +170,36 @@ app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
 
 // endpoint to accept a friend-request of a particular person
 app.post("/friend-request/accept", AuthGuard, async (req, res) => {
+  try {
+    const { senderId, recepientId } = req.body;
+    console.log("ACCEPT:: \t", req.body);
+    // retrieve the documents of sender and the recipient
+    const sender = await User.findById(senderId);
+    const recepient = await User.findById(recepientId);
+
+    sender.friends.push(recepientId);
+    recepient.friends.push(senderId);
+
+    recepient.freindRequests = recepient.freindRequests.filter(
+      (request) => request.toString() !== senderId.toString(),
+    );
+
+    sender.sentFriendRequests = sender.sentFriendRequests.filter(
+      (request) => request.toString() !== recepientId.toString,
+    );
+
+    await sender.save();
+    await recepient.save();
+
+    res.status(200).json({ message: "Friend Request accepted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// endpoint to accept a friend-request of a particular person
+app.post("/unfriend", AuthGuard, async (req, res) => {
   try {
     const { senderId, recepientId } = req.body;
     console.log("ACCEPT:: \t", req.body);

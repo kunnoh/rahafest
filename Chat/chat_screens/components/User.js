@@ -19,40 +19,37 @@ const User = ({ item }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchFriendRequests = async () => {
-      try {
-        // console.log("CURRENT USER::\t", userId);
-        const resp = await GetFriendRequestSent(userId);
-        // console.log("FRIEND REQ SENT::\t", resp);
-        setFriendRequests(resp);
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-
     fetchFriendRequests();
-  }, []);
-
-  useEffect(() => {
-    const fetchUserFriends = async () => {
-      try {
-        const resp = await GetUserFriends(userId);
-        // console.log("Friends::\t", resp);
-        setUserFriends(resp);
-      } catch (error) {
-        console.log("Error message", error);
-      }
-    };
-
     fetchUserFriends();
   }, []);
+
+  const fetchFriendRequests = async () => {
+    try {
+      // console.log("CURRENT USER::\t", userId);
+      const resp = await GetFriendRequestSent(userId);
+      // console.log("FRIEND REQ SENT::\t", resp);
+      setFriendRequests(resp);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const fetchUserFriends = async () => {
+    try {
+      const resp = await GetUserFriends(userId);
+      // console.log("Friends::\t", resp);
+      setUserFriends(resp);
+    } catch (error) {
+      console.log("Error message", error);
+    }
+  };
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
       setLoading(true);
       const resp = await SendFriendRequest(currentUserId, selectedUserId);
       setRequestSent(true);
-      console.log("SEND FRIEND REQ::\t", resp);
+      // console.log("SEND FRIEND REQ::\t", resp);
     } catch (error) {
       console.log("error message", error);
     } finally {
@@ -65,10 +62,13 @@ const User = ({ item }) => {
       setLoading(true);
       const result = await CancelFriendRequest(currentUserId, selectedUserId);
       success(result.message, 2000);
+      setRequestSent(false);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+      fetchFriendRequests();
+      fetchUserFriends();
     }
   };
   return (

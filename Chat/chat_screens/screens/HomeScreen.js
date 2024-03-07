@@ -1,10 +1,10 @@
-import { ScrollView, Text, View } from "react-native";
-import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import "core-js/stable/atob";
 import { jwtDecode } from "jwt-decode";
+import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 
 import { danger, success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
@@ -16,15 +16,23 @@ const HomeScreen = () => {
   const { userId, setUserId } = useContext(UserType);
   const [users, setUsers] = useState([]);
 
+  // console.log({users})
+  // setUsers
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
       headerLeft: () => <Text style={{ fontSize: 16, fontWeight: "bold" }}>Swift Chat</Text>,
       headerRight: () => (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
           <Ionicons
             onPress={() => navigation.navigate("Chats")}
             name="chatbox-ellipses-outline"
+            size={24}
+            color="black"
+          />
+          <MaterialIcons
+            onPress={() => navigation.navigate("Forum")}
+            name="forum"
             size={24}
             color="black"
           />
@@ -42,8 +50,8 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    setUsers([]);
     const fetchUsers = async () => {
+      setUsers([]);
       const token = await AsyncStorage.getItem("authToken");
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
@@ -51,7 +59,7 @@ const HomeScreen = () => {
 
       try {
         const { data } = await GetUsers(userId);
-        console.log("USERS::\t", data);
+        // console.log("HOME DATA;;\t", data);
         setUsers(data);
       } catch (error) {
         danger(error.errorMessage.message, 2000);
@@ -63,14 +71,18 @@ const HomeScreen = () => {
 
   async function handleLogout() {
     try {
+      setUserId("");
+
+      // Clear tokens
       await AsyncStorage.removeItem("authToken");
       await AsyncStorage.removeItem("refreshToken");
+      setUsers([]);
+      // Navigate to login screen
       navigation.navigate("Login");
       success("You are now logged out", 2000);
     } catch (e) {
       console.log(e);
       danger("Failed to log you out!", 2000);
-      return false;
     }
   }
 

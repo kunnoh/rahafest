@@ -41,6 +41,15 @@ const SendFriendRequest = async (currentUserId, selectedUserId) => {
   }
 };
 
+const FetchUserMessages = async (userId, itemId) => {
+  try {
+    const { data } = await axios.get(`${prod.local}/messages/${userId}/${itemId}`);
+    return data;
+  } catch (e) {
+    throw handleError(e);
+  }
+};
+
 const CancelFriendRequest = async (currentUserId, selectedUserId) => {
   try {
     const { data } = await axios.put(
@@ -65,7 +74,7 @@ const AcceptRequest = async (friendReqId, userId) => {
       },
       headers,
     );
-    console.log("FRIENDID:: \t", friendReqId);
+    // console.log("FRIENDID:: \t", friendReqId);
     // console.log("USERID::\t", userId);
     return data;
   } catch (e) {
@@ -73,10 +82,21 @@ const AcceptRequest = async (friendReqId, userId) => {
   }
 };
 
+const RemoveFriend = async (friendId) => {
+  try {
+    const { data } = await axios.post(`${prod.local}/unfriend`, friendId, headers);
+    return data;
+  } catch (e) {
+    throw handleError(e);
+  }
+}
+
 export {
   GetFriendRequestSent,
   GetUserFriends,
   SendFriendRequest,
   AcceptRequest,
   CancelFriendRequest,
+  FetchUserMessages,
+  RemoveFriend,
 };

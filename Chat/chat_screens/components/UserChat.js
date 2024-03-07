@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Text, View, Pressable, Image } from "react-native";
 
 import { UserType } from "../UserContext";
+import { FetchUserMessages } from "../services/user.service";
 
 const UserChat = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
@@ -10,14 +11,9 @@ const UserChat = ({ item }) => {
   const navigation = useNavigation();
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`http://192.168.100.23:8000/messages/${userId}/${item._id}`);
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessages(data);
-      } else {
-        console.log("error showing messags", response.status.message);
-      }
+      const res = await FetchUserMessages(userId, item._id);
+      // console.log(res);
+      setMessages(res);
     } catch (error) {
       console.log("error fetching messages", error);
     }
@@ -26,7 +22,7 @@ const UserChat = ({ item }) => {
   useEffect(() => {
     fetchMessages();
   }, []);
-  console.log(messages);
+  // console.log(messages);
 
   const getLastMessage = () => {
     const userMessages = messages.filter((message) => message.messageType === "text");
@@ -36,7 +32,7 @@ const UserChat = ({ item }) => {
     return userMessages[n - 1];
   };
   const lastMessage = getLastMessage();
-  console.log(lastMessage);
+  // console.log(lastMessage);
   const formatTime = (time) => {
     const options = { hour: "numeric", minute: "numeric" };
     return new Date(time).toLocaleString("en-US", options);
