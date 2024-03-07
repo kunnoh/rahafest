@@ -32,9 +32,9 @@ app.listen(port, () => {
 });
 
 const AuthGuard = require("./AuthGuard/auth.guard");
+const Forum = require("./models/forum");
 const Message = require("./models/message");
 const User = require("./models/user");
-const Forum = require("./models/forum");
 
 // function to create a token for the user
 const createToken = (payload, secret_key, period) =>
@@ -134,21 +134,22 @@ app.post("/friend-request", AuthGuard, async (req, res) => {
 // endpoint to send a request to a user
 app.put("/friend-request", AuthGuard, async (req, res) => {
   const { currentUserId, selectedUserId } = req.body;
-
+  console.log(req.body);
   try {
     // update the recepient's freindRequestsArray!
-    await User.findByIdAndUpdate(selectedUserId, {
-      $push: { freindRequests: currentUserId },
+    const n = await User.findByIdAndUpdate(selectedUserId, {
+      $pull: { freindRequests: currentUserId },
     });
 
     // update the sender's sentFriendRequests array
-    await User.findByIdAndUpdate(currentUserId, {
-      $push: { sentFriendRequests: selectedUserId },
+    const m = await User.findByIdAndUpdate(currentUserId, {
+      $pull: { sentFriendRequests: selectedUserId },
     });
-
-    res.sendStatus(200);
+    console.log("CURRENT::\t", n);
+    console.log("SELECTED:\t", m);
+    res.status(200).json({ message: "Friend request cancelled" });
   } catch (error) {
-    res.sendStatus(500);
+    res.status(500).json(error);
   }
 });
 
@@ -252,8 +253,9 @@ app.get("/user/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    // fetch the user data from the user ID
-    const recepientId = await User.findById(userId);
+    // fetch the user data from the user ID and exclude password
+    const recepientId = await User.findById(userId).select("-password");
+    console.log(recepientId);
 
     res.json(recepientId);
   } catch (error) {
@@ -313,23 +315,17 @@ app.get("/friend-requests/sent/:userId", AuthGuard, async (req, res) => {
   }
 });
 
-app.get("/friends/:userId", AuthGuard, (req, res) => {
+app.get("/friends/:userId", AuthGuard, async (req, res) => {
   try {
     const { userId } = req.params;
-
-    User.findById(userId)
-      .populate("friends")
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
-
-        const friendIds = user.friends.map((friend) => friend._id);
-
-        res.status(200).json(friendIds);
-      });
+    const user = await User.findById(userId).select("-password -__v").populate({
+      path: "friends",
+      select: "-password -__v",
+    });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json(user.friends);
   } catch (error) {
-    console.log("error", error);
+    console.log("Error fetching friends", error);
     res.status(500).json({ message: "internal server error" });
   }
 });

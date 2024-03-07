@@ -14,7 +14,7 @@ import {
 import EmojiSelector from "react-native-emoji-selector";
 import { ActivityIndicator } from "react-native-paper";
 
-import { success } from "../../../src/utils/toast";
+import { danger, success, warning } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import {
   DeleteMesages,
@@ -34,12 +34,12 @@ const ChatMessagesScreen = () => {
   const { recepientId } = route.params;
   const [message, setMessage] = useState("");
   const { userId, setUserId } = useContext(UserType);
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
   const [sendingMsg, setSendingMsg] = useState(false);
 
   const scrollViewRef = useRef(null);
   console.log({ message });
-
+  console.log("sending::\t", sendingMsg);
   useEffect(() => {
     scrollToBottom();
   }, []);
@@ -67,9 +67,12 @@ const ChatMessagesScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  useEffect(
+    () => {
+      fetchMessages();
+    },
+    // [messages]
+  );
 
   useEffect(() => {
     const fetchRecepientData = async () => {
@@ -86,6 +89,10 @@ const ChatMessagesScreen = () => {
   }, []);
   const handleSend = async (messageType, imageUri) => {
     try {
+      if (message === "") {
+        danger("Cannot send empty message!", 3000);
+        return;
+      }
       setSendingMsg(true);
       const obj = {
         senderId: userId,
@@ -114,6 +121,7 @@ const ChatMessagesScreen = () => {
         const send = SendMessage(obj);
         console.log("SENT:: \t", send);
         fetchMessages();
+        setMessage("");
       } catch (e) {
         console.log("handleSend Error::\t", e);
       }
@@ -124,7 +132,7 @@ const ChatMessagesScreen = () => {
     }
   };
 
-  console.log("messages", selectedMessages);
+  console.log("Selected messages", selectedMessages);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -174,28 +182,15 @@ const ChatMessagesScreen = () => {
 
   const deleteMessages = async (messageIds) => {
     try {
-      // const response = await fetch("http://127.0.0.0:8000/deleteMessages", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ messages: messageIds }),
-      // });
-
-      // if (response.ok) {
-      //   setSelectedMessages((prevSelectedMessages) =>
-      //     prevSelectedMessages.filter((id) => !messageIds.includes(id)),
-      //   );
-
-      //   fetchMessages();
-      // } else {
-      //   console.log("error deleting messages", response.status);
-      // }
       const resp = await DeleteMesages(messageIds);
       success(resp.message, 2000);
+      setSelectedMessages((prevSelectedMessages) =>
+        prevSelectedMessages.filter((id) => !messageIds.includes(id)),
+      );
       fetchMessages();
     } catch (error) {
-      console.log("error deleting messages", error);
+      console.log("error deleting messages::\t", error);
+      warning("Error deleting message", 2000);
     }
   };
   const formatTime = (time) => {

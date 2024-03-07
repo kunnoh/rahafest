@@ -43,7 +43,7 @@ const SendFriendRequest = async (currentUserId, selectedUserId) => {
 
 const CancelFriendRequest = async (currentUserId, selectedUserId) => {
   try {
-    const { data } = await axios.post(
+    const { data } = await axios.put(
       `${prod.local}/friend-request`,
       { currentUserId, selectedUserId },
       headers,

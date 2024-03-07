@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
-import prod from "../../../env/env";
+import { success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import {
   CancelFriendRequest,
@@ -9,7 +10,6 @@ import {
   GetUserFriends,
   SendFriendRequest,
 } from "../services/user.service";
-import { ActivityIndicator } from "react-native-paper";
 
 const User = ({ item }) => {
   const { userId, setUserId } = useContext(UserType);
@@ -21,9 +21,9 @@ const User = ({ item }) => {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        console.log("CURRENT USER::\t", userId);
+        // console.log("CURRENT USER::\t", userId);
         const resp = await GetFriendRequestSent(userId);
-        console.log("FRIEND REQ SENT::\t", resp);
+        // console.log("FRIEND REQ SENT::\t", resp);
         setFriendRequests(resp);
       } catch (error) {
         console.log("error", error);
@@ -37,8 +37,8 @@ const User = ({ item }) => {
     const fetchUserFriends = async () => {
       try {
         const resp = await GetUserFriends(userId);
-        console.log("Friends::\t", resp);
-        setUserFriends("USER FRIENDS::\t", resp);
+        // console.log("Friends::\t", resp);
+        setUserFriends(resp);
       } catch (error) {
         console.log("Error message", error);
       }
@@ -60,12 +60,15 @@ const User = ({ item }) => {
     }
   };
 
-  const cancelFriendRequest = async () => {
+  const cancelFriendRequest = async (currentUserId, selectedUserId) => {
     try {
-      const { data } = await CancelFriendRequest();
-      console.log(data);
+      setLoading(true);
+      const result = await CancelFriendRequest(currentUserId, selectedUserId);
+      success(result.message, 2000);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -105,6 +108,10 @@ const User = ({ item }) => {
             width: 105,
             borderRadius: 6,
           }}>
+          {/* Conditionally render ActivityIndicator when loading */}
+          {loading ? (
+            <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+          ) : null}
           <Text style={{ textAlign: "center", color: "white", fontSize: 13 }}>Request Sent</Text>
         </Pressable>
       ) : (
@@ -128,5 +135,3 @@ const User = ({ item }) => {
 };
 
 export default User;
-
-const styles = StyleSheet.create({});

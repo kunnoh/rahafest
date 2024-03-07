@@ -12,7 +12,6 @@ const GetMessages = async (userId, recepientId) => {
     const { data } = await axios.get(`${prod.local}/messages/${userId}/${recepientId}`);
     return data;
   } catch (e) {
-    console.log(e);
     throw handleError(e);
   }
 };
@@ -20,7 +19,6 @@ const GetMessages = async (userId, recepientId) => {
 const GetRecipientData = async (recepientId) => {
   try {
     const { data } = await axios.get(`${prod.local}/user/${recepientId}`);
-    console.log("RECIPIENT::\t", data);
     return data;
   } catch (e) {
     throw handleError(e);

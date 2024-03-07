@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +10,7 @@ import { danger, success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import User from "../components/User";
 import { GetUsers } from "../services/home.service";
+
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
@@ -50,6 +51,7 @@ const HomeScreen = () => {
 
       try {
         const { data } = await GetUsers(userId);
+        console.log("USERS::\t", data);
         setUsers(data);
       } catch (error) {
         danger(error.errorMessage.message, 2000);
@@ -84,5 +86,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});
