@@ -264,7 +264,7 @@ app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) =>
       recepientId,
       messageType,
       message: messageText,
-      timestamp: new Date(),
+      timeStamp: new Date(),
       imageUrl: messageType === "image" ? req.file.path : null,
     });
 
@@ -358,8 +358,19 @@ app.get("/friends/:userId", AuthGuard, async (req, res) => {
   }
 });
 
+// endpoint to get Messages in forum
+app.get("/forum/messages", AuthGuard, async (req, res) => {
+  try {
+    const msgs = await Message.find({});
+    res.status(200).json(msgs);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // endpoint to post Messages in forum
-app.post("/forum", AuthGuard, upload.single("imageFile"), async (req, res) => {
+app.post("/forum/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
     const { senderId, messageType, messageText } = req.body;
 

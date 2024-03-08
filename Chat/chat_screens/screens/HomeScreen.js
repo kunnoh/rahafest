@@ -31,7 +31,7 @@ const HomeScreen = () => {
             color="black"
           />
           <MaterialIcons
-            onPress={() => navigation.navigate("Forum")}
+            onPress={() => navigation.navigate("Feeds")}
             name="forum"
             size={24}
             color="black"
