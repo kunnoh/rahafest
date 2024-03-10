@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   subCategory: {
     left: 15,
-    marginBottom: 25
+    marginBottom: 25,
   },
   subCategoryTxt: {
     fontSize: 20,

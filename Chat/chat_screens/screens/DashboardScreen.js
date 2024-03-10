@@ -11,7 +11,7 @@ import { UserType } from "../UserContext";
 import User from "../components/User";
 import { GetUsers } from "../services/home.service";
 
-const HomeScreen = () => {
+const DashboardScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
   const [users, setUsers] = useState([]);
@@ -97,4 +97,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default DashboardScreen;

@@ -34,7 +34,7 @@ const LoginScreen = () => {
         const token = await AsyncStorage.getItem("authToken");
 
         if (token) {
-          navigation.replace("Home");
+          navigation.replace("Dashboard");
         } else {
           // token not found , show the login screen itself
         }
@@ -79,7 +79,7 @@ const LoginScreen = () => {
       setEmail("");
       setPassword("");
       success("Welcome!", 2000);
-      navigation.navigate("Home");
+      navigation.navigate("Dashboard");
     } catch (e) {
       console.log(e.errorMessage);
       danger(e.errorMessage.message, 2000);

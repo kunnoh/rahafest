@@ -89,7 +89,7 @@ const RemoveFriend = async (friendId) => {
   } catch (e) {
     throw handleError(e);
   }
-}
+};
 
 export {
   GetFriendRequestSent,

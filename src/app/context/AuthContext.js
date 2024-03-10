@@ -72,7 +72,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { dev } from "../../env";
+import prod from "../../../env/env";
 
 const TOKEN_KEY = "access_token";
 const AuthContext = createContext({});
@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password) => {
     try {
-      return await axios.post(`${dev.api}/users`, { email, password });
+      return await axios.post(`${prod.local}/users`, { email, password });
     } catch (e) {
       return { error: true, msg: e.response.data.msg };
     }
@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const result = await axios.post(`${dev.api}/auth`, { email, password });
+      const result = await axios.post(`${prod.local}/auth`, { email, password });
       setAuthState({
         token: result.data.token,
         authenticated: true,

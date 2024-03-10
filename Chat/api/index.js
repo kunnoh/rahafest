@@ -351,6 +351,7 @@ app.get("/friends/:userId", AuthGuard, async (req, res) => {
       select: "-password -__v",
     });
     if (!user) return res.status(404).json({ message: "User not found" });
+    // console.log(user.friends)
     res.status(200).json(user.friends);
   } catch (error) {
     console.log("Error fetching friends", error);

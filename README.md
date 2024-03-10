@@ -21,7 +21,7 @@ npm install
 Install dependencies for chat app
 
 ```sh
-npm chat-install
+make chat-install
 ```
 
 

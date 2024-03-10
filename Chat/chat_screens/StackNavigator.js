@@ -3,8 +3,8 @@ import React from "react";
 
 import ChatMessagesScreen from "./screens/ChatMessagesScreen";
 import ChatsScreen from "./screens/ChatsScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 import FriendsScreen from "./screens/FriendsScreen";
-import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import FeedsScreen from "./screens/feeds/FeedsScreen";
@@ -15,7 +15,7 @@ const StackNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Dashboard" component={DashboardScreen} />
 
       <Stack.Screen name="Friends" component={FriendsScreen} />
       <Stack.Screen name="Feeds" component={FeedsScreen} />

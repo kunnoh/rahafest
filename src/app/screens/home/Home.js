@@ -119,10 +119,10 @@ export default function Home({ navigation }) {
                   style={{ marginHorizontal: 10 }}
                   onPress={() => Linking.openURL("https://www.tiktok.com/@rahafest/")}
                 />
-                <Entypo 
-                  name="twitter" 
-                  size={40} 
-                  color="#4267B2" 
+                <Entypo
+                  name="twitter"
+                  size={40}
+                  color="#4267B2"
                   style={{ marginHorizontal: 10 }}
                   onPress={() => Linking.openURL("https://twitter.com/raha_fest")}
                 />
