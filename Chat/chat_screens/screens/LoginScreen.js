@@ -17,7 +17,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 
-import { login } from "../../../src/redux/auth/authActions";
+import { login, getUser } from "../../../src/redux/auth/authActions";
 import MamaKilo from "../../../src/utils/MamaKilo";
 import { danger, success } from "../../../src/utils/toast";
 
@@ -29,19 +29,22 @@ const LoginScreen = () => {
   const [passwordError, setPasswordError] = useState("");
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { access_token, error, loading } = useSelector((state) => state.auth);
+  const { access_token, error, loading, user } = useSelector((state) => state.auth);
 
-  console.log("rettr", access_token);
-  console.log("rettr", access_token);
-  console.log("err::\t", error);
-  console.log("loading::\t", loading);
+  // console.log("rettr", access_token);
+  // console.log("rettr", access_token);
+  // console.log("err::\t", error);
+  // console.log("loading::\t", loading);
 
-  useEffect(() => {
-    // Redirect if user is already logged in
-    if (access_token) {
-      navigation.replace("Dashboard");
-    }
-  }, [access_token, navigation]);
+  // useEffect(() => {
+  //   // Redirect if user is already logged in
+  //   if (access_token) {
+  //     // navigation.replace("Dashboard");
+  //     dispatch(getUser(access_token));
+  //   }
+  // }, [access_token]);
+
+  console.log("user::\t", user);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),
@@ -74,6 +77,10 @@ const LoginScreen = () => {
     };
 
     dispatch(login(user));
+
+    if (access_token) {
+      dispatch(getUser(access_token));
+    }
     // success("Welcome", 3000);
     // navigation.navigate("Dashboard", 3000);
   };

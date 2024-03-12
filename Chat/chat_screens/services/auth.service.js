@@ -17,6 +17,19 @@ const LoginApi = async (userData) => {
   }
 };
 
+const GetUserApi = async (token) => {
+  try {
+    const { data } = await axios.get(`${prod.local}/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw handleError(error);
+  }
+};
+
 const RegisterApi = async (userData) => {
   try {
     const { data } = await axios.post(`${prod.local}/register`, userData, headers);
@@ -45,4 +58,4 @@ const RefreshTokenApi = async () => {
   }
 };
 
-export { LoginApi, RegisterApi, LogoutApi, RefreshTokenApi };
+export { LoginApi, RegisterApi, LogoutApi, RefreshTokenApi, GetUserApi };
