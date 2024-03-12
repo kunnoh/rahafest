@@ -268,9 +268,10 @@ app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) =>
 });
 
 /// endpoint to get the userDetails to design the chat Room header
-app.get("/user/:userId", AuthGuard, async (req, res) => {
+app.get("/user", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.params;
+    // const { userId } = req.params;
+    const userId = req.user.id;
 
     // fetch the user data from the user ID and exclude password
     const recepientId = await User.findById(userId).select("-password");
