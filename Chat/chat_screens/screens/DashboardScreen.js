@@ -7,18 +7,19 @@ import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { logout } from "../../../src/redux/auth/authActions";
+import { logout, getUsers } from "../../../src/redux/auth/authActions";
 import { danger, success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import User from "../components/User";
-import { GetUsers } from "../services/home.service";
+// import { GetUsers } from "../services/home.service";
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
-  const [users, setUsers] = useState([]);
-  const { access_token } = useSelector((state) => state.auth);
+  // const [users, setUsers] = useState([]);
+  const { access_token, users } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  console.log("access_token", access_token);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -60,22 +61,12 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      setUsers([]);
+      // setUsers([]);
       if (!access_token) {
         navigation.navigate("Login");
         return;
       }
-
-      const decodedToken = jwtDecode(access_token);
-      const userId = decodedToken.id;
-      setUserId(userId);
-
-      try {
-        const { data } = await GetUsers(userId);
-        setUsers(data);
-      } catch (error) {
-        danger(error.errorMessage.message, 2000);
-      }
+      dispatch(getUsers(access_token));
     };
 
     fetchUsers();
@@ -86,12 +77,6 @@ const DashboardScreen = () => {
     if (!access_token) {
       success("You are now logged out", 2000);
     }
-    // try {
-    //   navigation.navigate("Login");
-    // } catch (e) {
-    //   console.log(e);
-    //   danger("Failed to log you out!", 2000);
-    // }
   }
 
   return (

@@ -49,6 +49,20 @@ const LogoutApi = async () => {
   }
 };
 
+const GetUsersApi = async (token) => {
+  try {
+    const { data } = await axios.get(prod.local + "/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
+  } catch (error) {
+    // console.log(error);
+    throw handleError(error);
+  }
+};
+
 const RefreshTokenApi = async () => {
   try {
     const { data } = await axios.post(`${prod.local}/refresh-token`);
@@ -58,4 +72,4 @@ const RefreshTokenApi = async () => {
   }
 };
 
-export { LoginApi, RegisterApi, LogoutApi, RefreshTokenApi, GetUserApi };
+export { LoginApi, RegisterApi, LogoutApi, RefreshTokenApi, GetUserApi, GetUsersApi };

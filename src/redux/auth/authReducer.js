@@ -7,6 +7,7 @@ const initialState = {
   access_token: null,
   otp: null,
   pinReset: false,
+  users: null,
 };
 
 const authSlice = createSlice({
@@ -60,6 +61,17 @@ const authSlice = createSlice({
         state.user = action.payload.data;
       })
       .addCase("auth/register/rejected", (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase("auth/getUsers/pending", (state) => {
+        state.loading = true;
+      })
+      .addCase("auth/getUsers/fulfilled", (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase("auth/getUsers/rejected", (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

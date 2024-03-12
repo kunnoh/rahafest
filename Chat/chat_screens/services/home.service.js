@@ -7,9 +7,13 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const GetUsers = async (user_id) => {
+const GetUsers = async (token) => {
   try {
-    const { data } = await axios.get(prod.local + "/users/" + user_id);
+    const { data } = await axios.get(prod.local + "/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return data;
   } catch (error) {
     // console.log(error);
