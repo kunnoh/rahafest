@@ -108,9 +108,9 @@ app.get("/logout", async (req, res) => {
 });
 
 // endpoint to access all the users except the user who's is currently logged in!
-app.get("/users/:userId", AuthGuard, async (req, res) => {
+app.get("/users", AuthGuard, async (req, res) => {
   try {
-    const loggedInUserId = req.params.userId;
+    const loggedInUserId = req.user.id;
     const users = await User.find({ _id: { $ne: loggedInUserId } }).select("-password -__v");
     return res.status(200).json({ data: users });
   } catch (error) {
