@@ -29,7 +29,7 @@ const RegisterApi = async (userData) => {
 
 const LogoutApi = async () => {
   try {
-    const { data } = await axios.post(`${prod.local}/logout`);
+    const { data } = await axios.get(`${prod.local}/logout`);
     return data;
   } catch (error) {
     throw handleError(error);

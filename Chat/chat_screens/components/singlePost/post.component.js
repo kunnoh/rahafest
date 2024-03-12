@@ -43,27 +43,27 @@ export const Post = ({ index, item, editPost, deletePost, handleLike }) => {
               onPress={openHandler}
               style={{ display: "flex", flexDirection: "row" }}>
               <Text style={feedsStyle.name}>{item?.name}</Text>
-              {/* <Text style={feedsStyle.username}>@{item?.}</Text> */}
+              <Text style={feedsStyle.username}>@{item?.name}</Text>
             </TouchableOpacity>
-            <Text style={feedsStyle.time}>{item?.timeStamp}</Text>
+            {/* <Text style={feedsStyle.time}>{item?.timeStamp}</Text> */}
             {/* <TouchableOpacity style={{ marginLeft: 12 }} onPress={openOptions}>
               <Ionicons name="ellipsis-vertical" size={24} />
             </TouchableOpacity> */}
-            <Menu>
-              <MenuTrigger text="more..." />
+            {/* <Menu>
+              <MenuTrigger />
               <MenuOptions>
                 <MenuOption onSelect={editpost} text="edit" />
                 <MenuOption onSelect={deletepost} text="delete" />
               </MenuOptions>
-            </Menu>
+            </Menu> */}
           </View>
           <Text style={feedsStyle.message}>{item?.message}</Text>
           {/* <Text style={feedsStyle.message}>{item?.messageText}</Text> */}
-          <View style={feedsStyle.feedback}>
+          {/* <View style={feedsStyle.feedback}>
             <TouchableOpacity style={{ padding: 5, width: 50 }} onPress={handleLike}>
               <Ionicons name="heart" size={24} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     </Pressable>

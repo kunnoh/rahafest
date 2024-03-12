@@ -18,7 +18,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 
 import { login } from "../../../src/redux/auth/authActions";
-// import { authError } from "../../../src/redux/auth/";
 import MamaKilo from "../../../src/utils/MamaKilo";
 import { danger, success } from "../../../src/utils/toast";
 
@@ -32,7 +31,8 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const { access_token, error, loading } = useSelector((state) => state.auth);
 
-  console.log("rer", access_token);
+  console.log("rettr", access_token);
+  console.log("rettr", access_token);
   console.log("err::\t", error);
   console.log("loading::\t", loading);
 
@@ -42,22 +42,6 @@ const LoginScreen = () => {
       navigation.replace("Dashboard");
     }
   }, [access_token, navigation]);
-
-  // useEffect(() => {
-  //   const checkLoginStatus = async () => {
-  //     try {
-  //       if (access_token) {
-  //         navigation.replace("Dashboard");
-  //       } else {
-  //         // token not found , show the login screen itself
-  //       }
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-
-  //   checkLoginStatus();
-  // }, []);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),
@@ -88,16 +72,6 @@ const LoginScreen = () => {
       email,
       password,
     };
-
-    // if (email === "" || password === "") {
-    //   if (email === "") {
-    //     setEmailError("Email is empty!");
-    //   }
-    //   if (password === "") {
-    //     setPasswordError("Password is empty!");
-    //   }
-    //   return;
-    // }
 
     dispatch(login(user));
     // success("Welcome", 3000);
@@ -274,7 +248,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginVertical: 10,
     width: 300,
-    color: "#fff",
+    color: "#000",
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#b5a39a",
+    backgroundColor: "#b5a39a",
   },
   inputError: {
     borderBottomColor: "red",

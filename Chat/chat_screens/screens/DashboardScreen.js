@@ -7,11 +7,11 @@ import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
+import { logout } from "../../../src/redux/auth/authActions";
 import { danger, success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import User from "../components/User";
 import { GetUsers } from "../services/home.service";
-import { logout } from "../../../src/redux/auth/authActions";
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
@@ -82,14 +82,16 @@ const DashboardScreen = () => {
   }, [access_token]);
 
   async function handleLogout() {
-    try {
-      dispatch(logout);
-      navigation.navigate("Login");
+    dispatch(logout());
+    if (!access_token) {
       success("You are now logged out", 2000);
-    } catch (e) {
-      console.log(e);
-      danger("Failed to log you out!", 2000);
     }
+    // try {
+    //   navigation.navigate("Login");
+    // } catch (e) {
+    //   console.log(e);
+    //   danger("Failed to log you out!", 2000);
+    // }
   }
 
   return (

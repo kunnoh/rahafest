@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import Chat from "./Chat/chat_screens/Chat";
-import { AuthProvider } from "./src/app/context/AuthContext";
 import { Info, Menu, Schedule } from "./src/app/screens";
 import LineupDetail from "./src/app/screens/LineupDetail";
 import LineupList from "./src/app/screens/LineupList";

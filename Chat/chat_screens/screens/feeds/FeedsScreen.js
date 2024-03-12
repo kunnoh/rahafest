@@ -48,6 +48,7 @@ const FeedsScreen = () => {
         messageText: postText,
         senderId: userId,
         messageType: "text",
+        // name
       });
       console.log(postresp);
       closeModal();
@@ -68,125 +69,7 @@ const FeedsScreen = () => {
     try {
       const res = await GetPosts();
       setMessages(res);
-      console.log(res[-1]);
-      // setMessages([
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText: "This is a sample feed content.",
-      //     timeStamp: "23h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      //   {
-      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-      //     name: "alvin",
-      //     username: "kunnoh",
-      //     messageType: "text",
-      //     messageText:
-      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-      //     timeStamp: "2h",
-      //   },
-      // ]);
+      console.log(res[0]);
     } catch (e) {
       console.log(e);
     }
@@ -214,7 +97,7 @@ const FeedsScreen = () => {
     navigation.setOptions({
       headerTitle: "Your feeds",
       headerLeft: () => (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginRight: 20 }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons
               // onPress={() => navigation.goBack()}

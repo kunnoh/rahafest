@@ -98,6 +98,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// logging in of particular user
+app.get("/logout", async (req, res) => {
+  try {
+    res.status(200).json({ message: "logged out" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // endpoint to access all the users except the user who's is currently logged in!
 app.get("/users/:userId", AuthGuard, async (req, res) => {
   try {
