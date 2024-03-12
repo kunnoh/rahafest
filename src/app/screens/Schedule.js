@@ -43,32 +43,26 @@ const Schedule = () => {
   }
 
   const dayOne = [
-    "Femi One",
-    "Mejja",
-    "Samidoh",
     "Musa Keys",
-    // "Davido",
-    "Makadem",
-    "Okello Max",
-    "Boutross",
-    "Sofia",
+    "Samidoh",
+    "Mejja",
+    "JB Mpiana",
     "Frasha",
-    "Nyanshinki",
+    "Zeman",
+    "Femi One",
+    // "Davido",
   ];
 
   const dayTwo = [
-    "Nadia Mukami",
-    "Sanapei",
-    "Bensoul",
-    "Nviiri",
-    "Hart the band",
-    "Otile Brown",
-    // "King Promise",
-    "JB Mpiana",
     "Ya Levis",
-    "Musa Keys",
-    "Nasty C",
-    "Bien",
+    "Otile Brown",
+    "Bensoul",
+    "Nviiri The Storyteller",
+    "Nadia Mukami",
+    "Melina Gold",
+    "Sanapei",
+    "Hart the band",
+    // "King Promise",
   ];
 
   return (
@@ -82,7 +76,7 @@ const Schedule = () => {
           Lineup
         </MamaKilo> */}
           <View style={styles.wrapper}>
-            <MamaKilo color="#fff" size={30} height={50}>
+            <MamaKilo color="#fff" size={34} height={60}>
               Day 1
             </MamaKilo>
             <Text style={styles.boldtext}>Davido</Text>
@@ -93,7 +87,7 @@ const Schedule = () => {
             ))}
           </View>
           <View style={styles.wrapper}>
-            <MamaKilo color="#fff" size={30} height={50}>
+            <MamaKilo color="#fff" size={34} height={60}>
               Day 2
             </MamaKilo>
             <Text style={styles.boldtext}>King Promise</Text>
@@ -142,8 +136,9 @@ const styles = StyleSheet.create({
   },
   boldtext: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
+    marginTop: 20
   },
   text: {
     color: "#fff",

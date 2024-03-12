@@ -15,77 +15,93 @@ import {
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
 
+import { login } from "../../../src/redux/auth/authActions";
+// import { authError } from "../../../src/redux/auth/";
 import MamaKilo from "../../../src/utils/MamaKilo";
 import { danger, success } from "../../../src/utils/toast";
-import { LoginApi } from "../services/auth.service";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { access_token, error, loading } = useSelector((state) => state.auth);
+
+  console.log("rer", access_token);
+  console.log("err::\t", error);
+  console.log("loading::\t", loading);
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const token = await AsyncStorage.getItem("authToken");
+    // Redirect if user is already logged in
+    if (access_token) {
+      navigation.replace("Dashboard");
+    }
+  }, [access_token, navigation]);
 
-        if (token) {
-          navigation.replace("Dashboard");
-        } else {
-          // token not found , show the login screen itself
-        }
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
+  // useEffect(() => {
+  //   const checkLoginStatus = async () => {
+  //     try {
+  //       if (access_token) {
+  //         navigation.replace("Dashboard");
+  //       } else {
+  //         // token not found , show the login screen itself
+  //       }
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   };
 
-    checkLoginStatus();
-  }, []);
+  //   checkLoginStatus();
+  // }, []);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),
     "Roboto-Bold": require("../../../assets/fonts/Roboto-Bold.ttf"),
   });
 
+  if (error) {
+    // danger(error, 2000);
+    return;
+  }
+
   const handleLogin = async () => {
     // Reset error messages
     setEmailError("");
     setPasswordError("");
+
+    // Validate inputs
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      return;
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      return;
+    }
+
     const user = {
       email,
       password,
     };
 
-    if (email === "" || password === "") {
-      if (email === "") {
-        setEmailError("Email is empty!");
-      }
-      if (password === "") {
-        setPasswordError("Password is empty!");
-      }
-      return;
-    }
+    // if (email === "" || password === "") {
+    //   if (email === "") {
+    //     setEmailError("Email is empty!");
+    //   }
+    //   if (password === "") {
+    //     setPasswordError("Password is empty!");
+    //   }
+    //   return;
+    // }
 
-    try {
-      setLoading(true);
-      const u = await LoginApi(user);
-      console.log(u);
-      AsyncStorage.setItem("authToken", u.access_token);
-      AsyncStorage.setItem("refreshToken", u.refresh_token);
-      setEmail("");
-      setPassword("");
-      success("Welcome!", 2000);
-      navigation.navigate("Dashboard");
-    } catch (e) {
-      console.log(e.errorMessage);
-      danger(e.errorMessage.message, 2000);
-    } finally {
-      setLoading(false);
-    }
+    dispatch(login(user));
+    // success("Welcome", 3000);
+    // navigation.navigate("Dashboard", 3000);
   };
 
   return (

@@ -14,10 +14,11 @@ const FriendsScreen = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friends, setFriends] = useState([]);
   const scrollViewRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchFriendRequests();
-    // fetchFriends();
+    fetchFriends();
   }, []);
 
   const scrollToBottom = () => {
@@ -26,9 +27,9 @@ const FriendsScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchFriends();
-  }, []);
+  // useEffect(() => {
+  //   fetchFriends();
+  // }, []);
 
   const fetchFriendRequests = async () => {
     try {
@@ -42,9 +43,8 @@ const FriendsScreen = () => {
   const fetchFriends = async () => {
     try {
       const response = await GetUserFriends(userId);
-      // console.log(response[0])
+      // console.log(response)
       setFriends(response);
-      // setFriends([{"_id": "65e6dbcf0908b4cf19983b88", "email": "Dere@gmail.com", "freindRequests": [], "friends": ["65e6ae2c4c14e7508a763136"], "image": "1", "name": "Dere", "sentFriendRequests": ["65e6ae2c4c14e7508a763136", "65e077fc81a3fbec15184442", "65e0379e636bc2478142e5f7", "65e0374e636bc2478142e5f3", "65e039e08d8a5066c945aeca"]}, {"_id": "65e6dbcf0908b4cf19983b88", "email": "Dere@gmail.com", "freindRequests": [], "friends": ["65e6ae2c4c14e7508a763136"], "image": "1", "name": "Dere", "sentFriendRequests": ["65e6ae2c4c14e7508a763136", "65e077fc81a3fbec15184442", "65e0379e636bc2478142e5f7", "65e0374e636bc2478142e5f3", "65e039e08d8a5066c945aeca"]}]);
     } catch (err) {
       console.log("error message", err);
     }
@@ -54,21 +54,25 @@ const FriendsScreen = () => {
     try {
       const resp = await AcceptRequest(friendRequestId, userId);
       success("Friend request accepted!", 2000);
-      // console.log("USERID:: \t", resp);
       setIsAccepted(true);
+      fetchFriends();
     } catch (err) {
       console.log("error acceptin the friend request", err);
     }
   };
 
-  const Unfriend = async (friendId) => {
-    console.log("UNFRIEND", friendId);
+  const Unfriend = async (friend) => {
+    // console.log("UNFRIEND", friend);
+    const recipientId = friend._id;
+    setIsLoading(true);
     try {
-      const res = await RemoveFriend(friendId);
+      const res = await RemoveFriend({ userId, recipientId });
       fetchFriends();
-      console.log(res);
+      // console.log(res);
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,6 +80,11 @@ const FriendsScreen = () => {
     <SafeAreaView>
       <View style={{ padding: 10, marginHorizontal: 12 }}>
         {friendRequests.length > 0 && <Text>Your Friend Requests!</Text>}
+        {friendRequests.length === 0 && (
+          <Text style={{ textAlign: "center", marginHorizontal: 20 }}>
+            You have no Friend Requests!
+          </Text>
+        )}
 
         {friendRequests.map((item, index) => (
           <FriendRequest
@@ -89,14 +98,17 @@ const FriendsScreen = () => {
           />
         ))}
       </View>
+      {friends.length === 0 && (
+        <Text style={{ textAlign: "center", marginHorizontal: 20 }}>You have no Friends!</Text>
+      )}
       {friends.length > 0 && (
-        <Text style={{ fontSize: 20, fontWeight: 500, marginLeft: 15 }}>My friends</Text>
+        <Text style={{ fontSize: 20, fontWeight: 500, marginLeft: 15 }}>Recent friends</Text>
       )}
       <FlatList
         ref={scrollViewRef}
         data={friends}
         renderItem={({ item, index }) => (
-          <AcceptedFriend index={index} item={item} Unfriend={Unfriend} />
+          <AcceptedFriend index={index} item={item} isLoading={isLoading} Unfriend={Unfriend} />
         )}
         keyExtractor={(item, index) => index.toString()}
         style={{ padding: 15 }}

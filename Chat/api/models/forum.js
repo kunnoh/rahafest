@@ -9,6 +9,8 @@ const forumSchema = new mongoose.Schema({
     type: String,
     enum: ["text", "image"],
   },
+  senderUsername: String,
+  likes: Number,
   message: String,
   imageUrl: String,
   timeStamp: {

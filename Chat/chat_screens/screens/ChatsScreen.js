@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Pressable, SafeAreaView } from "react-native";
 
 import { UserType } from "../UserContext";
 import UserChat from "../components/UserChat";
@@ -20,17 +20,21 @@ const ChatsScreen = () => {
         console.log("error showing the accepted friends", error);
       }
     };
-
     acceptedFriend();
   }, []);
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Pressable>
-        {acceptedFriends.map((item, index) => (
-          <UserChat key={index} item={item} />
-        ))}
-      </Pressable>
-    </ScrollView>
+    <SafeAreaView>
+      {acceptedFriends.length === 0 && (
+        <Text style={{ textAlign: "center", marginTop: 50 }}>You have no friends to chat with</Text>
+      )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Pressable>
+          {acceptedFriends.map((item, index) => (
+            <UserChat key={index} item={item} />
+          ))}
+        </Pressable>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

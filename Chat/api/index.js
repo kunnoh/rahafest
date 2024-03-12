@@ -198,30 +198,12 @@ app.post("/friend-request/accept", AuthGuard, async (req, res) => {
   }
 });
 
-// endpoint to accept a friend-request of a particular person
+// endpoint to unfriend a particular person
 app.post("/unfriend", AuthGuard, async (req, res) => {
   try {
-    const { senderId, recepientId } = req.body;
-    console.log("ACCEPT:: \t", req.body);
-    // retrieve the documents of sender and the recipient
-    const sender = await User.findById(senderId);
-    const recepient = await User.findById(recepientId);
-
-    sender.friends.push(recepientId);
-    recepient.friends.push(senderId);
-
-    recepient.freindRequests = recepient.freindRequests.filter(
-      (request) => request.toString() !== senderId.toString(),
-    );
-
-    sender.sentFriendRequests = sender.sentFriendRequests.filter(
-      (request) => request.toString() !== recepientId.toString,
-    );
-
-    await sender.save();
-    await recepient.save();
-
-    res.status(200).json({ message: "Friend Request accepted successfully" });
+    const { userId, recipientId } = req.body;
+    await User.updateOne({ _id: userId }, { $pull: { friends: recipientId } });
+    res.status(200).json({ message: "removed friend" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -362,7 +344,7 @@ app.get("/friends/:userId", AuthGuard, async (req, res) => {
 // endpoint to get Messages in forum
 app.get("/forum/messages", AuthGuard, async (req, res) => {
   try {
-    const msgs = await Message.find({});
+    const msgs = await Forum.find({});
     res.status(200).json(msgs);
   } catch (error) {
     console.log(error);
@@ -373,11 +355,13 @@ app.get("/forum/messages", AuthGuard, async (req, res) => {
 // endpoint to post Messages in forum
 app.post("/forum/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
-    const { senderId, messageType, messageText } = req.body;
+    const { senderId, messageType, messageText, senderUsername, likes } = req.body;
 
     const newMessage = new Forum({
       senderId,
       messageType,
+      senderUsername,
+      likes,
       message: messageText,
       timestamp: new Date(),
       imageUrl: messageType === "image" ? req.file.path : null,
@@ -385,6 +369,18 @@ app.post("/forum/messages", AuthGuard, upload.single("imageFile"), async (req, r
 
     await newMessage.save();
     res.status(200).json({ message: "Message sent Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// endpoint to delete Messages in forum
+app.delete("/forum/messages/:id", AuthGuard, async (req, res) => {
+  try {
+    const messageId = req.params.id;
+    await Forum.findByIdAndDelete(messageId);
+    res.sendStatus(204);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });

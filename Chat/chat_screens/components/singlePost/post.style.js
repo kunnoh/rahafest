@@ -14,6 +14,7 @@ export const feedsStyle = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
+    backgroundColor: "wheat"
   },
   content: {
     flex: 1,
@@ -37,6 +38,7 @@ export const feedsStyle = StyleSheet.create({
   time: {
     flex: 1,
     textAlign: "right",
+    marginRight: 20,
   },
   message: {
     marginTop: 5,
@@ -46,7 +48,8 @@ export const feedsStyle = StyleSheet.create({
   },
   feedback: {
     flex: 1,
-    // justifyContent: "flex-end",
-    // alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
 });

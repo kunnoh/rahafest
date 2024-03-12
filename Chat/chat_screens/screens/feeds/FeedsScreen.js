@@ -10,11 +10,17 @@ import {
   Button,
   Pressable,
   TouchableOpacity,
+  Text,
+  StyleSheet,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
+import feedsStyle from "./feeds.style";
+import { danger, success } from "../../../../src/utils/toast";
 import { UserType } from "../../UserContext";
 import { Post } from "../../components/singlePost/post.component";
 import { GetAllMessages } from "../../services/forum.service";
+import { DeletePost, GetPosts, SendPost } from "../../services/post.service";
 
 const FeedsScreen = () => {
   const [showEmojiSelector, setShowEmojiSelector] = useState(false);
@@ -24,132 +30,163 @@ const FeedsScreen = () => {
   const scrollViewRef = useRef(null);
   const { userId, setUserId } = useContext(UserType);
 
+  const [postText, setPostText] = useState("");
+  const [charCount, setCharCount] = useState(280); // Twitter's character limit
+  const [showPostView, setShowPostView] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handlePostTextChange = (text) => {
+    setPostText(text);
+    setCharCount(280 - text.length);
+  };
+
+  const handlePost = async () => {
+    console.log("Post:", postText);
+    setLoading(true);
+    try {
+      const postresp = await SendPost({
+        messageText: postText,
+        senderId: userId,
+        messageType: "text",
+      });
+      console.log(postresp);
+      closeModal();
+      fetchAllMessages();
+    } catch (e) {
+      danger("Failed to upload your post!", 2000);
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, []);
 
   const fetchAllMessages = async () => {
     try {
-      const res = await GetAllMessages();
-      // setMessages(res);
-      setMessages([
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText: "This is a sample feed content.",
-          timeStamp: "23h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-        {
-          profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
-          name: "alvin",
-          username: "kunnoh",
-          messageType: "text",
-          messageText:
-            "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
-          timeStamp: "2h",
-        },
-      ]);
+      const res = await GetPosts();
+      setMessages(res);
+      console.log(res[-1]);
+      // setMessages([
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText: "This is a sample feed content.",
+      //     timeStamp: "23h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      //   {
+      //     profileImage: require("../../../api/files/1688547106897-739523091-image.jpg"),
+      //     name: "alvin",
+      //     username: "kunnoh",
+      //     messageType: "text",
+      //     messageText:
+      //       "This is a sample feed content.uidbduifnb huwahfoa awhuohofa pc ascipbasuiap",
+      //     timeStamp: "2h",
+      //   },
+      // ]);
     } catch (e) {
       console.log(e);
     }
@@ -178,7 +215,14 @@ const FeedsScreen = () => {
       headerTitle: "Your feeds",
       headerLeft: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <Ionicons onPress={() => navigation.goBack()} name="arrow-back" size={24} color="black" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons
+              // onPress={() => navigation.goBack()}
+              name="arrow-back"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
         </View>
       ),
     });
@@ -193,6 +237,33 @@ const FeedsScreen = () => {
     // alert(text);
   };
 
+  const openPost = () => {
+    setShowPostView(true);
+  };
+
+  const closeModal = () => {
+    setShowPostView(false);
+    setPostText("");
+    setCharCount(280);
+  };
+
+  const editPost = (post) => {
+    setShowPostView(true);
+    setPostText(post.message);
+  };
+
+  const deletePost = async (post) => {
+    try {
+      const { _id, senderId } = post;
+      await DeletePost(_id);
+      fetchAllMessages();
+      success("Deleted the post", 3000);
+    } catch (e) {
+      console.log(e);
+      danger("Failed to delete the post", 3000);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -200,23 +271,71 @@ const FeedsScreen = () => {
       <FlatList
         ref={scrollViewRef}
         data={messages}
-        renderItem={({ item, index }) => <Post index={index} item={item} handleLike={handleLike} />}
+        renderItem={({ item, index }) => (
+          <Post
+            index={index}
+            item={item}
+            editPost={editPost}
+            deletePost={deletePost}
+            handleLike={handleLike}
+          />
+        )}
         keyExtractor={(item, index) => index.toString()}
       />
-      <Pressable
-        style={{
-          position: "absolute",
-          bottom: 10,
-          right: 35,
-          backgroundColor: "purple",
-          borderRadius: 20,
-          paddingHorizontal: 20,
-          paddingVertical: 5,
-        }}>
-        <TouchableOpacity>
+      <Pressable style={feedsStyle.createPostPressable} onPress={openPost}>
+        <TouchableOpacity onPress={openPost}>
           <Ionicons name="create" size={54} color="salmon" />
         </TouchableOpacity>
       </Pressable>
+
+      {showPostView && (
+        <View
+          style={{
+            position: "absolute",
+            minHeight: 400,
+            minWidth: "100%",
+            top: "20%",
+            // backgroundColor: "wheat",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 999,
+          }}>
+          <View
+            style={{
+              position: "relative",
+              width: "93%",
+              height: "90%",
+              backgroundColor: "#fff",
+              borderRadius: 20,
+            }}>
+            <View style={styles.container}>
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <Text style={styles.header}>Your post</Text>
+                <TouchableOpacity onPress={closeModal}>
+                  <Ionicons name="close-circle" size={24} />
+                </TouchableOpacity>
+              </View>
+              <TextInput
+                multiline
+                placeholder="What's happening?"
+                value={postText}
+                onChangeText={handlePostTextChange}
+                style={styles.input}
+              />
+              <Text style={styles.counter}>{charCount} characters remaining</Text>
+
+              {/* Image Upload (optional) */}
+              {/* Implement image upload functionality if needed */}
+
+              {loading ? (
+                <ActivityIndicator size="small" color="blue" style={{ marginRight: 10 }} />
+              ) : (
+                <Button title="Post" onPress={handlePost} disabled={postText.length === 0} />
+              )}
+            </View>
+          </View>
+        </View>
+      )}
       {/* <View
         style={{
           flexDirection: "row",
@@ -261,5 +380,30 @@ const FeedsScreen = () => {
     </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  header: {
+    // Header styles
+    fontSize: 18,
+    marginBottom: 15,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    minHeight: 150,
+  },
+  counter: {
+    alignSelf: "flex-end",
+    marginBottom: 10,
+    color: "#666",
+  },
+});
 
 export default FeedsScreen;

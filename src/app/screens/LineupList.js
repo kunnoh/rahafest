@@ -19,8 +19,6 @@ export default function LineupList() {
   const navigation = useNavigation();
 
   const renderItem = (itemData) => {
-    // console.log(itemData.item);
-
     return (
       <View
         style={{
@@ -49,11 +47,11 @@ export default function LineupList() {
               {itemData.item.country}
             </MamaKilo>
           </View>
-          <Pressable
+          {/* <Pressable
             style={{ justifyContent: "center" }}
             onPress={() => navigation.navigate("LineupDetail", { ...itemData })}>
             <Ionicons name="ellipsis-horizontal-circle-sharp" size={35} color="white" />
-          </Pressable>
+          </Pressable> */}
         </View>
       </View>
     );

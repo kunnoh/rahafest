@@ -38,8 +38,8 @@ const ChatMessagesScreen = () => {
   const [sendingMsg, setSendingMsg] = useState(false);
 
   const scrollViewRef = useRef(null);
-  console.log({ message });
-  console.log("sending::\t", sendingMsg);
+  // console.log({ message });
+  // console.log("sending::\t", sendingMsg);
   useEffect(() => {
     scrollToBottom();
   }, []);
@@ -71,6 +71,7 @@ const ChatMessagesScreen = () => {
     () => {
       fetchMessages();
     },
+    // [],
     // [messages]
   );
 

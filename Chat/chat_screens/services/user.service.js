@@ -82,9 +82,9 @@ const AcceptRequest = async (friendReqId, userId) => {
   }
 };
 
-const RemoveFriend = async (friendId) => {
+const RemoveFriend = async (ids) => {
   try {
-    const { data } = await axios.post(`${prod.local}/unfriend`, friendId, headers);
+    const { data } = await axios.post(`${prod.local}/unfriend`, ids, headers);
     return data;
   } catch (e) {
     throw handleError(e);

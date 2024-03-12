@@ -56,7 +56,13 @@ const UserChat = ({ item }) => {
         padding: 10,
       }}>
       <Image
-        style={{ width: 50, height: 50, borderRadius: 25, resizeMode: "cover" }}
+        style={{
+          width: 50,
+          height: 50,
+          backgroundColor: "wheat",
+          borderRadius: 25,
+          resizeMode: "cover",
+        }}
         source={{ uri: item?.image }}
       />
 

@@ -4,46 +4,55 @@ import { useNavigation } from "@react-navigation/native";
 import "core-js/stable/atob";
 import { jwtDecode } from "jwt-decode";
 import React, { useLayoutEffect, useContext, useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import { danger, success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
 import User from "../components/User";
 import { GetUsers } from "../services/home.service";
+import { logout } from "../../../src/redux/auth/authActions";
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
   const [users, setUsers] = useState([]);
+  const { access_token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  // console.log({users})
-  // setUsers
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
       headerLeft: () => <Text style={{ fontSize: 16, fontWeight: "bold" }}>Swift Chat</Text>,
       headerRight: () => (
         <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
-          <Ionicons
-            onPress={() => navigation.navigate("Chats")}
-            name="chatbox-ellipses-outline"
-            size={24}
-            color="black"
-          />
-          <MaterialIcons
-            onPress={() => navigation.navigate("Feeds")}
-            name="forum"
-            size={24}
-            color="black"
-          />
-          <MaterialIcons
-            onPress={() => navigation.navigate("Friends")}
-            name="people-outline"
-            size={24}
-            color="black"
-          />
-
-          <MaterialIcons onPress={handleLogout} name="logout" size={24} color="black" />
+          <TouchableOpacity onPress={() => navigation.navigate("Chats")}>
+            <Ionicons
+              // onPress={() => navigation.navigate("Chats")}
+              name="chatbox-ellipses-outline"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Feeds")}>
+            <MaterialIcons
+              // onPress={() => navigation.navigate("Feeds")}
+              name="forum"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Friends")}>
+            <MaterialIcons
+              // onPress={() => navigation.navigate("Friends")}
+              name="people-outline"
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <MaterialIcons onPress={handleLogout} name="logout" size={24} color="black" />
+          </TouchableOpacity>
         </View>
       ),
     });
@@ -52,14 +61,17 @@ const DashboardScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       setUsers([]);
-      const token = await AsyncStorage.getItem("authToken");
-      const decodedToken = jwtDecode(token);
+      if (!access_token) {
+        navigation.navigate("Login");
+        return;
+      }
+
+      const decodedToken = jwtDecode(access_token);
       const userId = decodedToken.id;
       setUserId(userId);
 
       try {
         const { data } = await GetUsers(userId);
-        // console.log("HOME DATA;;\t", data);
         setUsers(data);
       } catch (error) {
         danger(error.errorMessage.message, 2000);
@@ -67,17 +79,11 @@ const DashboardScreen = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [access_token]);
 
   async function handleLogout() {
     try {
-      setUserId("");
-
-      // Clear tokens
-      await AsyncStorage.removeItem("authToken");
-      await AsyncStorage.removeItem("refreshToken");
-      setUsers([]);
-      // Navigate to login screen
+      dispatch(logout);
       navigation.navigate("Login");
       success("You are now logged out", 2000);
     } catch (e) {
