@@ -14,6 +14,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 import feedsStyle from "./feeds.style";
 import { danger, success } from "../../../../src/utils/toast";
@@ -34,6 +35,7 @@ const FeedsScreen = () => {
   const [charCount, setCharCount] = useState(280); // Twitter's character limit
   const [showPostView, setShowPostView] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { access_token, user } = useSelector((state) => state.auth);
 
   const handlePostTextChange = (text) => {
     setPostText(text);
@@ -44,12 +46,15 @@ const FeedsScreen = () => {
     console.log("Post:", postText);
     setLoading(true);
     try {
-      const postresp = await SendPost({
-        messageText: postText,
-        senderId: userId,
-        messageType: "text",
-        // name
-      });
+      const postresp = await SendPost(
+        {
+          messageText: postText,
+          senderId: userId,
+          messageType: "text",
+          name: user.name,
+        },
+        access_token,
+      );
       console.log(postresp);
       closeModal();
       fetchAllMessages();
@@ -67,7 +72,7 @@ const FeedsScreen = () => {
 
   const fetchAllMessages = async () => {
     try {
-      const res = await GetPosts();
+      const res = await GetPosts(access_token);
       setMessages(res);
       console.log(res[0]);
     } catch (e) {
@@ -138,7 +143,7 @@ const FeedsScreen = () => {
   const deletePost = async (post) => {
     try {
       const { _id, senderId } = post;
-      await DeletePost(_id);
+      await DeletePost(access_token);
       fetchAllMessages();
       success("Deleted the post", 3000);
     } catch (e) {

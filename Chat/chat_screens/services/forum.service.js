@@ -7,18 +7,27 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const GetAllMessages = async () => {
+const GetAllMessages = async (access_token) => {
   try {
-    const { data } = axios.get(`${prod.local}/forum/messages`);
+    const { data } = axios.get(`${prod.local}/forum/messages`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);
   }
 };
 
-const PostMessage = async (msg) => {
+const PostMessage = async (access_token, msg) => {
   try {
-    const { data } = axios.post(`${prod.local}/forum/messages`, msg, headers);
+    const { data } = axios.post(`${prod.local}/forum/messages`, msg, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);

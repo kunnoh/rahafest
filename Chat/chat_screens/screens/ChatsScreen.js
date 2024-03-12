@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, Pressable, SafeAreaView } from "react-native";
+import { useSelector } from "react-redux";
 
 import { UserType } from "../UserContext";
 import UserChat from "../components/UserChat";
@@ -10,10 +11,12 @@ const ChatsScreen = () => {
   const [acceptedFriends, setAcceptedFriends] = useState([]);
   const { userId, setUserId } = useContext(UserType);
   const navigation = useNavigation();
+  const { access_token, user } = useSelector((state) => state.auth);
+
   useEffect(() => {
     const acceptedFriend = async () => {
       try {
-        const friends = await acceptedFriendsList(userId);
+        const friends = await acceptedFriendsList(access_token);
         // console.log("ACCEPTED FRIENDS:\t", friends);
         setAcceptedFriends(friends);
       } catch (error) {

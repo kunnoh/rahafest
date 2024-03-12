@@ -7,9 +7,13 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const GetFriendRequestSent = async (user_id) => {
+const GetFriendRequestSent = async (access_token) => {
   try {
-    const { data } = await axios.get(`${prod.local}/friend-requests/sent/${user_id}`);
+    const { data } = await axios.get(`${prod.local}/friend-requests/sent`, {
+      headers: {
+        authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (error) {
     console.log(error);
@@ -17,9 +21,13 @@ const GetFriendRequestSent = async (user_id) => {
   }
 };
 
-const GetUserFriends = async (user_id) => {
+const GetUserFriends = async (access_token) => {
   try {
-    const { data } = await axios.get(`${prod.local}/friends/${user_id}`);
+    const { data } = await axios.get(`${prod.local}/friends`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (error) {
     console.log(error);
@@ -27,12 +35,17 @@ const GetUserFriends = async (user_id) => {
   }
 };
 
-const SendFriendRequest = async (currentUserId, selectedUserId) => {
+const SendFriendRequest = async (access_token, selectedUserId) => {
   try {
     const { data } = await axios.post(
       `${prod.local}/friend-request`,
-      { currentUserId, selectedUserId },
-      headers,
+      { selectedUserId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
     );
     return data;
   } catch (error) {
@@ -41,21 +54,30 @@ const SendFriendRequest = async (currentUserId, selectedUserId) => {
   }
 };
 
-const FetchUserMessages = async (userId, itemId) => {
+const FetchUserMessages = async (access_token, itemId) => {
   try {
-    const { data } = await axios.get(`${prod.local}/messages/${userId}/${itemId}`);
+    const { data } = await axios.get(`${prod.local}/messages/${itemId}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);
   }
 };
 
-const CancelFriendRequest = async (currentUserId, selectedUserId) => {
+const CancelFriendRequest = async (access_token, selectedUserId) => {
   try {
     const { data } = await axios.put(
       `${prod.local}/friend-request`,
-      { currentUserId, selectedUserId },
-      headers,
+      { selectedUserId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
     );
     return data;
   } catch (error) {
@@ -64,15 +86,19 @@ const CancelFriendRequest = async (currentUserId, selectedUserId) => {
   }
 };
 
-const AcceptRequest = async (friendReqId, userId) => {
+const AcceptRequest = async (friendReqId, access_token) => {
   try {
     const { data } = await axios.post(
       `${prod.local}/friend-request/accept`,
       {
-        senderId: friendReqId,
-        recepientId: userId,
+        selectedUserId: friendReqId,
       },
-      headers,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
     );
     // console.log("FRIENDID:: \t", friendReqId);
     // console.log("USERID::\t", userId);
@@ -82,9 +108,18 @@ const AcceptRequest = async (friendReqId, userId) => {
   }
 };
 
-const RemoveFriend = async (ids) => {
+const RemoveFriend = async (access_token, recipientId) => {
   try {
-    const { data } = await axios.post(`${prod.local}/unfriend`, ids, headers);
+    const { data } = await axios.post(
+      `${prod.local}/unfriend`,
+      { recipientId },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
     return data;
   } catch (e) {
     throw handleError(e);

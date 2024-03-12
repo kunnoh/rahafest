@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+
 mongoose
   .connect(
     "mongodb+srv://okeyodemichael:S0Zu5Nql1cQGm88W@cluster0.uplu6ft.mongodb.net/?retryWrites=true&w=majority",
@@ -55,12 +56,11 @@ app.post("/register", async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: "User already exists" });
     }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new User object with hashed password
     const newUser = new User({ name, email, password: hashedPassword, image });
-    // Save the user to the database
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
@@ -121,7 +121,9 @@ app.get("/users", AuthGuard, async (req, res) => {
 
 // endpoint to send a request to a user
 app.post("/friend-request", AuthGuard, async (req, res) => {
-  const { currentUserId, selectedUserId } = req.body;
+  const { selectedUserId } = req.body;
+  const currentUserId = req.user.id;
+  console.log("USER ID:\t", currentUserId);
 
   try {
     // update the recepient's freindRequestsArray!
@@ -142,8 +144,9 @@ app.post("/friend-request", AuthGuard, async (req, res) => {
 
 // endpoint to send a request to a user
 app.put("/friend-request", AuthGuard, async (req, res) => {
-  const { currentUserId, selectedUserId } = req.body;
-  console.log(req.body);
+  const { selectedUserId } = req.body;
+  const currentUserId = req.user.id;
+  // console.log(req.body);
   try {
     // update the recepient's freindRequestsArray!
     await User.findByIdAndUpdate(selectedUserId, {
@@ -161,9 +164,9 @@ app.put("/friend-request", AuthGuard, async (req, res) => {
 });
 
 // endpoint to show all the friend-requests of a particular user
-app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
+app.get("/friend-request", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
 
     // fetch the user document based on the User id
     const user = await User.findById(userId).populate("freindRequests", "name email image").lean();
@@ -180,14 +183,15 @@ app.get("/friend-request/:userId", AuthGuard, async (req, res) => {
 // endpoint to accept a friend-request of a particular person
 app.post("/friend-request/accept", AuthGuard, async (req, res) => {
   try {
-    const { senderId, recepientId } = req.body;
-    console.log("ACCEPT:: \t", req.body);
+    const senderId = req.user.id;
+    const recepientId = req.body.selectedUserId;
+    console.log("ACCEPT:: \t", recepientId);
     // retrieve the documents of sender and the recipient
     const sender = await User.findById(senderId);
     const recepient = await User.findById(recepientId);
 
-    sender.friends.push(recepientId);
-    recepient.friends.push(senderId);
+    sender.friends.push(recepient._id);
+    recepient.friends.push(sender._id);
 
     recepient.freindRequests = recepient.freindRequests.filter(
       (request) => request.toString() !== senderId.toString(),
@@ -210,7 +214,8 @@ app.post("/friend-request/accept", AuthGuard, async (req, res) => {
 // endpoint to unfriend a particular person
 app.post("/unfriend", AuthGuard, async (req, res) => {
   try {
-    const { userId, recipientId } = req.body;
+    const { recipientId } = req.body;
+    const userId = req.user.id;
     await User.updateOne({ _id: userId }, { $pull: { friends: recipientId } });
     res.status(200).json({ message: "removed friend" });
   } catch (error) {
@@ -220,9 +225,9 @@ app.post("/unfriend", AuthGuard, async (req, res) => {
 });
 
 // endpoint to access all the friends of the logged in user!
-app.get("/accepted-friends/:userId", AuthGuard, async (req, res) => {
+app.get("/accepted-friends", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const user = await User.findById(userId).populate("friends", "name email image");
     const acceptedFriends = user.friends;
     res.json(acceptedFriends);
@@ -249,7 +254,9 @@ const upload = multer({ storage });
 // endpoint to post Messages and store it in the backend
 app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
-    const { senderId, recepientId, messageType, messageText } = req.body;
+    const { recepientId, messageType, messageText } = req.body;
+    console.log("BODY msg:\t",req.body)
+    const senderId = req.user.id;
     const newMessage = new Message({
       senderId,
       recepientId,
@@ -285,10 +292,11 @@ app.get("/user", AuthGuard, async (req, res) => {
 });
 
 // endpoint to fetch the messages between two users in the chatRoom
-app.get("/messages/:senderId/:recepientId", AuthGuard, async (req, res) => {
+app.get("/messages/:recepientId", AuthGuard, async (req, res) => {
   try {
-    const { senderId, recepientId } = req.params;
-
+    console.log("Params:\t",req.params)
+    const { recepientId } = req.params.recepientId;
+    const senderId = req.user.id;
     const messages = await Message.find({
       $or: [
         { senderId, recepientId },
@@ -320,9 +328,9 @@ app.post("/deleteMessages", AuthGuard, async (req, res) => {
   }
 });
 
-app.get("/friend-requests/sent/:userId", AuthGuard, async (req, res) => {
+app.get("/friend-requests/sent", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.user.id;
     const user = await User.findById(userId)
       .populate("sentFriendRequests", "name email image")
       .lean();
@@ -335,9 +343,9 @@ app.get("/friend-requests/sent/:userId", AuthGuard, async (req, res) => {
   }
 });
 
-app.get("/friends/:userId", AuthGuard, async (req, res) => {
+app.get("/friends", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const user = await User.findById(userId).select("-password -__v").populate({
       path: "friends",
       select: "-password -__v",
@@ -365,12 +373,13 @@ app.get("/forum/messages", AuthGuard, async (req, res) => {
 // endpoint to post Messages in forum
 app.post("/forum/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
-    const { senderId, messageType, messageText, senderUsername, likes } = req.body;
+    console.log(req.body);
+    const { senderId, messageType, messageText, name, likes } = req.body;
 
     const newMessage = new Forum({
       senderId,
       messageType,
-      senderUsername,
+      name,
       likes,
       message: messageText,
       timestamp: new Date(),

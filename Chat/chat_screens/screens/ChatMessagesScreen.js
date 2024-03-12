@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import EmojiSelector from "react-native-emoji-selector";
 import { ActivityIndicator } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 import { danger, success, warning } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
@@ -36,6 +37,7 @@ const ChatMessagesScreen = () => {
   const { userId, setUserId } = useContext(UserType);
   // const [file, setFile] = useState(null);
   const [sendingMsg, setSendingMsg] = useState(false);
+  const { access_token } = useSelector((state) => state.auth);
 
   const scrollViewRef = useRef(null);
   // console.log({ message });
@@ -60,7 +62,7 @@ const ChatMessagesScreen = () => {
 
   const fetchMessages = async () => {
     try {
-      const msg = await GetMessages(userId, recepientId);
+      const msg = await GetMessages(access_token, recepientId);
       setMessages(msg);
     } catch (error) {
       console.log("error fetching messages", error);
@@ -119,7 +121,7 @@ const ChatMessagesScreen = () => {
       }
 
       try {
-        const send = SendMessage(obj);
+        const send = SendMessage(access_token, obj);
         console.log("SENT:: \t", send);
         fetchMessages();
         setMessage("");

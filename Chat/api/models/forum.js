@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
 
 const forumSchema = new mongoose.Schema({
-  senderId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
+  // senderId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User",
+  // },
+  sebderId: String,
   messageType: {
     type: String,
     enum: ["text", "image"],
   },
-  senderUsername: String,
+  name: String,
   likes: Number,
   message: String,
   imageUrl: String,

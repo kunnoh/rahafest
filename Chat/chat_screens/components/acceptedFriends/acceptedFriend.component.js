@@ -16,9 +16,7 @@ const AcceptedFriend = ({ index, item, isLoading, Unfriend }) => {
         source={{ uri: item.image }}
       />
 
-      <Text style={{ fontSize: 15, marginLeft: 10, flex: 1 }}>
-        {item?.name}. {item?.friends?.length} friends
-      </Text>
+      <Text style={{ fontSize: 15, marginLeft: 10, flex: 1 }}>{item?.name}</Text>
 
       <Pressable onPress={() => Unfriend(item)} style={acceptedFriendStyle.unfriendPressable}>
         {isLoading ? (

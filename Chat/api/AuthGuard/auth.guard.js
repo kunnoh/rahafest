@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 const AuthGuard = async (req, res, next) => {
-  // next();
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -12,6 +11,7 @@ const AuthGuard = async (req, res, next) => {
   }
   try {
     const decoded = await jwt.verify(token, "MsERT?R2431jCW$3b");
+    console.log("USER::\t", decoded);
     req.user = decoded;
     next();
   } catch (e) {

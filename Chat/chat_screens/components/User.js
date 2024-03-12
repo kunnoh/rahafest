@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 import { success } from "../../../src/utils/toast";
-import { UserType } from "../UserContext";
 import {
   CancelFriendRequest,
   GetFriendRequestSent,
@@ -11,12 +10,12 @@ import {
   SendFriendRequest,
 } from "../services/user.service";
 
-const User = ({ item }) => {
-  const { userId, setUserId } = useContext(UserType);
+const User = ({ index, item, access_token }) => {
   const [requestSent, setRequestSent] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [userFriends, setUserFriends] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const { access_token } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchFriendRequests();
@@ -26,7 +25,7 @@ const User = ({ item }) => {
   const fetchFriendRequests = async () => {
     try {
       // console.log("CURRENT USER::\t", userId);
-      const resp = await GetFriendRequestSent(userId);
+      const resp = await GetFriendRequestSent(access_token);
       // console.log("FRIEND REQ SENT::\t", resp);
       setFriendRequests(resp);
     } catch (error) {
@@ -36,7 +35,7 @@ const User = ({ item }) => {
 
   const fetchUserFriends = async () => {
     try {
-      const resp = await GetUserFriends(userId);
+      const resp = await GetUserFriends(access_token);
       // console.log("Friends::\t", resp);
       setUserFriends(resp);
     } catch (error) {
@@ -47,7 +46,7 @@ const User = ({ item }) => {
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
       setLoading(true);
-      const resp = await SendFriendRequest(currentUserId, selectedUserId);
+      const resp = await SendFriendRequest(access_token, selectedUserId);
       setRequestSent(true);
       // console.log("SEND FRIEND REQ::\t", resp);
     } catch (error) {
@@ -60,7 +59,7 @@ const User = ({ item }) => {
   const cancelFriendRequest = async (currentUserId, selectedUserId) => {
     try {
       setLoading(true);
-      const result = await CancelFriendRequest(currentUserId, selectedUserId);
+      const result = await CancelFriendRequest(access_token, selectedUserId);
       success(result.message, 2000);
       setRequestSent(false);
     } catch (error) {
@@ -101,7 +100,7 @@ const User = ({ item }) => {
         </Pressable>
       ) : requestSent || friendRequests.some((friend) => friend._id === item._id) ? (
         <Pressable
-          onPress={() => cancelFriendRequest(userId, item._id)}
+          onPress={() => cancelFriendRequest(access_token, item._id)}
           style={{
             backgroundColor: "gray",
             padding: 10,
@@ -116,7 +115,7 @@ const User = ({ item }) => {
         </Pressable>
       ) : (
         <Pressable
-          onPress={() => sendFriendRequest(userId, item._id)}
+          onPress={() => sendFriendRequest(access_token, item._id)}
           style={{
             backgroundColor: "#567189",
             padding: 10,

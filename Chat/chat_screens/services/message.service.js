@@ -7,36 +7,58 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const GetMessages = async (userId, recepientId) => {
+const GetMessages = async (access_token, recepientId) => {
   try {
-    const { data } = await axios.get(`${prod.local}/messages/${userId}/${recepientId}`);
+    const { data } = await axios.get(`${prod.local}/messages/${recepientId}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);
   }
 };
 
-const GetRecipientData = async (recepientId) => {
+const GetRecipientData = async (access_token, recepientId) => {
   try {
-    const { data } = await axios.get(`${prod.local}/user/${recepientId}`);
+    const { data } = await axios.get(`${prod.local}/user/${recepientId}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);
   }
 };
 
-const SendMessage = async (formData) => {
+const SendMessage = async (access_token, formData) => {
   try {
-    const { data } = await axios.post(`${prod.local}/messages`, formData, headers);
+    const { data } = await axios.post(`${prod.local}/messages`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     return data;
   } catch (e) {
     throw handleError(e);
   }
 };
 
-const DeleteMesages = async (messageIds) => {
+const DeleteMesages = async (access_token, messageIds) => {
   try {
-    const { data } = await axios.post(`${prod.local}/deleteMessages`, { messageIds }, headers);
+    const { data } = await axios.post(
+      `${prod.local}/deleteMessages`,
+      { messageIds },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
     return data;
   } catch (e) {
     throw handleError(e);

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import { SafeAreaView, Text, View, FlatList } from "react-native";
+import { useSelector } from "react-redux";
 
 import { success } from "../../../src/utils/toast";
 import { UserType } from "../UserContext";
@@ -15,6 +16,7 @@ const FriendsScreen = () => {
   const [friends, setFriends] = useState([]);
   const scrollViewRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { access_token } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchFriendRequests();
@@ -33,7 +35,7 @@ const FriendsScreen = () => {
 
   const fetchFriendRequests = async () => {
     try {
-      const response = await FriendRequests(userId);
+      const response = await FriendRequests(access_token);
       setFriendRequests(response);
     } catch (err) {
       console.log("error message", err);
@@ -42,7 +44,7 @@ const FriendsScreen = () => {
 
   const fetchFriends = async () => {
     try {
-      const response = await GetUserFriends(userId);
+      const response = await GetUserFriends(access_token);
       // console.log(response)
       setFriends(response);
     } catch (err) {
@@ -52,10 +54,11 @@ const FriendsScreen = () => {
 
   const acceptRequest = async (friendRequestId) => {
     try {
-      const resp = await AcceptRequest(friendRequestId, userId);
+      const resp = await AcceptRequest(friendRequestId, access_token);
       success("Friend request accepted!", 2000);
       setIsAccepted(true);
       fetchFriends();
+      fetchFriendRequests();
     } catch (err) {
       console.log("error acceptin the friend request", err);
     }
@@ -66,7 +69,7 @@ const FriendsScreen = () => {
     const recipientId = friend._id;
     setIsLoading(true);
     try {
-      const res = await RemoveFriend({ userId, recipientId });
+      const res = await RemoveFriend(access_token, recipientId);
       fetchFriends();
       // console.log(res);
     } catch (e) {

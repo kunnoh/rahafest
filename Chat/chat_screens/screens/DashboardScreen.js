@@ -16,7 +16,6 @@ import User from "../components/User";
 const DashboardScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
-  // const [users, setUsers] = useState([]);
   const { access_token, users, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   // console.log("access_token", access_token);
@@ -63,7 +62,6 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      // setUsers([]);
       if (!access_token) {
         navigation.navigate("Login");
         return;
@@ -85,7 +83,7 @@ const DashboardScreen = () => {
     <ScrollView>
       <View style={{ padding: 10 }}>
         {users ? (
-          users.map((item, index) => <User key={index} item={item} />)
+          users.map((item, index) => <User key={index} item={item} access_token={access_token}/>)
         ) : (
           <Text>No users</Text>
         )}

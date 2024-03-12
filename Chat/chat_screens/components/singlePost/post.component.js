@@ -4,14 +4,6 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from "react-native-popup-m
 
 import { feedsStyle } from "./post.style";
 
-// const popUp = () => {
-//   return (
-//     <View>
-
-//     </View>
-//   )
-// }
-
 export const Post = ({ index, item, editPost, deletePost, handleLike }) => {
   const openHandler = () => {
     alert(item.username);
@@ -43,7 +35,7 @@ export const Post = ({ index, item, editPost, deletePost, handleLike }) => {
               onPress={openHandler}
               style={{ display: "flex", flexDirection: "row" }}>
               <Text style={feedsStyle.name}>{item?.name}</Text>
-              <Text style={feedsStyle.username}>@{item?.name}</Text>
+              {/* <Text style={feedsStyle.username}>@{item?.name}</Text> */}
             </TouchableOpacity>
             {/* <Text style={feedsStyle.time}>{item?.timeStamp}</Text> */}
             {/* <TouchableOpacity style={{ marginLeft: 12 }} onPress={openOptions}>
