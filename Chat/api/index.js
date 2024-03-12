@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
-
 mongoose
   .connect(
     "mongodb+srv://okeyodemichael:S0Zu5Nql1cQGm88W@cluster0.uplu6ft.mongodb.net/?retryWrites=true&w=majority",
@@ -123,8 +122,6 @@ app.get("/users", AuthGuard, async (req, res) => {
 app.post("/friend-request", AuthGuard, async (req, res) => {
   const { selectedUserId } = req.body;
   const currentUserId = req.user.id;
-  console.log("USER ID:\t", currentUserId);
-
   try {
     // update the recepient's freindRequestsArray!
     await User.findByIdAndUpdate(selectedUserId, {
@@ -138,6 +135,7 @@ app.post("/friend-request", AuthGuard, async (req, res) => {
 
     res.sendStatus(200);
   } catch (error) {
+    console.log(error)
     res.sendStatus(500);
   }
 });
@@ -172,7 +170,7 @@ app.get("/friend-request", AuthGuard, async (req, res) => {
     const user = await User.findById(userId).populate("freindRequests", "name email image").lean();
     const freindRequests = user.freindRequests;
 
-    res.json(freindRequests);
+    res.status(200).json(freindRequests);
     console.log(freindRequests);
   } catch (error) {
     console.log(error);
@@ -255,10 +253,8 @@ const upload = multer({ storage });
 app.post("/messages", AuthGuard, upload.single("imageFile"), async (req, res) => {
   try {
     const { recepientId, messageType, messageText } = req.body;
-    console.log("BODY msg:\t",req.body)
-    const senderId = req.user.id;
     const newMessage = new Message({
-      senderId,
+      senderId: req.user.id,
       recepientId,
       messageType,
       message: messageText,
@@ -291,11 +287,25 @@ app.get("/user", AuthGuard, async (req, res) => {
   }
 });
 
+/// endpoint to get the userDetails to design the chat Room header
+app.get("/user/:userId", AuthGuard, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // fetch the user data from the user ID
+    const recepientId = await User.findById(userId);
+
+    res.json(recepientId);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // endpoint to fetch the messages between two users in the chatRoom
 app.get("/messages/:recepientId", AuthGuard, async (req, res) => {
   try {
-    console.log("Params:\t",req.params)
-    const { recepientId } = req.params.recepientId;
+    const recepientId = req.params.recepientId;
     const senderId = req.user.id;
     const messages = await Message.find({
       $or: [
@@ -303,8 +313,7 @@ app.get("/messages/:recepientId", AuthGuard, async (req, res) => {
         { senderId: recepientId, recepientId: senderId },
       ],
     }).populate("senderId", "_id name");
-
-    res.json(messages);
+    res.status(200).json(messages);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -336,7 +345,7 @@ app.get("/friend-requests/sent", AuthGuard, async (req, res) => {
       .lean();
     const sentFriendRequests = user.sentFriendRequests;
 
-    res.json(sentFriendRequests);
+    res.status(200).json(sentFriendRequests);
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: "Internal Server" });

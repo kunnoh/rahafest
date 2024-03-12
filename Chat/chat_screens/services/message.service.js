@@ -61,6 +61,7 @@ const DeleteMesages = async (access_token, messageIds) => {
     );
     return data;
   } catch (e) {
+    console.log(e)
     throw handleError(e);
   }
 };

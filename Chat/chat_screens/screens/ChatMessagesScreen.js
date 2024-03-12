@@ -40,7 +40,6 @@ const ChatMessagesScreen = () => {
   const { access_token } = useSelector((state) => state.auth);
 
   const scrollViewRef = useRef(null);
-  // console.log({ message });
   // console.log("sending::\t", sendingMsg);
   useEffect(() => {
     scrollToBottom();
@@ -63,24 +62,21 @@ const ChatMessagesScreen = () => {
   const fetchMessages = async () => {
     try {
       const msg = await GetMessages(access_token, recepientId);
+      // console.log("USER::\t",msg)
       setMessages(msg);
     } catch (error) {
       console.log("error fetching messages", error);
     }
   };
 
-  useEffect(
-    () => {
-      fetchMessages();
-    },
-    // [],
-    // [messages]
-  );
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   useEffect(() => {
     const fetchRecepientData = async () => {
       try {
-        const resp = await GetRecipientData(recepientId);
+        const resp = await GetRecipientData(access_token, recepientId);
         console.log("Recipient Data::\t", resp);
         setRecepientData(resp);
       } catch (error) {
@@ -90,7 +86,7 @@ const ChatMessagesScreen = () => {
 
     fetchRecepientData();
   }, []);
-  const handleSend = async (messageType, imageUri) => {
+  const handleSend = async (messageType) => {
     try {
       if (message === "") {
         danger("Cannot send empty message!", 3000);
@@ -98,31 +94,13 @@ const ChatMessagesScreen = () => {
       }
       setSendingMsg(true);
       const obj = {
-        senderId: userId,
         recepientId,
         messageText: message,
         messageType,
       };
-      // const formData = new FormData();
-      // formData.append("senderId", userId);
-      // formData.append("recepientId", recepientId);
-
-      // if the message type id image or a normal text
-      if (messageType === "image") {
-        // formData.append("messageType", "image");
-        // formData.append("imageFile", {
-        //   uri: imageUri,
-        //   name: "image.jpg",
-        //   type: "image/jpeg",
-        // });
-      } else {
-        // formData.append("messageType", "text");
-        // formData.append("messageText", message);
-      }
 
       try {
-        const send = SendMessage(access_token, obj);
-        console.log("SENT:: \t", send);
+        await SendMessage(access_token, obj);
         fetchMessages();
         setMessage("");
       } catch (e) {
@@ -236,7 +214,8 @@ const ChatMessagesScreen = () => {
             const isSelected = selectedMessages.includes(item._id);
             return (
               <Pressable
-                onLongPress={() => handleSelectMessage(item)}
+                // onLongPress={() => handleSelectMessage(item)}
+                onLongPress={() => null}
                 key={index}
                 style={[
                   item?.senderId?._id === userId
@@ -359,7 +338,7 @@ const ChatMessagesScreen = () => {
           placeholder="Type Your message..."
         />
 
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -369,7 +348,7 @@ const ChatMessagesScreen = () => {
           <Entypo onPress={pickImage} name="camera" size={24} color="gray" />
 
           <Feather name="mic" size={24} color="gray" />
-        </View>
+        </View> */}
 
         <Pressable
           onPress={() => handleSend("text")}
@@ -387,14 +366,14 @@ const ChatMessagesScreen = () => {
         </Pressable>
       </View>
 
-      {showEmojiSelector && (
+      {/* {showEmojiSelector && (
         <EmojiSelector
           onEmojiSelected={(emoji) => {
             setMessage((prevMessage) => prevMessage + emoji);
           }}
           style={{ height: 250 }}
         />
-      )}
+      )} */}
     </KeyboardAvoidingView>
   );
 };

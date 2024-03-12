@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, Pressable } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -43,10 +43,11 @@ const User = ({ index, item, access_token }) => {
     }
   };
 
-  const sendFriendRequest = async (currentUserId, selectedUserId) => {
+  const sendFriendRequest = async (selectedUserId) => {
     try {
       setLoading(true);
       const resp = await SendFriendRequest(access_token, selectedUserId);
+      console.log(resp)
       setRequestSent(true);
       // console.log("SEND FRIEND REQ::\t", resp);
     } catch (error) {
@@ -56,7 +57,7 @@ const User = ({ index, item, access_token }) => {
     }
   };
 
-  const cancelFriendRequest = async (currentUserId, selectedUserId) => {
+  const cancelFriendRequest = async (selectedUserId) => {
     try {
       setLoading(true);
       const result = await CancelFriendRequest(access_token, selectedUserId);
@@ -115,7 +116,7 @@ const User = ({ index, item, access_token }) => {
         </Pressable>
       ) : (
         <Pressable
-          onPress={() => sendFriendRequest(access_token, item._id)}
+          onPress={() => sendFriendRequest(item._id)}
           style={{
             backgroundColor: "#567189",
             padding: 10,

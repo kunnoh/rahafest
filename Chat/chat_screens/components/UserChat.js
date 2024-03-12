@@ -1,22 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Pressable, Image } from "react-native";
-
-import { UserType } from "../UserContext";
-import { FetchUserMessages } from "../services/user.service";
 import { useSelector } from "react-redux";
 
+import { FetchUserMessages } from "../services/user.service";
+
 const UserChat = ({ item }) => {
-  const { userId, setUserId } = useContext(UserType);
   const [messages, setMessages] = useState([]);
   const navigation = useNavigation();
   const { access_token } = useSelector((state) => state.auth);
 
   const fetchMessages = async () => {
     try {
-      console.log(item)
+      // console.log(item);
       const res = await FetchUserMessages(access_token, item._id);
-      console.log(res);
+      // console.log(res);
       setMessages(res);
     } catch (error) {
       console.log("error fetching messages", error);
