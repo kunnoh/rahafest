@@ -36,13 +36,18 @@ const LoginScreen = () => {
   // console.log("err::\t", error);
   // console.log("loading::\t", loading);
 
-  // useEffect(() => {
-  //   // Redirect if user is already logged in
-  //   if (access_token) {
-  //     // navigation.replace("Dashboard");
-  //     dispatch(getUser(access_token));
-  //   }
-  // }, [access_token]);
+  useEffect(() => {
+    if (access_token) {
+      dispatch(getUser(access_token));
+    }
+  }, [access_token]);
+
+  useEffect(() => {
+    if (user) {
+      success("Welcome", 3000);
+      navigation.replace("Dashboard", 3000);
+    }
+  }, [user]);
 
   console.log("user::\t", user);
 
@@ -78,9 +83,6 @@ const LoginScreen = () => {
 
     dispatch(login(user));
 
-    if (access_token) {
-      dispatch(getUser(access_token));
-    }
     // success("Welcome", 3000);
     // navigation.navigate("Dashboard", 3000);
   };
