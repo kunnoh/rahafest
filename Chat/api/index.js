@@ -78,7 +78,7 @@ app.post("/login", async (req, res) => {
 
     // Check for that user in the database
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(400).json({ message: "User not found" });
 
     // Compare the provided password with the hashed password in the database
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -140,11 +140,11 @@ app.post("/friend-request", AuthGuard, async (req, res) => {
   }
 });
 
-// endpoint to send a request to a user
+// endpoint to modify request to a user
 app.put("/friend-request", AuthGuard, async (req, res) => {
   const { selectedUserId } = req.body;
   const currentUserId = req.user.id;
-  // console.log(req.body);
+  console.log(req.body);
   try {
     // update the recepient's freindRequestsArray!
     await User.findByIdAndUpdate(selectedUserId, {
@@ -189,7 +189,9 @@ app.post("/friend-request/accept", AuthGuard, async (req, res) => {
     const recepient = await User.findById(recepientId);
 
     sender.friends.push(recepient._id);
+    sender.freindRequests.pull(recepientId);
     recepient.friends.push(sender._id);
+    // recepient.freindRequests.pull(recepientId);
 
     recepient.freindRequests = recepient.freindRequests.filter(
       (request) => request.toString() !== senderId.toString(),
@@ -215,6 +217,7 @@ app.post("/unfriend", AuthGuard, async (req, res) => {
     const { recipientId } = req.body;
     const userId = req.user.id;
     await User.updateOne({ _id: userId }, { $pull: { friends: recipientId } });
+    await User.updateOne({ _id: recipientId }, { $pull: { friends: userId } });
     res.status(200).json({ message: "removed friend" });
   } catch (error) {
     console.log(error);
@@ -314,6 +317,7 @@ app.get("/messages/:recepientId", AuthGuard, async (req, res) => {
       ],
     }).populate("senderId", "_id name");
     res.status(200).json(messages);
+    console.log(messages)
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -339,10 +343,11 @@ app.post("/deleteMessages", AuthGuard, async (req, res) => {
 
 app.get("/friend-requests/sent", AuthGuard, async (req, res) => {
   try {
-    const { userId } = req.user.id;
+    const userId = req.user.id;
     const user = await User.findById(userId)
       .populate("sentFriendRequests", "name email image")
       .lean();
+    // await User.
     const sentFriendRequests = user.sentFriendRequests;
 
     res.status(200).json(sentFriendRequests);

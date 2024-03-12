@@ -30,17 +30,16 @@ const ChatMessagesScreen = () => {
   const [messages, setMessages] = useState([]);
   const [recepientData, setRecepientData] = useState();
   const navigation = useNavigation();
-  const [selectedImage, setSelectedImage] = useState("");
+  // const [selectedImage, setSelectedImage] = useState("");
   const route = useRoute();
   const { recepientId } = route.params;
   const [message, setMessage] = useState("");
   const { userId, setUserId } = useContext(UserType);
   // const [file, setFile] = useState(null);
   const [sendingMsg, setSendingMsg] = useState(false);
-  const { access_token } = useSelector((state) => state.auth);
+  const { access_token, user } = useSelector((state) => state.auth);
 
   const scrollViewRef = useRef(null);
-  // console.log("sending::\t", sendingMsg);
   useEffect(() => {
     scrollToBottom();
   }, []);
@@ -218,7 +217,7 @@ const ChatMessagesScreen = () => {
                 onLongPress={() => null}
                 key={index}
                 style={[
-                  item?.senderId?._id === userId
+                  item?.senderId?._id === user._id
                     ? {
                         alignSelf: "flex-end",
                         backgroundColor: "#DCF8C6",
@@ -379,3 +378,4 @@ const ChatMessagesScreen = () => {
 };
 
 export default ChatMessagesScreen;
+

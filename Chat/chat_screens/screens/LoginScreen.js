@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
@@ -31,35 +30,36 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const { access_token, error, loading, user } = useSelector((state) => state.auth);
 
-  // console.log("rettr", access_token);
-  // console.log("rettr", access_token);
-  // console.log("err::\t", error);
-  // console.log("loading::\t", loading);
+  console.log("err::\t", error);
+
+  if (error) {
+    console.log("check credentials");
+    danger("check credentals!", 2000);
+  }
 
   useEffect(() => {
     if (access_token) {
       dispatch(getUser(access_token));
     }
   }, [access_token]);
+  useEffect(() => {
+    if (error) {
+      console.log("check credentials");
+      danger("check credentals!", 2000);
+    }
+  }, [error]);
 
   useEffect(() => {
-    if (user) {
+    if (user && !error) {
       success("Welcome", 3000);
       navigation.navigate("Dashboard", 3000);
     }
   }, [user]);
 
-  // console.log("user::\t", user);
-
   const [fontsLoaded] = useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),
     "Roboto-Bold": require("../../../assets/fonts/Roboto-Bold.ttf"),
   });
-
-  if (error) {
-    // danger(error, 2000);
-    return;
-  }
 
   const handleLogin = async () => {
     // Reset error messages

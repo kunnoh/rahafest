@@ -9,10 +9,12 @@ import {
 
 export const login = createAsyncThunk("auth/login", (userData, { rejectWithValue }) => {
   try {
+    console.log("Login success:");
     return LoginApi(userData);
   } catch (error) {
-    console.log("Login failed:", error.message);
-    return rejectWithValue(error.message);
+    console.log("Login failed:", error);
+    rejectWithValue(error);
+    // return error;
   }
 });
 
@@ -21,7 +23,7 @@ export const logout = createAsyncThunk("auth/logout", (_, { rejectWithValue }) =
     return LogoutApi();
   } catch (error) {
     console.log("Logout failed:", error.message);
-    return rejectWithValue(error.message);
+    rejectWithValue(error.message);
   }
 });
 
@@ -30,8 +32,8 @@ export const getUser = createAsyncThunk("auth/getUser", (token, { rejectWithValu
     console.log("token", token);
     return GetUserApi(token);
   } catch (error) {
-    console.log("Get user failed:", error.message);
-    return rejectWithValue(error.message);
+    console.log("Get user failed:", error);
+    rejectWithValue(error.message);
   }
 });
 
@@ -40,6 +42,6 @@ export const getUsers = createAsyncThunk("auth/getUsers", (token, { rejectWithVa
     return GetUsersApi(token);
   } catch (error) {
     console.log("Get user failed:", error.message);
-    return rejectWithValue(error.message);
+    rejectWithValue(error.message);
   }
 });

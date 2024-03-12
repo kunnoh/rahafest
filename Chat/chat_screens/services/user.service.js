@@ -68,6 +68,18 @@ const FetchUserMessages = async (access_token, itemId) => {
 };
 
 const CancelFriendRequest = async (access_token, selectedUserId) => {
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log("SELECT::\t",selectedUserId)
+  console.log()
+  console.log()
+  console.log()
+  console.log()
+  console.log()
   try {
     const { data } = await axios.put(
       `${prod.local}/friend-request`,

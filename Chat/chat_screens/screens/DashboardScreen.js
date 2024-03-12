@@ -15,7 +15,6 @@ import User from "../components/User";
 
 const DashboardScreen = () => {
   const navigation = useNavigation();
-  const { userId, setUserId } = useContext(UserType);
   const { access_token, users, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   // console.log("access_token", access_token);

@@ -24,7 +24,6 @@ const User = ({ index, item, access_token }) => {
 
   const fetchFriendRequests = async () => {
     try {
-      // console.log("CURRENT USER::\t", userId);
       const resp = await GetFriendRequestSent(access_token);
       // console.log("FRIEND REQ SENT::\t", resp);
       setFriendRequests(resp);
@@ -57,10 +56,10 @@ const User = ({ index, item, access_token }) => {
     }
   };
 
-  const cancelFriendRequest = async (selectedUserId) => {
+  const cancelFriendRequest = async () => {
     try {
       setLoading(true);
-      const result = await CancelFriendRequest(access_token, selectedUserId);
+      const result = await CancelFriendRequest(access_token, item._id);
       success(result.message, 2000);
       setRequestSent(false);
     } catch (error) {
@@ -73,18 +72,6 @@ const User = ({ index, item, access_token }) => {
   };
   return (
     <Pressable style={{ flexDirection: "row", alignItems: "center", marginVertical: 10 }}>
-      <View>
-        {/* <Image
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 25,
-            resizeMode: "cover",
-          }}
-          source={{ uri: item.image || "" }}
-        /> */}
-      </View>
-
       <View style={{ marginLeft: 12, flex: 1 }}>
         <Text style={{ fontWeight: "bold" }}>{item?.name}</Text>
         <Text style={{ marginTop: 4, color: "gray" }}>{item?.email}</Text>

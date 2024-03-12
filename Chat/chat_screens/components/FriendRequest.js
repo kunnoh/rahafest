@@ -12,17 +12,6 @@ const FriendRequest = ({
   isAccepted,
   Unfriend,
 }) => {
-  const { userId, setUserId } = useContext(UserType);
-  // const navigation = useNavigation();
-  // const acceptRequest = async (friendRequestId) => {
-  //   try {
-  //     const resp = await AcceptRequest(friendRequestId, userId);
-  //     success("Friend request accepted!", 2000);
-  //     console.log("USERID:: \t", resp);
-  //   } catch (err) {
-  //     console.log("error acceptin the friend request", err);
-  //   }
-  // };
   return (
     <Pressable
       style={{
