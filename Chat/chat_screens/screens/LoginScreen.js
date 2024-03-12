@@ -45,11 +45,11 @@ const LoginScreen = () => {
   useEffect(() => {
     if (user) {
       success("Welcome", 3000);
-      navigation.replace("Dashboard", 3000);
+      navigation.navigate("Dashboard", 3000);
     }
   }, [user]);
 
-  console.log("user::\t", user);
+  // console.log("user::\t", user);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Light": require("../../../assets/fonts/Roboto-Light.ttf"),

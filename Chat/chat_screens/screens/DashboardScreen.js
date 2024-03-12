@@ -17,9 +17,11 @@ const DashboardScreen = () => {
   const navigation = useNavigation();
   const { userId, setUserId } = useContext(UserType);
   // const [users, setUsers] = useState([]);
-  const { access_token, users } = useSelector((state) => state.auth);
+  const { access_token, users, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  console.log("access_token", access_token);
+  // console.log("access_token", access_token);
+  // console.log("users", users);
+  // console.log("user", user);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -82,9 +84,11 @@ const DashboardScreen = () => {
   return (
     <ScrollView>
       <View style={{ padding: 10 }}>
-        {users.map((item, index) => (
-          <User key={index} item={item} />
-        ))}
+        {users ? (
+          users.map((item, index) => <User key={index} item={item} />)
+        ) : (
+          <Text>No users</Text>
+        )}
       </View>
     </ScrollView>
   );
