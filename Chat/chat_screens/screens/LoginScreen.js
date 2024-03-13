@@ -82,9 +82,6 @@ const LoginScreen = () => {
     };
 
     dispatch(login(user));
-
-    // success("Welcome", 3000);
-    // navigation.navigate("Dashboard", 3000);
   };
 
   return (
@@ -98,15 +95,14 @@ const LoginScreen = () => {
             style={{ height: 150, width: 150, marginRight: 10, flex: 1 / 4 }}
             source={require("../../../assets/images/rahalogo.png")}
           />
-
           {/** <span style={{ color: "#11e0ff" }}>R</span>
-    <span style={{ color: "#ffffff" }}>A</span>
-    <span style={{ color: "#e42eff" }}>H</span>
-    <span style={{ color: "#ffdf2d" }}>A</span>
-    <span style={{ color: "#05e705" }}>F</span>
-    <span style={{ color: "#ff1748" }}>E</span>
-    <span style={{ color: "#ffffff" }}>S</span>
-<span style={{ color: "#11e0ff" }}>T</span> **/}
+          <span style={{ color: "#ffffff" }}>A</span>
+          <span style={{ color: "#e42eff" }}>H</span>
+          <span style={{ color: "#ffdf2d" }}>A</span>
+          <span style={{ color: "#05e705" }}>F</span>
+          <span style={{ color: "#ff1748" }}>E</span>
+          <span style={{ color: "#ffffff" }}>S</span>
+          <span style={{ color: "#11e0ff" }}>T</span> **/}
         </View>
 
         <View

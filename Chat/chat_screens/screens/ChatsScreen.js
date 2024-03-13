@@ -9,8 +9,6 @@ import { acceptedFriendsList } from "../services/chat.service";
 
 const ChatsScreen = () => {
   const [acceptedFriends, setAcceptedFriends] = useState([]);
-  const { userId, setUserId } = useContext(UserType);
-  const navigation = useNavigation();
   const { access_token, user } = useSelector((state) => state.auth);
 
   useEffect(() => {

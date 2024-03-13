@@ -12,7 +12,7 @@ const LoginApi = async (userData) => {
     const { data } = await axios.post(`${prod.local}/login`, userData, headers);
     return data;
   } catch (error) {
-    console.log('loginapi',error);
+    console.log("loginapi", error);
     return error;
     // return handleError(error);
   }
