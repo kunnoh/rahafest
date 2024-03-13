@@ -2,8 +2,8 @@ const prod = {
   production: true,
   endpoint: "https://api.rahafest.com",
   // chatapi "http://192.168.88.172:8000",
-  // chatapi: "http://192.168.88.153:8000",
-  local: "https://chat.rahafest.com",
+  local: "http://192.168.88.153:8000",
+  // local: "https://chat.rahafest.com",
   // local: "http://192.168.88.249:8000",
 };
 

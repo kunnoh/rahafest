@@ -16,12 +16,9 @@ const StackNavigator = () => {
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
-
       <Stack.Screen name="Friends" component={FriendsScreen} />
       <Stack.Screen name="Feeds" component={FeedsScreen} />
-
       <Stack.Screen name="Chats" component={ChatsScreen} />
-
       <Stack.Screen name="Messages" component={ChatMessagesScreen} />
     </Stack.Navigator>
   );

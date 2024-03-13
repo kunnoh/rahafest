@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, StyleSheet, useWindowDimensions } from "react-native";
+import { SafeAreaView, StyleSheet, useWindowDimensions } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 
 import Drinks from "./Drinks";
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   tabview: {
-    marginTop: 40,
     flex: 1,
   },
 });

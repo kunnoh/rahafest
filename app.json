@@ -20,15 +20,12 @@
         }
       ]
     ],
-    "orentation": "potrait",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns":["assets/fonts/*"] ,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mwendwa99.rahafest"
@@ -51,8 +48,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "02b76adf-e4f2-41b7-b2a0-e18cb573092d"
+        "projectId": "7f18520f-895f-4c62-a8ae-1042c22b5528"
       }
-    }
+    },
+    "owner": "kunnoh"
   }
 }

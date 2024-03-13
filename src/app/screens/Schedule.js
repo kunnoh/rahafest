@@ -13,7 +13,6 @@ import {
 import { ActivityIndicator } from "react-native-paper";
 
 import MamaKilo from "../../utils/MamaKilo";
-import { GetSchedule } from "../services/schedule.service";
 
 const Schedule = () => {
   const [isLoading, setLoading] = useState(true);

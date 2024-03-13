@@ -552,8 +552,6 @@ const Map = () => {
   );
 };
 
-export default Map;
-
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
@@ -583,3 +581,5 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
+
+export default Map;

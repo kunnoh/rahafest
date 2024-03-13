@@ -30,8 +30,6 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const { access_token, error, loading, user } = useSelector((state) => state.auth);
 
-  console.log("err::\t", error);
-
   if (error) {
     console.log("check credentials");
     danger("check credentals!", 2000);
