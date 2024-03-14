@@ -8,7 +8,8 @@ const MamaKilo = ({ children, color, size, height }) => {
   useEffect(() => {
     async function loadFonts() {
       await loadAsync({
-        "MamaKilo Black": require("../../assets/fonts/MamaKilo_Decorative.otf"),
+        // "MamaKilo Black": require("../../assets/fonts/MamaKilo_Decorative.otf"),
+        "MamaKilo Black": require("../../assets/fonts/mamaKilodecorative.otf"),
       });
       setFontsLoaded(true);
     }
