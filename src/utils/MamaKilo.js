@@ -1,21 +1,26 @@
 import { loadAsync } from "expo-font";
+import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
 import { Text } from "react-native";
 
 const MamaKilo = ({ children, color, size, height }) => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  // const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  useEffect(() => {
-    async function loadFonts() {
-      await loadAsync({
-        // "MamaKilo Black": require("../../assets/fonts/MamaKilo_Decorative.otf"),
-        "MamaKilo Black": require("../../assets/fonts/mamaKilodecorative.otf"),
-      });
-      setFontsLoaded(true);
-    }
+  // useEffect(() => {
+  //   async function loadFonts() {
+  //     await loadAsync({
+  //       "MamaKilo Black": require("../../assets/fonts/MamaKilo_Decorative.otf"),
+  //       // "MamaKilo Black": require("../../assets/fonts/mamaKilodecorative.otf"),
+  //     });
+  //     setFontsLoaded(true);
+  //   }
 
-    loadFonts();
-  }, []);
+  //   loadFonts();
+  // }, []);
+  Font;
+  const [fontsLoaded] = Font.useFonts({
+    "MamaKilo Black": require("../../assets/fonts/MamaKilo_Decorative.otf"),
+  });
 
   if (!fontsLoaded)
     return (

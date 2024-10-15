@@ -10,7 +10,6 @@ import { FriendRequests } from "../services/chat.service";
 import { AcceptRequest, GetUserFriends, RemoveFriend } from "../services/user.service";
 
 const FriendsScreen = () => {
-  const { userId, setUserId } = useContext(UserType);
   const [isAccepted, setIsAccepted] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [friends, setFriends] = useState([]);

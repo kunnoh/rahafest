@@ -1,8 +1,8 @@
 export const prod = {
   production: true,
   endpoint: "https://api.rahafest.com/api",
-  local: "http://192.168.88.153:8000",
-  // local: "https://api.rahafest.com/api",
+  // local: "http://192.168.88.153:8000",
+  local: "https://api.rahafest.com/api",
   // local: "http://192.168.88.249:8000",
 };
 
